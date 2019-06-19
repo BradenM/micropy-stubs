@@ -26,6 +26,8 @@ from pprint import pprint
 from firmware import Firmware
 from deepmerge import always_merger
 import subprocess as subp
+import upip
+from shutil import rmtree
 
 def_files = Path.cwd().glob("**/info.json")
 ROOT = (Path(__file__).parent).resolve()
@@ -42,9 +44,18 @@ def make_stubs(target_dir):
     py_file = stub_dir / 'make_stub_files.py'
     py_cfg = stub_dir / 'make_stub_files.cfg'
     target = Path(str(target_dir)).resolve()
-    args = ["python", str(py_file), "-c",
-            str(py_cfg), "-u", f"{str(target)}/*.py"]
-    subp.run(args, capture_output=True)
+    dirs = set([p.parent for p in target.rglob('*.py')])
+    for d in dirs:
+        args = ["python", str(py_file), "-c",
+                str(py_cfg), "-u", f"{str(d)}/*.py"]
+        subp.run(args, capture_output=True)
+
+
+def get_module(module, target_dir):
+    """Download module from pypi"""
+    target = Path(str(target_dir)).resolve()
+    module = f"micropython-{module}"
+    return upip.install(module, str(target))
 
 
 def get_file(path):
@@ -123,11 +134,26 @@ def update_device(device_info):
     return update_file(device_info, new_device)
 
 
+def update_firmware_modules(firm):
+    """Update firmware specific modules"""
+    path = Path(firm['path']).parent / 'common' / 'modules'
+    if path.exists():
+        rmtree(str(path))
+    path.mkdir(exist_ok=True, parents=True)
+    modules = firm.get('modules')
+    if not modules:
+        return firm
+    modules = [get_module(m, path) for m in modules]
+    make_stubs(path)
+    return firm
+
+
 def update_firmware(firm):
     """update firmware info file"""
     versions = firm.get('versions', None)
     if not versions or len(versions.keys()) == 0:
         firm = add_firmware(firm)
+    update_firmware_modules(firm)
     fware = firm['firmware']
     devices = get_devices_by_firm(fware)
     updated = [update_device(d) for d in devices]
