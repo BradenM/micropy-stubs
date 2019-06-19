@@ -25,14 +25,26 @@ import json
 from pprint import pprint
 from firmware import Firmware
 from deepmerge import always_merger
+import subprocess as subp
 
 def_files = Path.cwd().glob("**/info.json")
-ROOT = Path.cwd()
+ROOT = (Path(__file__).parent).resolve()
 INFO = {
     'firmware': [],
     'device': [],
     'stats': {}
 }
+
+
+def make_stubs(target_dir):
+    """Call make_stub_files on a directory"""
+    stub_dir = (ROOT / 'tools' / 'stubber' / 'runOnPc').resolve()
+    py_file = stub_dir / 'make_stub_files.py'
+    py_cfg = stub_dir / 'make_stub_files.cfg'
+    target = Path(str(target_dir)).resolve()
+    args = ["python", str(py_file), "-c",
+            str(py_cfg), "-u", f"{str(target)}/*.py"]
+    subp.run(args, capture_output=True)
 
 
 def get_file(path):
