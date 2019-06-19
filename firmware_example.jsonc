@@ -6,11 +6,18 @@
   "repo": "micropython/micropython", // Firmware Git repository
   "module_path": "ports/{}/modules", // {} are formatted with port name (ex. esp32)
   "firmware": "micropython", // Firmware 'codename'
-  "excluded_modules": [ // Base firmware or device exclusions
+  "excluded_modules": [
+    // Base firmware or device exclusions
     "_boot.py",
     "inisetup.py",
     "upip.py",
     "upip_utarfile.py"
+  ],
+  "modules": [
+    // Firmware Specific modules to be stubbed
+    "uaiohttpclient",
+    "uargparse",
+    "uasyncio"
   ],
   "devices": ["esp8266", "esp32"] // Available ports
   // "versions": {} This is left empty, as it will be automatically populated
