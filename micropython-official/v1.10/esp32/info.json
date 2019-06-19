@@ -1,0 +1,13 @@
+{
+  "scope": "device",
+  "firmware": "micropython",
+  "version": "1.10.0",
+  "device": {
+    "nodename": "esp32",
+    "release": "v1.10-247-g0fb15fc3f on 2019-03-29",
+    "machine": "ESP32 module with ESP32",
+    "sysname": "esp32"
+  },
+  "modules": [],
+  "stubs": []
+}
