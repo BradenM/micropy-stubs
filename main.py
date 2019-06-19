@@ -91,21 +91,33 @@ def get_devices_by_firm(fware):
     return devices
 
 
+def get_firm_by_device(device):
+    """get firmware info from device"""
+    fwares = INFO['firmware']
+    dev_fware = device['firmware']
+    firm = next((f for f in fwares if f['firmware'] == dev_fware))
+    return firm
+
+
 def update_device(device_info):
     """update device info file"""
     def update_files(key, path):
         for m in path.iterdir():
-            file = {
-                "name": m.stem,
-                "path": str(m.relative_to(path.parent))
-            }
-            new_device[key].append(file)
+            if m.suffix == '.py':
+                file = {
+                    "name": m.stem,
+                    "path": str(m.relative_to(path.parent))
+                }
+                new_device[key].append(file)
         new_device[key] = list(
             {v['name']: v for v in new_device[key]}.values())
     path = Path(device_info['path']).parent
-    new_device = device_info.copy()
+    dev_mods = device_info.get('modules', None)
+    if not dev_mods or len(dev_mods) == 0:
+        device_info = add_device(device_info)
     modules = path / 'modules'
     stubs = path / 'stubs'
+    new_device = device_info.copy()
     update_files('modules', modules)
     update_files('stubs', stubs)
     return update_file(device_info, new_device)
@@ -128,15 +140,31 @@ def update_firmware(firm):
     return firm
 
 
+def add_device(device):
+    """add device from info file"""
+    fware_info = get_firm_by_device(device)
+    # Find a suitable port
+    _port_attrs = ['machine', 'sysname', 'nodename']
+    _port_ids = [device['device'].get(a).lower().strip() for a in _port_attrs]
+    port_ids = set([item for sublist in _port_ids for item in _port_ids])
+    port = list(set(fware_info['devices']).intersection(port_ids))[0]
+    fware_tag = device['version']
+    fware = Firmware(firmware_info=fware_info, port=port, tag=fware_tag)
+    mods_out = Path(device['path']).parent / 'modules'
+    mods_out.mkdir(exist_ok=True, parents=True)
+    fware.retrieve_modules(mods_out)
+    make_stubs(mods_out)
+    return device
+
+
 def add_firmware(firm):
     """add firmware from info file"""
-    fname = firm['firmware']
     ports = firm['devices']
     path = Path(firm['path']).parent
     versions = {}
     updated_firm = firm.copy()
     for p in ports:
-        fware = Firmware(fname, port=p, firmware_info=firm)
+        fware = Firmware(port=p, firmware_info=firm)
         compat = fware.get_compatible_tags()
         versions = always_merger.merge(versions, compat)
     updated_firm['versions'] = versions

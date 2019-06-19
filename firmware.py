@@ -17,9 +17,10 @@ from os import environ
 class Firmware:
     """MicroPython Firmware"""
 
-    def __init__(self, name, port, firmware_info, tag=None, **kwargs):
+    def __init__(self, port, firmware_info, tag=None, **kwargs):
         self.tag = version.parse(tag) if tag else None
         self.port = port
+        self.name = kwargs.get('name', firmware_info.get('firmware'))
         self.__dict__.update(firmware_info)
         self.module_path = Path(self.module_path.format(self.port))
         self.git = Github(environ.get("GIT_API_TOKEN"))
@@ -89,6 +90,7 @@ class Firmware:
         modules = self.fetch_modules()
         for mod in modules:
             out_dir = Path(str(output_dir))
+            failed_out = out_dir / 'failed.txt'
             mod_path = Path(mod.path)
             out_path = out_dir / Path(*mod_path.parts[3:])
             print("OUT: ", str(out_path))
@@ -107,8 +109,9 @@ class Firmware:
                     content = file.decoded_content
                     self.write_module(content, out_path)
                 except AssertionError:
-                    print(f"Failed to write {name}")
-                    self.write_module(b"ERROR", out_path)
+                    with failed_out.open('a+') as f:
+                        f.write(
+                            f'\nFailed to retrieve: {name} from {mod.path}')
             else:
                 print(f"Module: {name} => {str(out_path)}")
                 self.write_module(content, out_path)
