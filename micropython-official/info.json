@@ -10,6 +10,28 @@
     "upip.py",
     "upip_utarfile.py"
   ],
+  "modules": [
+    "uaiohttpclient",
+    "uargparse",
+    "uasyncio",
+    "uasyncio.core",
+    "uasyncio.queues",
+    "uasyncio.synchro",
+    "uasyncio.udp",
+    "ucontextlib",
+    "ucurses",
+    "udnspkt",
+    "ulogging",
+    "upip",
+    "upysh",
+    "urequests",
+    "urllib.urequest",
+    "utarfile",
+    "utokenize",
+    "uurequests",
+    "uwwwauth",
+    "xmltok2"
+  ],
   "devices": ["esp8266", "esp32"],
   "path": "micropython-official/info.json",
   "versions": {
