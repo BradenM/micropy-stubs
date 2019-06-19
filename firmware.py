@@ -72,7 +72,8 @@ class Firmware:
         for files in subdirs:
             repo_mods.extend(files)
         modules = [i
-                   for i in repo_mods if i.name not in exclude and i.type != "dir"]
+                   for i in repo_mods if i.name not in exclude
+                   and i.type != "dir"]
         return modules
 
     def write_module(self, content, path):
