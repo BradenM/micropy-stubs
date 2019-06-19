@@ -1,0 +1,17 @@
+// Basic Requirements for a Firmware Definition File
+// This would be placed under <firmware_name>/info.json
+{
+  "scope": "firmware",
+  "name": "MicroPython Official", // Human Readable Name
+  "repo": "micropython/micropython", // Firmware Git repository
+  "module_path": "ports/{}/modules", // {} are formatted with port name (ex. esp32)
+  "firmware": "micropython", // Firmware 'codename'
+  "excluded_modules": [ // Base firmware or device exclusions
+    "_boot.py",
+    "inisetup.py",
+    "upip.py",
+    "upip_utarfile.py"
+  ],
+  "devices": ["esp8266", "esp32"] // Available ports
+  // "versions": {} This is left empty, as it will be automatically populated
+}

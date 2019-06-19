@@ -1,0 +1,22 @@
+// Basic Requirements for a Device Definition File
+// This would be placed under <firmware_name>/<version>/<device>/info.json
+{
+  "scope": "device",
+  "firmware": "micropython", // Must match firmware definition file
+  "version": "1.11.0", // Would come from stubber
+  "device": {
+    // All would come from stubber
+    "nodename": "esp8266",
+    "machine": "ESP module with ESP8266",
+    "sysname": "esp8266",
+    "release": "v1.11 on 2019-06-03"
+  },
+  "modules": [
+    // Will be automatically downloaded, frozen, and populated by main.py
+    // Note: These are device specific modules
+  ],
+  "stubs": [
+    // Requires ./stubs folder from stubber
+    // If ./stubs exists, it will be automatically populated
+  ]
+}
