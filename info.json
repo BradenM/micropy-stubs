@@ -1,0 +1,303 @@
+{
+  "scope": "firmware",
+  "name": "MicroPython Official",
+  "repo": "micropython/micropython",
+  "module_path": "ports/{}/modules",
+  "firmware": "micropython",
+  "excluded_modules": [
+    "_boot.py",
+    "inisetup.py",
+    "upip.py",
+    "upip_utarfile.py"
+  ],
+  "modules": [
+    "uaiohttpclient",
+    "uargparse",
+    "uasyncio",
+    "uasyncio.core",
+    "uasyncio.queues",
+    "uasyncio.synchro",
+    "uasyncio.udp",
+    "ucontextlib",
+    "ucurses",
+    "udnspkt",
+    "ulogging",
+    "upip",
+    "upysh",
+    "urequests",
+    "urllib.urequest",
+    "utarfile",
+    "utokenize",
+    "uurequests",
+    "uwwwauth",
+    "xmltok2"
+  ],
+  "devices": ["esp8266", "esp32"],
+  "path": "micropython-official/info.json",
+  "versions": {
+    "1.11": {
+      "git_tag": "v1.11",
+      "sha": "6f75c4f3cd393131579db70cdf0b35d1fe5b95ab",
+      "latest": true,
+      "devices": ["esp8266", "esp32"]
+    },
+    "1.10": {
+      "git_tag": "v1.10",
+      "sha": "3e25d611ef3185b68558a20057d50b0d18dc67a0",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    "1.9.4": {
+      "git_tag": "v1.9.4",
+      "sha": "421b84af9968e582f324899934f52b3df60381ee",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    "1.9.3": {
+      "git_tag": "v1.9.3",
+      "sha": "fe45d78b1edd6d2202c3544797885cb0b12d4f03",
+      "latest": false,
+      "devices": ["esp8266"]
+    },
+    "1.9.2": {
+      "git_tag": "v1.9.2",
+      "sha": "1f78e7a43130acfa4bedf16c1007a1b0f37c75c3",
+      "latest": false,
+      "devices": []
+    },
+    "1.9.1": {
+      "git_tag": "v1.9.1",
+      "sha": "869cdcfdfc860b1177baf9b0f8818915ba54f3f5",
+      "latest": false,
+      "devices": []
+    },
+    "1.9": {
+      "git_tag": "v1.9",
+      "sha": "825460a093a6bcd8fb79119b5f6ee8408f63603b",
+      "latest": false,
+      "devices": []
+    },
+    "1.8.7": {
+      "git_tag": "v1.8.7",
+      "sha": "5653e3c72fc8555c6a060acf6447ac694a036053",
+      "latest": false,
+      "devices": []
+    },
+    "1.8.6": {
+      "git_tag": "v1.8.6",
+      "sha": "5a1d63fc14dae788f705403a43c2d8639b7dd9cd",
+      "latest": false,
+      "devices": []
+    },
+    "1.8.5": {
+      "git_tag": "v1.8.5",
+      "sha": "c8d31585a00616b39839d112b7c696dafed6b08d",
+      "latest": false,
+      "devices": []
+    },
+    "1.8.4": {
+      "git_tag": "v1.8.4",
+      "sha": "3611dcc260cef08eaa497cea4e3ca17977848b6c",
+      "latest": false,
+      "devices": []
+    },
+    "1.8.3": {
+      "git_tag": "v1.8.3",
+      "sha": "e4e4526954f8bcd88ceb21fe789963bfa710fa4f",
+      "latest": false,
+      "devices": []
+    },
+    "1.8.2": {
+      "git_tag": "v1.8.2",
+      "sha": "1459a8d5c9b29c78da2cf5c7cf3c37ab03b34b8e",
+      "latest": false,
+      "devices": []
+    },
+    "1.8.1": {
+      "git_tag": "v1.8.1",
+      "sha": "9b39263b118a4be65c58bf9c396203fa535bebe1",
+      "latest": false,
+      "devices": []
+    },
+    "1.8": {
+      "git_tag": "v1.8",
+      "sha": "2c2fc070ecca654b0e9a80e1d9a342d46c6f0cdb",
+      "latest": false,
+      "devices": []
+    },
+    "1.7": {
+      "git_tag": "v1.7",
+      "sha": "9b0a150bd69f9c62a14045b4a2ecfaaf7523f542",
+      "latest": false,
+      "devices": []
+    },
+    "1.6": {
+      "git_tag": "v1.6",
+      "sha": "331a48195d325b9557175056e2c3650ef496d862",
+      "latest": false,
+      "devices": []
+    },
+    "1.5.2": {
+      "git_tag": "v1.5.2",
+      "sha": "ed584e2ffd906e97ae234cccebbc63222a7dbcf2",
+      "latest": false,
+      "devices": []
+    },
+    "1.5.1": {
+      "git_tag": "v1.5.1",
+      "sha": "4dea24e10590928310f3b03703e966c9f774871c",
+      "latest": false,
+      "devices": []
+    },
+    "1.5": {
+      "git_tag": "v1.5",
+      "sha": "fe08e3a54fd282a100c00c9f9d4cc87869e711f0",
+      "latest": false,
+      "devices": []
+    },
+    "1.4.6": {
+      "git_tag": "v1.4.6",
+      "sha": "5572f735b65cb4704725966d5437564501ceb673",
+      "latest": false,
+      "devices": []
+    },
+    "1.4.5": {
+      "git_tag": "v1.4.5",
+      "sha": "032b0e9369558d6c33289f284180ac16edc2cf10",
+      "latest": false,
+      "devices": []
+    },
+    "1.4.4": {
+      "git_tag": "v1.4.4",
+      "sha": "e78a8c94b65977de91f634363eed4a741c19575a",
+      "latest": false,
+      "devices": []
+    },
+    "1.4.3": {
+      "git_tag": "v1.4.3",
+      "sha": "d7b7d5f6ee0141bcc4ac64db9ba0c63524494238",
+      "latest": false,
+      "devices": []
+    },
+    "1.4.2": {
+      "git_tag": "v1.4.2",
+      "sha": "43d56f9ba93b2f3a889f024b250f39335cf18bb7",
+      "latest": false,
+      "devices": []
+    },
+    "1.4.1": {
+      "git_tag": "v1.4.1",
+      "sha": "0f6424efda0bc8214ac0036cd29c47ef2f92245d",
+      "latest": false,
+      "devices": []
+    },
+    "1.4": {
+      "git_tag": "v1.4",
+      "sha": "64e8b622917156bfe3a7ca3698072188be1ab862",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.10": {
+      "git_tag": "v1.3.10",
+      "sha": "79dc0a0886b4c7fa7779258532cdb27c0ca848b8",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.9": {
+      "git_tag": "v1.3.9",
+      "sha": "552f7c40a0c98fdd3bbf89f7d4ebf23e342e0c01",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.8": {
+      "git_tag": "v1.3.8",
+      "sha": "361909e3ca8a44632c918aeed2c3426b970068fc",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.7": {
+      "git_tag": "v1.3.7",
+      "sha": "722fab7c2a1aa9e141f4bfc794f705855ef46796",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.6": {
+      "git_tag": "v1.3.6",
+      "sha": "ff8d0e071c4281e7593b4798e92af56bb80f5471",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.5": {
+      "git_tag": "v1.3.5",
+      "sha": "ccedf000ed7e3a155f84ad60afb86ca5f953fe8c",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.4": {
+      "git_tag": "v1.3.4",
+      "sha": "481d714bd56e0173668b249760e9cea8fce9b04f",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.3": {
+      "git_tag": "v1.3.3",
+      "sha": "0bbe4de52782334ef8e18bda1797b9726abc3237",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.2": {
+      "git_tag": "v1.3.2",
+      "sha": "55a5b807937a4be8d57153970d723bc31113b6d4",
+      "latest": false,
+      "devices": []
+    },
+    "1.3.1": {
+      "git_tag": "v1.3.1",
+      "sha": "110ba35980d03da2e744a8aadd85d08c0c06a23b",
+      "latest": false,
+      "devices": []
+    },
+    "1.3": {
+      "git_tag": "v1.3",
+      "sha": "9d02780eafd9546354fd3ac429b0211f52331650",
+      "latest": false,
+      "devices": []
+    },
+    "1.2": {
+      "git_tag": "v1.2",
+      "sha": "dce8876dbe272d34d8d28aac21b4a4c3bdea0317",
+      "latest": false,
+      "devices": []
+    },
+    "1.1.1": {
+      "git_tag": "v1.1.1",
+      "sha": "2547928148aefcf163953057979e14f46bef1170",
+      "latest": false,
+      "devices": []
+    },
+    "1.1": {
+      "git_tag": "v1.1",
+      "sha": "8340c4838948876a4e477556beaed79e59e5e9b4",
+      "latest": false,
+      "devices": []
+    },
+    "1.0.1": {
+      "git_tag": "v1.0.1",
+      "sha": "147c80bf7cad0f8e02f3b7ccf8ec14e65092e52b",
+      "latest": false,
+      "devices": []
+    },
+    "1.0": {
+      "git_tag": "v1.0",
+      "sha": "6ec835dfef90a2f940a24b126cba8e3d8ede1ef2",
+      "latest": false,
+      "devices": []
+    },
+    "1.0rc1": {
+      "git_tag": "v1.0-rc1",
+      "sha": "b4bb3fdb9cfcb76fb5b64e0a031a70c807ac7395",
+      "latest": false,
+      "devices": []
+    }
+  }
+}
