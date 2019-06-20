@@ -1,5 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 
 """
 Micropy-Stubs
@@ -28,6 +28,7 @@ from deepmerge import always_merger
 import subprocess as subp
 import upip
 from shutil import rmtree
+import click
 
 ROOT = (Path(__file__).parent).resolve()
 PKG_ROOT = ROOT / 'packages'
@@ -204,7 +205,14 @@ def add_firmware(firm):
     return update_file(firm, updated_firm)
 
 
-def main():
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+def generate():
+    """Generate Stubs"""
     files = sort_info(def_files)
     for firm in files['firmware']:
         update_firmware(firm)
@@ -212,4 +220,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    cli()

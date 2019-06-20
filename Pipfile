@@ -18,6 +18,7 @@ micropython-cpython-upip = "*"
 dictdiffer = "*"
 pygithub = "*"
 deepmerge = "*"
+click = "*"
 
 [requires]
 python_version = "3.7"
