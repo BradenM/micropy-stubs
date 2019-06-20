@@ -23,7 +23,7 @@ class Firmware:
         self.name = kwargs.get('name', firmware_info.get('firmware'))
         self.__dict__.update(firmware_info)
         self.module_path = Path(self.module_path.format(self.port))
-        self.git = Github(environ.get("GIT_API_TOKEN"))
+        self.git = Github(environ.get("GITHUB_TOKEN"))
 
     @staticmethod
     def parse_version(text):
