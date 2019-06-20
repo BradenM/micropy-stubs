@@ -12,6 +12,8 @@ If a firmware file is found, it creates the file structure required and download
 If a device file is found, it will then download its required modules
 and stub them. The initial info file and device stubs must be added manually.
 
+Please refer to the [example](./example) directory for more information.
+
 
 ## Credits
 

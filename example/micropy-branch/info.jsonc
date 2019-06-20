@@ -1,0 +1,24 @@
+// Basic Requirements for a Firmware Definition File
+// This would be placed under <firmware_name>/info.json
+{
+  "scope": "firmware",
+  "name": "Some Micropython Branch", // Human Readable Name
+  "repo": "gitauthor/micropy-branch", // Firmware Git repository
+  "module_path": "builtin/{}/modules", // {} are formatted with port name (ex. esp32)
+  "firmware": "micropy-branch", // Firmware 'codename'
+  "excluded_modules": [
+    // Modules to be excluded for each port
+    "_boot.py",
+    "inisetup.py",
+    "upip.py",
+    "upip_utarfile.py"
+  ],
+  "modules": [
+    // Firmware Specific modules to be stubbed (sourced from pypi)
+    "uaiohttpclient",
+    "uargparse",
+    "uasyncio"
+  ],
+  "devices": ["esp8266", "esp32"] // Available ports
+  // "versions": {} This is left empty, as it will be automatically populated by git tags
+}

@@ -2,14 +2,14 @@
 // This would be placed under <firmware_name>/<version>/<device>/info.json
 {
   "scope": "device",
-  "firmware": "micropython", // Must match firmware definition file
-  "version": "1.11.0", // Would come from stubber
+  "firmware": "micropy-branch", // Must match firmware definition file
+  "version": "1.0.0", // Would come from stubber
   "device": {
     // All would come from stubber
-    "nodename": "esp8266",
-    "machine": "ESP module with ESP8266",
-    "sysname": "esp8266",
-    "release": "v1.11 on 2019-06-03"
+    "nodename": "esp32",
+    "machine": "ESP module with ESP32",
+    "sysname": "esp32",
+    "release": "v1.0 on 2019-06-03"
   },
   "modules": [
     // Will be automatically downloaded, frozen, and populated by main.py
