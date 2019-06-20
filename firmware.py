@@ -34,11 +34,16 @@ class Firmware:
             raise Exception("Invalid Version")
         return ver
 
-    def get_compatible_tags(self):
-        """returns tags compatible with current device"""
+    def get_refs(self):
+        """get tags/branch refs"""
         repo = self.git.get_repo(self.repo)
         repo_tag_objs = list(repo.get_tags())
         repo_tag_objs.append(repo.get_branch('master'))
+        return (repo, repo_tag_objs)
+
+    def get_compatible_tags(self):
+        """returns tags compatible with current device"""
+        repo, repo_tag_objs = self.get_refs()
         compat = {}
         for tag in repo_tag_objs:
             version = str(self.parse_version(tag.name))
@@ -61,8 +66,7 @@ class Firmware:
     def fetch_modules(self, exclude=None):
         """Fetch modules from git repository"""
         exclude = exclude or self.excluded_modules
-        repo = self.git.get_repo(self.repo)
-        repo_tags_objs = repo.get_tags()
+        repo, repo_tags_objs = self.get_refs()
         tag_obj = next(
             (i for i in repo_tags_objs
                 if self.parse_version(i.name) == self.tag))
@@ -74,7 +78,9 @@ class Firmware:
             repo_mods.extend(files)
         modules = [i
                    for i in repo_mods if i.name not in exclude
-                   and i.type != "dir"]
+                   and i.type != "dir"
+                   and Path(i.name).suffix == ".py"
+                   ]
         return modules
 
     def write_module(self, content, path):
@@ -92,11 +98,11 @@ class Firmware:
             out_dir = Path(str(output_dir))
             failed_out = out_dir / 'failed.txt'
             mod_path = Path(mod.path)
-            out_path = out_dir / Path(*mod_path.parts[3:])
-            print("OUT: ", str(out_path))
-            if not out_path.parent.exists():
-                out_path.parent.mkdir(exist_ok=True)
-                print(out_path)
+            mod_index = list(mod_path.parts).index(self.module_path.name) + 1
+            mod_stem = Path(*mod_path.parts[mod_index:])
+            out_path = out_dir / mod_stem
+            if out_path.parent.is_dir():
+                out_path.parent.mkdir(exist_ok=True, parents=True)
             name = str(out_path.name)
             try:
                 content = mod.decoded_content
