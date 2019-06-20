@@ -10,6 +10,7 @@
     "upip.py",
     "upip_utarfile.py"
   ],
+  "modules": [],
   "devices": ["esp32"],
   "path": "esp32_LoBo/info.json",
   "versions": {
