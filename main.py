@@ -29,8 +29,9 @@ import subprocess as subp
 import upip
 from shutil import rmtree
 
-def_files = Path.cwd().glob("**/info.json")
 ROOT = (Path(__file__).parent).resolve()
+PKG_ROOT = ROOT / 'packages'
+def_files = PKG_ROOT.glob("**/info.json")
 INFO = {
     'firmware': [],
     'device': [],
