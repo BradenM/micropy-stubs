@@ -31,7 +31,7 @@ If all of the above requirements are met, you should have a directory tree simil
  │  │  │  │  └────     stub2.py  
 ```
 
-Which will then be picked recognized and have the reset automatically generated as so:
+Which will then be recognized and have the rest automatically generated as so...
 
 ```sh
  └──     micropy-branch/ 
@@ -51,6 +51,6 @@ Which will then be picked recognized and have the reset automatically generated 
  │  │  │  │  └────     stub2.py 
 ```
 
-With the info.json files updated accordingly.
+...with the info.json files updated accordingly.
 
-> <a name="device-stubs">1</a>: As( far as I know, the best way to create device stubs is to do it on the actual device using [micropy-cli](https://github.com/BradenM/micropy-cli) or more directly [micropython-stubber](https://github.com/Josverl/micropython-stubber). Therefore, the stubs must be added manually. As I don't own every micropython compatible device, this project will require some PRs for it to be successful. 
+> <a name="device-stubs">1</a>: As far as I know, the best way to create device stubs is to do it on the actual device using [micropy-cli](https://github.com/BradenM/micropy-cli) or more directly [micropython-stubber](https://github.com/Josverl/micropython-stubber). Therefore, the stubs must be added manually. As I don't own every micropython compatible device, this project will require some PRs for it to be successful. 
