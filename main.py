@@ -91,7 +91,6 @@ def update_file(orig, new):
 
 def sort_info(glob):
     """Sort info files by scope"""
-    global INFO
     for f in glob:
         data, scope = get_file(f)
         data['path'] = str(f.relative_to(ROOT))
@@ -209,6 +208,14 @@ def add_firmware(firm):
     return update_file(firm, updated_firm)
 
 
+def get_stub_name(device):
+    """return stub pkg name"""
+    fware = get_firm_by_device(device)
+    dev_name = device['device']['sysname']
+    name = f"{dev_name}-{fware['firmware']}@{device['version']}"
+    return name
+
+
 def archive_device(device):
     """Create archive from device"""
     fware = get_firm_by_device(device)
@@ -227,9 +234,11 @@ def archive_device(device):
             else:
                 copy2(str(mod), str(out_path))
             print(out_path)
-        tar_out = ROOT / fware['firmware']
+        archive_name = get_stub_name(device)
+        tar_out = ROOT / 'dist' / f"{archive_name}.tar.gz"
+        tar_out.parent.mkdir(exist_ok=True)
         with tarfile.open(str(tar_out), 'w:gz') as tar:
-            tar.add(str(tmp_path), arcname=tmp_path.name)
+            tar.add(str(tmp_path), arcname=archive_name)
 
 
 @click.group()
@@ -238,13 +247,19 @@ def cli():
 
 
 @cli.command()
-def archive():
+@click.argument('stub_name', required=True)
+def archive(stub_name=""):
     """Archive Stubs"""
     files = sort_info(def_files)
-    device = next(
-        (i for i in files['device']
-         if i['path']
-         == "packages/micropython-official/v1.11/esp8266/info.json"))
+    avail_stubs = set((get_stub_name(i) for i in files['device']))
+    try:
+        device = next(
+            (i for i in files['device'] if get_stub_name(i) == stub_name))
+    except StopIteration:
+        print(f"Could not find {stub_name}")
+        avail = "\n".join(avail_stubs)
+        print(f"Available Stubs:\n", avail)
+        return
     return archive_device(device)
 
 
