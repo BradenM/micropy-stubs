@@ -1,0 +1,13 @@
+{
+  "scope": "device",
+  "firmware": "micropython",
+  "version": "1.10.0",
+  "device": {
+    "nodename": "esp8266",
+    "machine": "ESP module with ESP8266",
+    "sysname": "esp8266",
+    "release": "v1.10-8-g8b7039d7d on 2019-01-26"
+  },
+  "modules": [],
+  "stubs": []
+}
