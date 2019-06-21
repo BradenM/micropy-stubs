@@ -251,14 +251,23 @@ def cli():
 
 
 @cli.command()
-@click.argument('stub_name', required=True)
-def archive(stub_name=""):
+@click.argument('stub_name', default="")
+@click.option('-f', "--firmware", default=None,
+              help="Generate all stubs by firmware")
+def archive(stub_name="", firmware=None):
     """Archive Stubs"""
     files = sort_info(def_files)
+    devices = files['device']
     avail_stubs = set((get_stub_name(i) for i in files['device']))
+    if firmware:
+        try:
+            devices = get_devices_by_firm(firmware)
+            return [archive_device(dev) for dev in devices]
+        except Exception:
+            pass
     try:
         device = next(
-            (i for i in files['device'] if get_stub_name(i) == stub_name))
+            (i for i in devices if get_stub_name(i) == stub_name))
     except StopIteration:
         print(f"Could not find {stub_name}")
         avail = "\n".join(avail_stubs)
