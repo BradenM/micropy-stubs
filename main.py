@@ -153,12 +153,15 @@ def update_firmware_modules(firm):
     return firm
 
 
-def update_firmware(firm):
+def update_firmware(firm, existing=False):
     """update firmware info file"""
     versions = firm.get('versions', None)
     if not versions or len(versions.keys()) == 0:
         firm = add_firmware(firm)
-    update_firmware_modules(firm)
+        update_firmware_modules(firm)
+    else:
+        if existing:
+            update_firmware_modules(firm)
     fware = firm['firmware']
     devices = get_devices_by_firm(fware)
     updated = [update_device(d) for d in devices]
@@ -265,11 +268,13 @@ def archive(stub_name=""):
 
 
 @cli.command()
-def generate():
+@click.option('-u', '--update', is_flag=True,
+              help="Update existing firmware modules")
+def generate(update):
     """Generate Stubs"""
     files = sort_info(def_files)
     for firm in files['firmware']:
-        update_firmware(firm)
+        update_firmware(firm, existing=update)
     pprint(INFO['stats'])
 
 
