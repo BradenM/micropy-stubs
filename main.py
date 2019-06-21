@@ -15,6 +15,8 @@ and freeze them. The stubs and info file must be added manually
 Note: This is currently a WIP. The end goal is to have a mostly automated
 method of creating 'stub packages' with device-specific and firmware-specific
 modules included for micropy-cli.
+Also, yes script very much needs to be refactored. 
+I will do this along with some tests soon.
 
 """
 
@@ -27,8 +29,10 @@ from firmware import Firmware
 from deepmerge import always_merger
 import subprocess as subp
 import upip
-from shutil import rmtree
+from shutil import rmtree, copy2, copytree
 import click
+import tarfile
+import tempfile
 
 ROOT = (Path(__file__).parent).resolve()
 PKG_ROOT = ROOT / 'packages'
@@ -205,9 +209,43 @@ def add_firmware(firm):
     return update_file(firm, updated_firm)
 
 
+def archive_device(device):
+    """Create archive from device"""
+    fware = get_firm_by_device(device)
+    fware_mods = Path(fware['path']).parent / 'common' / 'modules'
+    dev_mods = Path(device['path']).parent / 'modules'
+    dev_stubs = Path(device['path']).parent / 'stubs'
+    modules = [*fware_mods.iterdir(), *dev_mods.iterdir()]
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_path = Path(tmpdir)
+        copytree(str(dev_stubs), str((tmp_path / 'stubs')))
+        frozen = tmp_path / 'frozen'
+        for mod in modules:
+            out_path = frozen / mod.name
+            if mod.is_dir():
+                copytree(str(mod), str(out_path))
+            else:
+                copy2(str(mod), str(out_path))
+            print(out_path)
+        tar_out = ROOT / fware['firmware']
+        with tarfile.open(str(tar_out), 'w:gz') as tar:
+            tar.add(str(tmp_path), arcname=tmp_path.name)
+
+
 @click.group()
 def cli():
     pass
+
+
+@cli.command()
+def archive():
+    """Archive Stubs"""
+    files = sort_info(def_files)
+    device = next(
+        (i for i in files['device']
+         if i['path']
+         == "packages/micropython-official/v1.11/esp8266/info.json"))
+    return archive_device(device)
 
 
 @cli.command()

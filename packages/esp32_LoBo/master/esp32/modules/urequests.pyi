@@ -1,4 +1,4 @@
-# make_stub_files: Thu 20 Jun 2019 at 18:35:20
+# make_stub_files: Thu 20 Jun 2019 at 18:34:57
 
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
@@ -12,7 +12,7 @@ class Response:
     def json(self) -> Any: ...
         #   0: return ujson.loads(self.content)
         # ? 0: return ujson.loads(self.content)
-def request(method: Any, url: Any, data: Any=None, json: Any=None, headers: Any={}, stream: Any=None, parse_headers: Any=bool) -> Any: ...
+def request(method: Any, url: Any, data: Any=None, json: Any=None, headers: Any={}, stream: Any=None) -> Any: ...
     #   0: return resp
     # ? 0: return resp
 def head(url: Any, **kw) -> Any: ...
