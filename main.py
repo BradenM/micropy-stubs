@@ -227,6 +227,7 @@ def archive_device(device):
         tmp_path = Path(tmpdir)
         copytree(str(dev_stubs), str((tmp_path / 'stubs')))
         frozen = tmp_path / 'frozen'
+        copy2(device['path'], str(tmp_path))
         for mod in modules:
             out_path = frozen / mod.name
             if mod.is_dir():
