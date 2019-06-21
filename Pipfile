@@ -12,6 +12,7 @@ pprint = "*"
 setuptools = "*"
 wheel = "*"
 packaging = "*"
+pre-commit = "*"
 
 [packages]
 micropython-cpython-upip = "*"
