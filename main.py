@@ -21,18 +21,20 @@ I will do this along with some tests soon.
 """
 
 
-import dictdiffer as dictdiff
-from pathlib import Path
 import json
-from pprint import pprint
-from firmware import Firmware
-from deepmerge import always_merger
 import subprocess as subp
-import upip
-from shutil import rmtree, copy2, copytree
-import click
 import tarfile
 import tempfile
+from pathlib import Path
+from pprint import pprint
+from shutil import copy2, copytree, rmtree
+
+import click
+
+import dictdiffer as dictdiff
+import upip
+from deepmerge import always_merger
+from firmware import Firmware
 
 ROOT = (Path(__file__).parent).resolve()
 PKG_ROOT = ROOT / 'packages'
@@ -215,7 +217,7 @@ def get_stub_name(device):
     """return stub pkg name"""
     fware = get_firm_by_device(device)
     dev_name = device['device']['sysname']
-    name = f"{dev_name}-{fware['firmware']}@{device['version']}"
+    name = f"{dev_name}-{fware['firmware']}-{device['version']}"
     return name
 
 
@@ -226,10 +228,13 @@ def archive_device(device):
     dev_mods = Path(device['path']).parent / 'modules'
     dev_stubs = Path(device['path']).parent / 'stubs'
     modules = [*fware_mods.iterdir(), *dev_mods.iterdir()]
+    dist_path = ROOT / 'dist'
+    dist_path.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
         copytree(str(dev_stubs), str((tmp_path / 'stubs')))
         frozen = tmp_path / 'frozen'
+        frozen.mkdir(exist_ok=True)
         copy2(device['path'], str(tmp_path))
         for mod in modules:
             out_path = frozen / mod.name
@@ -239,7 +244,7 @@ def archive_device(device):
                 copy2(str(mod), str(out_path))
             print(out_path)
         archive_name = get_stub_name(device)
-        tar_out = ROOT / 'dist' / f"{archive_name}.tar.gz"
+        tar_out = dist_path / f"{archive_name}.tar.gz"
         tar_out.parent.mkdir(exist_ok=True)
         with tarfile.open(str(tar_out), 'w:gz') as tar:
             tar.add(str(tmp_path), arcname=archive_name)
@@ -263,8 +268,8 @@ def archive(stub_name="", firmware=None):
         try:
             devices = get_devices_by_firm(firmware)
             return [archive_device(dev) for dev in devices]
-        except Exception:
-            pass
+        except Exception as e:
+            raise e
     try:
         device = next(
             (i for i in devices if get_stub_name(i) == stub_name))
