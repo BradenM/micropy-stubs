@@ -12,13 +12,14 @@
   ],
   "modules": [],
   "devices": ["esp32"],
-  "path": "esp32_LoBo/info.json",
-  "versions": {
-    "master": {
+  "path": "packages/esp32_LoBo/info.json",
+  "versions": [
+    {
+      "version": "master",
       "git_tag": "master",
       "sha": "fff2e193d064effe36a7d456050faa78fe6280a8",
       "latest": true,
       "devices": ["esp32"]
     }
-  }
+  ]
 }
