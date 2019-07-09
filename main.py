@@ -69,7 +69,7 @@ def get_module(module, target_dir):
 def get_file(path):
     """Get file by info path"""
     data = json.load(path.open())
-    scope = data.get('scope')
+    scope = data.get('scope', 'device')
     return (data, scope)
 
 
@@ -105,45 +105,30 @@ def sort_info(glob):
 
 def get_devices_by_firm(fware):
     """get devices by firmware file"""
-    devices = [f for f in INFO['device'] if f['firmware'] == fware]
+    devices = [f for f in INFO['device'] if f['firmware']['name'] == fware]
     return devices
 
 
 def get_firm_by_device(device):
     """get firmware info from device"""
     fwares = INFO['firmware']
-    dev_fware = device['firmware']
+    dev_fware = device['firmware']['name']
     firm = next((f for f in fwares if f['firmware'] == dev_fware))
     return firm
 
 
 def update_device(device_info):
     """update device info file"""
-    def update_files(key, path):
-        for m in path.iterdir():
-            if m.suffix == '.py':
-                file = {
-                    "name": m.stem,
-                    "path": str(m.relative_to(path.parent))
-                }
-                new_device[key].append(file)
-        new_device[key] = list(
-            {v['name']: v for v in new_device[key]}.values())
     path = Path(device_info['path']).parent
-    dev_mods = device_info.get('modules', None)
-    if not dev_mods or len(dev_mods) == 0:
+    frozen_path = path / 'frozen'
+    if not frozen_path.exists():
         device_info = add_device(device_info)
-    modules = path / 'modules'
-    stubs = path / 'stubs'
-    new_device = device_info.copy()
-    update_files('modules', modules)
-    update_files('stubs', stubs)
-    return update_file(device_info, new_device)
+    return device_info
 
 
 def update_firmware_modules(firm):
     """Update firmware specific modules"""
-    path = Path(firm['path']).parent / 'common' / 'modules'
+    path = Path(firm['path']).parent / 'frozen'
     if path.exists():
         rmtree(str(path))
     path.mkdir(exist_ok=True, parents=True)
@@ -179,14 +164,15 @@ def update_firmware(firm, existing=False):
 def add_device(device):
     """add device from info file"""
     fware_info = get_firm_by_device(device)
+    dev_fware = device['firmware']
     # Find a suitable port
     _port_attrs = ['machine', 'sysname', 'nodename']
-    _port_ids = [device['device'].get(a).lower().strip() for a in _port_attrs]
+    _port_ids = [dev_fware.get(a).lower().strip() for a in _port_attrs]
     port_ids = set([item for sublist in _port_ids for item in _port_ids])
     port = list(set(fware_info['devices']).intersection(port_ids))[0]
-    fware_tag = device['version']
+    fware_tag = dev_fware['version']
     fware = Firmware(firmware_info=fware_info, port=port, tag=fware_tag)
-    mods_out = Path(device['path']).parent / 'modules'
+    mods_out = Path(device['path']).parent / 'frozen'
     mods_out.mkdir(exist_ok=True, parents=True)
     fware.retrieve_modules(mods_out)
     make_stubs(mods_out)
@@ -222,8 +208,9 @@ def add_firmware(firm):
 def get_stub_name(device):
     """return stub pkg name"""
     fware = get_firm_by_device(device)
-    dev_name = device['device']['sysname']
-    name = f"{dev_name}-{fware['firmware']}-{device['version']}"
+    dev_fware = device['firmware']
+    dev_name = dev_fware['sysname']
+    name = f"{dev_name}-{fware['firmware']}-{dev_fware['version']}"
     return name
 
 
