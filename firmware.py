@@ -8,10 +8,11 @@ Copyright (c) 2019 Braden Mars
 """
 
 
+from os import environ
+from pathlib import Path
+
 from github import Github
 from packaging import version
-from pathlib import Path
-from os import environ
 
 
 class Firmware:
@@ -23,15 +24,17 @@ class Firmware:
         self.name = kwargs.get('name', firmware_info.get('firmware'))
         self.__dict__.update(firmware_info)
         self.module_path = Path(self.module_path.format(self.port))
-        self.git = Github(environ.get("GITHUB_TOKEN"))
+        git_token = environ.get("GITHUB_TOKEN").strip()
+        self.git = Github(login_or_token=git_token)
 
     @staticmethod
     def parse_version(text):
         """Validate Version Number"""
-        # TODO: Open PR on createstubs.py to use sys.implementation for version
         ver = version.parse(str(text))
         if not isinstance(ver, version.Version) and text != 'master':
             raise Exception("Invalid Version")
+        if len(str(ver).split('.')) == 2:
+            ver = version.parse(str(ver) + '.0')
         return ver
 
     def get_refs(self):
@@ -39,15 +42,17 @@ class Firmware:
         repo = self.git.get_repo(self.repo)
         repo_tag_objs = list(repo.get_tags())
         repo_tag_objs.append(repo.get_branch('master'))
+        repo_tag_objs = [t for t in repo_tag_objs if 'rc' not in t.name]
         return (repo, repo_tag_objs)
 
     def get_compatible_tags(self):
         """returns tags compatible with current device"""
         repo, repo_tag_objs = self.get_refs()
-        compat = {}
+        compat = []
         for tag in repo_tag_objs:
             version = str(self.parse_version(tag.name))
-            compat[version] = {
+            vers_obj = {
+                'version': version,
                 'git_tag': tag.name,
                 'sha': tag.commit.sha,
                 'latest': repo_tag_objs.index(tag) == 0,
@@ -58,9 +63,11 @@ class Firmware:
             except Exception:
                 pass
             else:
-                if len(compat[version]['devices']) == 0:
-                    compat[version]['devices'] = []
-                compat[version]['devices'].append(self.port)
+                if len(vers_obj['devices']) == 0:
+                    vers_obj['devices'] = []
+                vers_obj['devices'].append(self.port)
+            finally:
+                compat.append(vers_obj)
         return compat
 
     def fetch_modules(self, exclude=None):

@@ -158,7 +158,7 @@ def update_firmware_modules(firm):
 def update_firmware(firm, existing=False):
     """update firmware info file"""
     versions = firm.get('versions', None)
-    if not versions or len(versions.keys()) == 0:
+    if not versions or len(versions) == 0:
         firm = add_firmware(firm)
         update_firmware_modules(firm)
     else:
@@ -167,8 +167,8 @@ def update_firmware(firm, existing=False):
     fware = firm['firmware']
     devices = get_devices_by_firm(fware)
     updated = [update_device(d) for d in devices]
-    versions = firm['versions'].items()
-    possible = [v for v, data in versions if len(data['devices']) > 0]
+    versions = firm['versions']
+    possible = [v for v in versions if len(v['devices']) > 0]
     INFO['stats'][fware] = {
         'loaded': len(updated),
         'missing': len(possible) - len(updated)
@@ -197,17 +197,23 @@ def add_firmware(firm):
     """add firmware from info file"""
     ports = firm['devices']
     path = Path(firm['path']).parent
-    versions = {}
+    versions = []
     updated_firm = firm.copy()
     for p in ports:
         fware = Firmware(port=p, firmware_info=firm)
         compat = fware.get_compatible_tags()
-        versions = always_merger.merge(versions, compat)
+        for cmp in compat:
+            prev_compat = next(
+                (v for v in versions if v['version'] == cmp['version']), None)
+            if prev_compat:
+                always_merger.merge(prev_compat, cmp)
+            else:
+                versions.append(cmp)
     updated_firm['versions'] = versions
-    for vers, info in versions.items():
-        devices = info.get('devices')
-        if len(info['devices']) >= 0:
-            v_dir = path / info['git_tag']
+    for vers in versions:
+        devices = vers.get('devices')
+        if len(vers['devices']) >= 0:
+            v_dir = path / vers['git_tag']
             dev_dirs = [Path(v_dir / dev) for dev in devices]
             [d.mkdir(exist_ok=True, parents=True) for d in dev_dirs]
     return update_file(firm, updated_firm)

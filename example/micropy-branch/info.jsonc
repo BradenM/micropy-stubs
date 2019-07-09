@@ -20,5 +20,5 @@
     "uasyncio"
   ],
   "devices": ["esp8266", "esp32"] // Available ports
-  // "versions": {} This is left empty, as it will be automatically populated by git tags
+  // "versions": [] This is left empty, as it will be automatically populated by git tags
 }
