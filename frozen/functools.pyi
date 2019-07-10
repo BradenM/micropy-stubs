@@ -1,0 +1,21 @@
+# make_stub_files: Wed 10 Jul 2019 at 04:06:24
+
+from typing import Any, Dict, Optional, Sequence, Tuple, Union
+Node = Any
+def partial(func: Any, *args, **kwargs) -> Any:
+    #   0: return func(*args+more_args,None=kw)
+    # ? 0: return func(*args+more_args, None=kw)
+    #   1: return _partial
+    # ? 1: return _partial
+    def _partial(*more_args, **more_kwargs) -> Any: ...
+        #   0: return func(*args+more_args,None=kw)
+        # ? 0: return func(*args+more_args, None=kw)
+def update_wrapper(wrapper: Any, wrapped: Any, assigned: Any=None, updated: Any=None) -> Any: ...
+    #   0: return wrapper
+    # ? 0: return wrapper
+def wraps(wrapped: Any, assigned: Any=None, updated: Any=None) -> Any: ...
+    #   0: return lambda x: x
+    # ? 0: return lambda x: x
+def reduce(function: Any, iterable: Any, initializer: Any=None) -> Any: ...
+    #   0: return value
+    # ? 0: return value
