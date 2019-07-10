@@ -3,15 +3,24 @@
   "name": "MicroPython ESP32 LoBo",
   "repo": "loboris/MicroPython_ESP32_psRAM_LoBo",
   "module_path": "MicroPython_BUILD/components/micropython/esp32/modules",
-  "firmware": "esp32_lobo",
+  "firmware": "esp32_LoBo",
   "excluded_modules": [
     "_boot.py",
     "inisetup.py",
     "upip.py",
     "upip_utarfile.py"
   ],
-  "modules": [],
-  "devices": ["esp32"],
+  "modules": [
+    "display",
+    "functools",
+    "logging",
+    "mpu9250",
+    "requests",
+    "socket",
+    "ssd1306",
+    "upip"
+  ],
+  "devices": ["esp32_LoBo"],
   "path": "packages/esp32_LoBo/info.json",
   "versions": [
     {
@@ -19,7 +28,7 @@
       "git_tag": "master",
       "sha": "fff2e193d064effe36a7d456050faa78fe6280a8",
       "latest": true,
-      "devices": ["esp32"]
+      "devices": ["esp32_LoBo"]
     }
   ]
 }
