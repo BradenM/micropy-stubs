@@ -142,7 +142,7 @@ def update_firmware_modules(firm):
 def update_firmware(firm, existing=False):
     """update firmware info file"""
     versions = firm.get('versions', None)
-    if not versions or len(versions) == 0:
+    if not versions or existing:
         firm = add_firmware(firm)
         update_firmware_modules(firm)
     else:

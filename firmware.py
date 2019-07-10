@@ -41,7 +41,8 @@ class Firmware:
         """get tags/branch refs"""
         repo = self.git.get_repo(self.repo)
         repo_tag_objs = list(repo.get_tags())
-        repo_tag_objs.append(repo.get_branch('master'))
+        if not repo_tag_objs:
+            repo_tag_objs.append(repo.get_branch('master'))
         repo_tag_objs = [t for t in repo_tag_objs if 'rc' not in t.name]
         return (repo, repo_tag_objs)
 
