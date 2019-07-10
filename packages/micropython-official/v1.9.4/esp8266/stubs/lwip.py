@@ -27,3 +27,57 @@ def reset():
 
 class socket:
     ''
+    def accept():
+        pass
+
+    def bind():
+        pass
+
+    def close():
+        pass
+
+    def connect():
+        pass
+
+    def listen():
+        pass
+
+    def makefile():
+        pass
+
+    def read():
+        pass
+
+    def readinto():
+        pass
+
+    def readline():
+        pass
+
+    def recv():
+        pass
+
+    def recvfrom():
+        pass
+
+    def send():
+        pass
+
+    def sendall():
+        pass
+
+    def sendto():
+        pass
+
+    def setblocking():
+        pass
+
+    def setsockopt():
+        pass
+
+    def settimeout():
+        pass
+
+    def write():
+        pass
+
