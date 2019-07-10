@@ -1,17 +1,7 @@
 """
-Module: 'ujson' on esp32 1.10.0
+Module: 'umqtt.robust' on esp32 1.10.0
 """
 # MCU: (sysname='esp32', nodename='esp32', release='1.10.0', version='v1.10 on 2019-01-25', machine='ESP32 module with ESP32')
 # Stubber: 1.2.0
-def dump():
-    pass
-
-def dumps():
-    pass
-
-def load():
-    pass
-
-def loads():
-    pass
-
+robust = None
+simple = None
