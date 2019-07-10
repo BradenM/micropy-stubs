@@ -1,8 +1,8 @@
 """
-Module: 'sys' on esp8266 v1.11 on 2019
+Module: 'sys' on esp8266 v1.11
 """
-# MCU: (sysname='esp8266', nodename='esp8266', release='2.2.0-dev(9422289)', version='v1.11 on 2019-06-03', machine='ESP module with ESP8266')
-# Stubber: 1.1.2
+# MCU: (sysname='esp8266', nodename='esp8266', release='2.2.0-dev(9422289)', version='v1.11-8-g48dcbbe60 on 2019-05-29', machine='ESP module with ESP8266')
+# Stubber: 1.2.0
 argv = None
 byteorder = 'little'
 def exit():
