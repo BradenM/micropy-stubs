@@ -22,12 +22,12 @@ I will do this along with some tests soon.
 
 
 import json
+import shutil
 import subprocess as subp
 import tarfile
 import tempfile
 from pathlib import Path
 from pprint import pprint
-from shutil import copy2, copytree, rmtree
 
 import click
 
@@ -96,7 +96,6 @@ def sort_info(glob):
     for f in glob:
         data, scope = get_file(f)
         data['path'] = str(f.relative_to(ROOT))
-        pprint(data)
         if not INFO[scope]:
             INFO[scope] = []
         INFO[scope].append(data)
@@ -130,7 +129,7 @@ def update_firmware_modules(firm):
     """Update firmware specific modules"""
     path = Path(firm['path']).parent / 'frozen'
     if path.exists():
-        rmtree(str(path))
+        shutil.rmtree(str(path))
     path.mkdir(exist_ok=True, parents=True)
     modules = firm.get('modules')
     if not modules:
@@ -205,73 +204,99 @@ def add_firmware(firm):
     return update_file(firm, updated_firm)
 
 
-def get_stub_name(device):
+def get_stub_name(stub):
     """return stub pkg name"""
-    fware = get_firm_by_device(device)
-    dev_fware = device['firmware']
+    scope = stub.get('scope', 'device')
+    if scope == 'firmware':
+        return stub['firmware']
+    dev_fware = stub['firmware']
     dev_name = dev_fware['sysname']
-    name = f"{dev_name}-{fware['firmware']}-{dev_fware['version']}"
+    name = f"{dev_name}-{dev_fware['name']}-{dev_fware['version']}"
     return name
 
 
 def archive_device(device):
-    """Create archive from device"""
-    fware = get_firm_by_device(device)
-    fware_mods = Path(fware['path']).parent / 'common' / 'modules'
-    dev_mods = Path(device['path']).parent / 'modules'
-    dev_stubs = Path(device['path']).parent / 'stubs'
-    modules = [*fware_mods.iterdir(), *dev_mods.iterdir()]
+    """archive a device stub"""
+    path = Path(device['path']).parent
+    pkg_name = get_stub_name(device)
+    return create_archive(path, pkg_name)
+
+
+def archive_firmware(firmware):
+    """archive a firmwre stub"""
+    path = Path(firmware['path']).parent
+    name = get_stub_name(firmware)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_path = Path(tmpdir) / name
+        tmp_path.mkdir()
+        shutil.copytree((path / 'frozen'), (tmp_path / 'frozen'))
+        shutil.copy2((path / 'info.json'), tmp_path)
+        return create_archive(tmp_path, name)
+
+
+def archive_stub(stub):
+    """archive given stub"""
+    scope = stub.get('scope', 'device')
+    if scope == 'firmware':
+        return archive_firmware(stub)
+    return archive_device(stub)
+
+
+def create_archive(path, archive_name, **kwargs):
+    """archive given path to tarfile at dest"""
     dist_path = ROOT / 'dist'
     dist_path.mkdir(exist_ok=True)
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmp_path = Path(tmpdir)
-        copytree(str(dev_stubs), str((tmp_path / 'stubs')))
-        frozen = tmp_path / 'frozen'
-        frozen.mkdir(exist_ok=True)
-        copy2(device['path'], str(tmp_path))
-        for mod in modules:
-            out_path = frozen / mod.name
-            if mod.is_dir():
-                copytree(str(mod), str(out_path))
-            else:
-                copy2(str(mod), str(out_path))
-            print(out_path)
-        archive_name = get_stub_name(device)
-        tar_out = dist_path / f"{archive_name}.tar.gz"
-        tar_out.parent.mkdir(exist_ok=True)
-        with tarfile.open(str(tar_out), 'w:gz') as tar:
-            tar.add(str(tmp_path), arcname=archive_name)
+    archive_path = dist_path / (archive_name + '.tar.gz')
+    if archive_path.exists():
+        archive_path.unlink()
+    with tarfile.open(str(archive_path), 'w:gz') as tar:
+        tar.add(str(path), arcname=archive_name, **kwargs)
+    return archive_path
 
 
 @click.group()
 def cli():
-    pass
+    """Micropy Stubs Cli"""
 
 
 @cli.command()
-@click.argument('stub_name', default="")
-@click.option('-f', "--firmware", default=None,
-              help="Generate all stubs by firmware")
-def archive(stub_name="", firmware=None):
+@click.argument('stub_name', default=None, required=False)
+@click.option('--all', 'do_all', default=False, is_flag=True,
+              help="Archive all stubs")
+@click.option('--clean', default=False, is_flag=True,
+              help="Remove existing archives")
+def archive(stub_name, **kwargs):
     """Archive Stubs"""
     files = sort_info(def_files)
-    devices = files['device']
-    avail_stubs = set((get_stub_name(i) for i in files['device']))
-    if firmware:
-        try:
-            devices = get_devices_by_firm(firmware)
-            return [archive_device(dev) for dev in devices]
-        except Exception as e:
-            raise e
+    stubs = [*files['device'], *files['firmware']]
+    avail_stubs = set((get_stub_name(i) for i in stubs))
+    archives = []
+    if kwargs.get('clean'):
+        dist = ROOT / 'dist'
+        if dist.exists():
+            shutil.rmtree(dist)
+        print("Cleaned dist folder")
+    if kwargs.get('do_all'):
+        print("Archiving all stubs...")
+        archives.extend([archive_stub(s) for s in stubs])
     try:
-        device = next(
-            (i for i in devices if get_stub_name(i) == stub_name))
+        stub = next(
+            (i for i in stubs if get_stub_name(i) == stub_name.strip()))
     except StopIteration:
-        print(f"Could not find {stub_name}")
+        print(f"Could not find: {stub_name}")
         avail = "\n".join(avail_stubs)
-        print(f"Available Stubs:\n", avail)
-        return
-    return archive_device(device)
+        print(f"Available Stubs:")
+        print(avail)
+    except Exception:
+        pass
+    else:
+        archives.append(archive_stub(stub))
+    finally:
+        if archives:
+            archives = iter(archives)
+            for a in archives:
+                print("Archived:", a.name)
+            print("Done!")
 
 
 @cli.command()
