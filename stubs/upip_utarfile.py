@@ -21,3 +21,16 @@ TAR_HEADER = None
 
 class TarFile:
     ''
+    def extractfile():
+        pass
+
+    def next():
+        pass
+
+
+class TarInfo:
+    ''
+def roundup():
+    pass
+
+uctypes = None
