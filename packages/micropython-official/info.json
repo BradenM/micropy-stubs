@@ -33,7 +33,7 @@
     "xmltok2"
   ],
   "devices": ["esp8266", "esp32"],
-  "path": "packages/micropython/info.json",
+  "path": "packages/micropython-official/info.json",
   "versions": [
     {
       "version": "1.11.0",
@@ -335,13 +335,6 @@
       "sha": "6ec835dfef90a2f940a24b126cba8e3d8ede1ef2",
       "latest": false,
       "devices": []
-    },
-    {
-      "version": "master",
-      "git_tag": "master",
-      "sha": "a73859d5af7bc08356f69cb0ee677a0e80047148",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
     }
   ]
 }
