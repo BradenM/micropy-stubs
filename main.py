@@ -42,7 +42,7 @@ def_files = PKG_ROOT.glob("**/info.json")
 INFO = {
     'firmware': [],
     'device': [],
-    'stats': {}
+    'stats': []
 }
 
 
@@ -150,13 +150,14 @@ def update_firmware(firm, existing=False):
             update_firmware_modules(firm)
     fware = firm['firmware']
     devices = get_devices_by_firm(fware)
-    updated = [update_device(d) for d in devices]
+    loaded = [update_device(d) for d in devices]
     versions = firm['versions']
-    possible = [v for v in versions if len(v['devices']) > 0]
-    INFO['stats'][fware] = {
-        'loaded': len(updated),
-        'missing': len(possible) - len(updated)
-    }
+    possible = len([d for v in versions for d in v['devices']])
+    INFO['stats'].append({
+        'firmware': fware,
+        'loaded': len(loaded),
+        'possible': possible
+    })
     return firm
 
 
@@ -307,7 +308,11 @@ def generate(update):
     files = sort_info(def_files)
     for firm in files['firmware']:
         update_firmware(firm, existing=update)
-    pprint(INFO['stats'])
+    stats = INFO['stats']
+    print("Report:")
+    for s in stats:
+        print(f"\n{s['firmware']}:")
+        print(f"Devices Loaded: {s['loaded']}/{s['possible']}")
 
 
 if __name__ == '__main__':
