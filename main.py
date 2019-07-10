@@ -24,6 +24,7 @@ I will do this along with some tests soon.
 import json
 import shutil
 import subprocess as subp
+import sys
 import tarfile
 import tempfile
 from pathlib import Path
@@ -42,7 +43,8 @@ def_files = PKG_ROOT.glob("**/info.json")
 INFO = {
     'firmware': [],
     'device': [],
-    'stats': []
+    'stats': [],
+    'errors': []
 }
 
 
@@ -63,7 +65,13 @@ def get_module(module, target_dir):
     """Download module from pypi"""
     target = Path(str(target_dir)).resolve()
     module = f"micropython-{module}"
-    return upip.install(module, str(target))
+    try:
+        upip.install(module, str(target))
+    except upip.NotFoundError:
+        INFO['errors'].append({
+            "type": "Module",
+            "msg": f"Package {module} not found!"
+        })
 
 
 def get_file(path):
@@ -263,9 +271,26 @@ def create_archive(path, archive_name, **kwargs):
     return archive_path
 
 
+def resolve_stub(stub_name):
+    stubs = [*INFO['device'], *INFO['firmware']]
+    avail_stubs = set((get_stub_name(i) for i in stubs))
+    try:
+        stub = next(
+            (i for i in stubs if get_stub_name(i) == stub_name.strip()))
+    except StopIteration:
+        print(f"Could not find: {stub_name}")
+        avail = "\n".join(avail_stubs)
+        print(f"Available Stubs:")
+        print(avail)
+        sys.exit(1)
+    else:
+        return stub
+
+
 @click.group()
 def cli():
     """Micropy Stubs Cli"""
+    sort_info(def_files)
 
 
 @cli.command()
@@ -276,9 +301,7 @@ def cli():
               help="Remove existing archives")
 def archive(stub_name, **kwargs):
     """Archive Stubs"""
-    files = sort_info(def_files)
-    stubs = [*files['device'], *files['firmware']]
-    avail_stubs = set((get_stub_name(i) for i in stubs))
+    stubs = [*INFO['device'], *INFO['firmware']]
     archives = []
     if kwargs.get('clean'):
         dist = ROOT / 'dist'
@@ -288,39 +311,40 @@ def archive(stub_name, **kwargs):
     if kwargs.get('do_all'):
         print("Archiving all stubs...")
         archives.extend([archive_stub(s) for s in stubs])
-    try:
-        stub = next(
-            (i for i in stubs if get_stub_name(i) == stub_name.strip()))
-    except StopIteration:
-        print(f"Could not find: {stub_name}")
-        avail = "\n".join(avail_stubs)
-        print(f"Available Stubs:")
-        print(avail)
-    except Exception:
-        pass
-    else:
+    if stub_name:
+        stub = resolve_stub(stub_name)
         archives.append(archive_stub(stub))
-    finally:
-        if archives:
-            archives = iter(archives)
-            for a in archives:
-                print("Archived:", a.name)
-            print("Done!")
+    if archives:
+        archives = iter(archives)
+        for a in archives:
+            print("Archived:", a.name)
+        print("Done!")
 
 
 @cli.command()
+@click.option('-f', '--firmware', default=None,
+              help="Specific firmware to generate")
 @click.option('-u', '--update', is_flag=True,
               help="Update existing firmware modules")
-def generate(update):
+def generate(firmware, update):
     """Generate Stubs"""
     files = sort_info(def_files)
-    for firm in files['firmware']:
+    fwares = files['firmware']
+    if firmware:
+        fwares = [resolve_stub(firmware)]
+    for firm in fwares:
         update_firmware(firm, existing=update)
     stats = INFO['stats']
+    errors = INFO['errors']
     print("Report:")
     for s in stats:
         print(f"\n{s['firmware']}:")
         print(f"Devices Loaded: {s['loaded']}/{s['possible']}")
+    if errors:
+        print("\nThe following errors occured:")
+        for e in errors:
+            print("\nType:", e['type'])
+            print("Message:", e.get('msg'))
 
 
 if __name__ == '__main__':
