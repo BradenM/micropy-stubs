@@ -169,8 +169,12 @@ def add_device(device):
     _port_attrs = ['machine', 'sysname', 'nodename']
     _port_ids = [dev_fware.get(a).lower().strip() for a in _port_attrs]
     port_ids = set([item for sublist in _port_ids for item in _port_ids])
-    port = list(set(fware_info['devices']).intersection(port_ids))[0]
+    fware_devs = [d.lower() for d in fware_info['devices']]
+    port = list(set(fware_devs).intersection(port_ids))[0]
     fware_tag = dev_fware['version']
+    fware_versions = [v['version'] for v in fware_info['versions']]
+    if fware_tag not in fware_versions:
+        fware_tag = fware_versions[0]
     fware = Firmware(firmware_info=fware_info, port=port, tag=fware_tag)
     mods_out = Path(device['path']).parent / 'frozen'
     mods_out.mkdir(exist_ok=True, parents=True)
@@ -202,7 +206,11 @@ def add_firmware(firm):
             v_dir = path / vers['git_tag']
             dev_dirs = [Path(v_dir / dev) for dev in devices]
             [d.mkdir(exist_ok=True, parents=True) for d in dev_dirs]
-    return update_file(firm, updated_firm)
+    new = update_file(firm, updated_firm)
+    fware_index = INFO['firmware'].index(firm)
+    INFO['firmware'].pop(fware_index)
+    INFO['firmware'].append(new)
+    return new
 
 
 def get_stub_name(stub):
