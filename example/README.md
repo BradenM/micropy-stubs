@@ -36,15 +36,14 @@ Which will then be recognized and have the rest automatically generated as so...
 
 ```sh
  └──     micropy-branch/
- │  └────     common/
- │  │  └────     modules/
- │  │  │  ├────     fwaremod1.py
- │  │  │  └────     fwaremod1.pyi
+ │  └────     frozen/
+ │  │  ├────     fwaremod1.py
+ │  │  └────     fwaremod1.pyi
  │  ├────     info.json
  │  └────     v1.0/
  │  │  └────     esp32/
  │  │  │  ├────     info.json
- │  │  │  └────     modules/
+ │  │  │  └────     frozen/
  │  │  │  │  ├────     devicemod1.py
  │  │  │  │  └────     devicemod1.pyi
  │  │  │  └────     stubs/
