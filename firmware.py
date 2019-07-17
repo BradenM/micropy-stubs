@@ -32,7 +32,7 @@ class Firmware:
         """Validate Version Number"""
         ver = version.parse(str(text))
         if not isinstance(ver, version.Version) and text != 'master':
-            raise Exception("Invalid Version")
+            return None
         if len(str(ver).split('.')) == 2:
             ver = version.parse(str(ver) + '.0')
         return ver
@@ -44,6 +44,8 @@ class Firmware:
         if not repo_tag_objs:
             repo_tag_objs.append(repo.get_branch('master'))
         repo_tag_objs = [t for t in repo_tag_objs if 'rc' not in t.name]
+        repo_tag_objs = [
+            t for t in repo_tag_objs if self.parse_version(t.name)]
         return (repo, repo_tag_objs)
 
     def get_compatible_tags(self):
