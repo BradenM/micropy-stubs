@@ -13,6 +13,7 @@
     "upip.py",
     "upip_utarfile.py"
   ],
+  "module_prefix": "branch", // (OPTIONAL) Prefix for modules on pypi, defaults to micropython
   "modules": [
     // Firmware Specific modules to be stubbed (sourced from pypi)
     "uaiohttpclient",

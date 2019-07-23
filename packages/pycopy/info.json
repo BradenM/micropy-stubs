@@ -10,6 +10,7 @@
     "upip.py",
     "upip_utarfile.py"
   ],
+  "module_prefix": "pycopy",
   "modules": [
     "uaiohttpclient",
     "uargparse",

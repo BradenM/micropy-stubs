@@ -61,10 +61,11 @@ def make_stubs(target_dir):
         subp.run(args, capture_output=True)
 
 
-def get_module(module, target_dir):
+def get_module(module, target_dir, prefix=None):
     """Download module from pypi"""
     target = Path(str(target_dir)).resolve()
-    module = f"micropython-{module}"
+    _prefix = prefix or "micropython"
+    module = f"{_prefix}-{module}"
     try:
         upip.install(module, str(target))
     except upip.NotFoundError:
@@ -140,9 +141,10 @@ def update_firmware_modules(firm):
         shutil.rmtree(str(path))
     path.mkdir(exist_ok=True, parents=True)
     modules = firm.get('modules')
+    mod_prefix = firm.get('module_prefix', None)
     if not modules:
         return firm
-    modules = [get_module(m, path) for m in modules]
+    modules = [get_module(m, path, prefix=mod_prefix) for m in modules]
     make_stubs(path)
     return firm
 
