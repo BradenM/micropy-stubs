@@ -3,7 +3,7 @@ import uctypes
 # http://www.gnu.org/software/tar/manual/html_node/Standard.html
 TAR_HEADER = {
     "name": (uctypes.ARRAY | 0, uctypes.UINT8 | 100),
-    "size": (uctypes.ARRAY | 124, uctypes.UINT8 | 12),
+    "size": (uctypes.ARRAY | 124, uctypes.UINT8 | 11),
 }
 
 DIRTYPE = "dir"
@@ -39,7 +39,13 @@ class FileSection:
         return sz
 
     def skip(self):
-        self.f.read(self.content_len + self.align)
+        sz = self.content_len + self.align
+        if sz:
+            buf = bytearray(16)
+            while sz:
+                s = min(sz, 16)
+                self.f.readinto(buf, s)
+                sz -= s
 
 class TarInfo:
 
@@ -69,8 +75,8 @@ class TarFile:
                 return None
 
             d = TarInfo()
-            d.name = str(h.name, "utf-8").rstrip()
-            d.size = int(bytes(h.size).rstrip(), 8)
+            d.name = str(h.name, "utf-8").rstrip("\0")
+            d.size = int(bytes(h.size), 8)
             d.type = [REGTYPE, DIRTYPE][d.name[-1] == "/"]
             self.subf = d.subf = FileSection(self.f, d.size, roundup(d.size, 512))
             return d
