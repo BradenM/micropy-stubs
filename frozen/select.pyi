@@ -1,4 +1,4 @@
-# make_stub_files: Wed 17 Jul 2019 at 02:33:02
+# make_stub_files: Mon 22 Jul 2019 at 22:33:18
 
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
@@ -10,7 +10,7 @@ class Epoll:
         #   0: return res
         # ? 0: return res
     def poll(self, timeout: Any=-1) -> Any: ...
-        #   0: return self.poll_ms(-1 if timeout==-1 else timeout*1000 )
+        #   0: return self.poll_ms(-1 if timeout==-1 else math.ceil(timeout*1000) )
         # ? 0: return self.poll_ms(Union[Any, number])
     def close(self) -> None: ...
 def epoll(sizehint: Any=4) -> Any: ...
