@@ -1,0 +1,16 @@
+# make_stub_files: Thu 25 Jul 2019 at 22:20:16
+
+from typing import Any, Dict, Optional, Sequence, Tuple, Union
+Node = Any
+class MQTTClient(simple.MQTTClient):
+    def delay(self, i: int) -> None: ...
+    def log(self, in_reconnect: Any, e: Any) -> None: ...
+    def reconnect(self) -> Any: ...
+        #   0: return super().connect(bool)
+        # ? 0: return super().connect(bool)
+    def publish(self, topic: Any, msg: Any, retain: Any=bool, qos: Any=0) -> Any: ...
+        #   0: return super().publish(topic,msg,retain,qos)
+        # ? 0: return super().publish(topic, msg, retain, qos)
+    def wait_msg(self) -> Any: ...
+        #   0: return super().wait_msg()
+        # ? 0: return super().wait_msg()
