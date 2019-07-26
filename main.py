@@ -27,10 +27,12 @@ import subprocess as subp
 import sys
 import tarfile
 import tempfile
+from itertools import chain
 from pathlib import Path
 from pprint import pprint
 
 import click
+import requests
 
 import dictdiffer as dictdiff
 import upip
@@ -61,9 +63,23 @@ def make_stubs(target_dir):
         subp.run(args, capture_output=True)
 
 
+def get_git_module(repo, path, target_dir):
+    """Download module from git"""
+    print("Installing via Git")
+    url = f"https://raw.githubusercontent.com/{repo}/master/{path}"
+    data = requests.get(url).text
+    target = target_dir / Path(path).name
+    print(f"{url} => {target}")
+    with target.open('w+') as f:
+        f.write(data)
+
+
 def get_module(module, target_dir, prefix=None):
-    """Download module from pypi"""
+    """Download module from pypi or url"""
+    _module = module.split("@")
     target = Path(str(target_dir)).resolve()
+    if len(_module) >= 1:
+        return get_git_module(*_module, target)
     _prefix = prefix or "micropython"
     module = f"{_prefix}-{module}"
     try:
@@ -177,9 +193,9 @@ def add_device(device):
     dev_fware = device['firmware']
     # Find a suitable port
     _port_attrs = ['machine', 'sysname', 'nodename']
-    _port_ids = [dev_fware.get(a).lower().strip() for a in _port_attrs]
-    port_ids = set([item for sublist in _port_ids for item in _port_ids])
-    fware_devs = [d.lower() for d in fware_info['devices']]
+    _port_ids = [dev_fware.get(a).lower().split() for a in _port_attrs]
+    port_ids = set(chain.from_iterable(_port_ids))
+    fware_devs = [d for d in fware_info['devices']]
     port = list(set(fware_devs).intersection(port_ids))[0]
     fware_tag = dev_fware['version']
     fware_versions = [v['version'] for v in fware_info['versions']]

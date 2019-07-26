@@ -15,10 +15,11 @@
   ],
   "module_prefix": "branch", // (OPTIONAL) Prefix for modules on pypi, defaults to micropython
   "modules": [
-    // Firmware Specific modules to be stubbed (sourced from pypi)
+    // Firmware Specific modules to be stubbed (sourced from pypi/git)
     "uaiohttpclient",
     "uargparse",
-    "uasyncio"
+    "uasyncio",
+    "git_repo@path_on_git" // Git example
   ],
   "devices": ["esp8266", "esp32"] // Available ports
   // "versions": [] This is left empty, as it will be automatically populated by git tags
