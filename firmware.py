@@ -23,7 +23,10 @@ class Firmware:
         self.port = port
         self.name = kwargs.get('name', firmware_info.get('firmware'))
         self.__dict__.update(firmware_info)
-        self.module_path = Path(self.module_path.format(self.port))
+        if not isinstance(self.module_path, list):
+            self.module_path = [self.module_path]
+        self.module_path = [Path(p.format(self.port))
+                            for p in self.module_path]
         git_token = environ.get("GITHUB_TOKEN").strip()
         self.git = Github(login_or_token=git_token)
 
@@ -37,13 +40,22 @@ class Firmware:
             ver = version.parse(str(ver) + '.0')
         return ver
 
+    def get_modules(self, repo, **kwargs):
+        """get modules from module paths"""
+        for path in self.module_path:
+            contents = repo.get_contents(str(path), **kwargs)
+            for c in contents:
+                yield c
+
     def get_refs(self):
         """get tags/branch refs"""
         repo = self.git.get_repo(self.repo)
         repo_tag_objs = list(repo.get_tags())
         if not repo_tag_objs:
             repo_tag_objs.append(repo.get_branch('master'))
-        repo_tag_objs = [t for t in repo_tag_objs if 'rc' not in t.name]
+        exclusions = ('rc', 'post', 'b', 'r')
+        repo_tag_objs = [t for t in repo_tag_objs if not any(
+            i in t.name for i in exclusions)]
         repo_tag_objs = [
             t for t in repo_tag_objs if self.parse_version(t.name)]
         return (repo, repo_tag_objs)
@@ -62,7 +74,7 @@ class Firmware:
                 'devices': []
             }
             try:
-                repo.get_contents(str(self.module_path), ref=tag.name)
+                list(self.get_modules(repo, ref=tag.name))
             except Exception:
                 pass
             else:
@@ -81,7 +93,7 @@ class Firmware:
             (i for i in repo_tags_objs
                 if self.parse_version(i.name) == self.tag))
         self.tag_obj = tag_obj
-        repo_mods = repo.get_contents(str(self.module_path), ref=tag_obj.name)
+        repo_mods = list(self.get_modules(repo, ref=tag_obj.name))
         subdirs = [repo.get_contents(i.path)
                    for i in repo_mods if i.type == 'dir']
         for files in subdirs:
@@ -108,7 +120,10 @@ class Firmware:
             out_dir = Path(str(output_dir))
             failed_out = out_dir / 'failed.txt'
             mod_path = Path(mod.path)
-            mod_index = list(mod_path.parts).index(self.module_path.name) + 1
+            index_ref = self.module_path[0].name
+            if len(self.module_path) > 1:
+                index_ref = mod_path.parent.name
+            mod_index = list(mod_path.parts).index(index_ref) + 1
             mod_stem = Path(*mod_path.parts[mod_index:])
             out_path = out_dir / mod_stem
             if out_path.parent.is_dir():

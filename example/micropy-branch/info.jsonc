@@ -4,7 +4,7 @@
   "scope": "firmware",
   "name": "Some Micropython Branch", // Human Readable Name
   "repo": "gitauthor/micropy-branch", // Firmware Git repository
-  "module_path": "builtin/{}/modules", // {} are formatted with port name (ex. esp32)
+  "module_path": "builtin/{}/modules", // {} are formatted with port name (ex. esp32), can also be a list
   "firmware": "micropy-branch", // Firmware 'codename'
   "excluded_modules": [
     // Modules to be excluded for each port
