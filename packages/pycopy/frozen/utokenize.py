@@ -106,11 +106,14 @@ def tokenize(readline):
         while l:
             if l[0].isdigit() or (l.startswith(".") and len(l) > 1 and l[1].isdigit()):
                 t = ""
-                if l.startswith("0x"):
+                if l.startswith("0x") or l.startswith("0X"):
                     t = "0x"
                     l = l[2:]
-                elif l.startswith("0o"):
+                elif l.startswith("0o") or l.startswith("0O"):
                     t = "0o"
+                    l = l[2:]
+                elif l.startswith("0b") or l.startswith("0B"):
+                    t = "0b"
                     l = l[2:]
                 while l and (l[0].isdigit() or l[0] == "." or (t.startswith("0x") and l[0] in "ABCDEFabcdef")):
                     t += l[0]
@@ -158,7 +161,7 @@ def tokenize(readline):
                 for op in (
                     "**=", "//=", ">>=", "<<=", "+=", "-=", "*=", "/=",
                     "%=", "@=", "&=", "|=", "^=", "**", "//", "<<", ">>",
-                    "==", "!=", ">=", "<=", "..."
+                    "==", "!=", ">=", "<=", "...", "->"
                 ):
                     if l.startswith(op):
                         yield TokenInfo(OP, op, lineno, 0, org_l)
