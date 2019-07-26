@@ -3,7 +3,7 @@
     "machine": "ESP module with ESP8266",
     "firmware": "esp8266 v2.11.0.1 on 2019",
     "nodename": "esp8266",
-    "version": "2.11.0",
+    "version": "2.11.0.1",
     "release": "2.2.0-dev(9422289)",
     "sysname": "esp8266",
     "name": "pycopy"

@@ -3,7 +3,7 @@
     "machine": "ESP32 module with ESP32",
     "firmware": "esp32 1.11.0",
     "nodename": "esp32",
-    "version": "2.11.0",
+    "version": "2.11.0.1",
     "release": "1.11.0",
     "sysname": "esp32",
     "name": "pycopy"
