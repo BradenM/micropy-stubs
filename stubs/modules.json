@@ -1,0 +1,59 @@
+{
+  "firmware": {
+    "machine": "WiPy with ESP32",
+    "firmware": "WiPy 07a52e4",
+    "nodename": "WiPy",
+    "version": "0.0.1",
+    "release": "1.18.2",
+    "sysname": "WiPy"
+  },
+  "stubber": { "version": "1.2.0" },
+  "modules": [
+    { "file": "/flash/stubs/WiPy_07a52e4/_thread.py", "module": "_thread" },
+    { "file": "/flash/stubs/WiPy_07a52e4/array.py", "module": "array" },
+    { "file": "/flash/stubs/WiPy_07a52e4/binascii.py", "module": "binascii" },
+    { "file": "/flash/stubs/WiPy_07a52e4/builtins.py", "module": "builtins" },
+    { "file": "/flash/stubs/WiPy_07a52e4/cmath.py", "module": "cmath" },
+    { "file": "/flash/stubs/WiPy_07a52e4/errno.py", "module": "errno" },
+    { "file": "/flash/stubs/WiPy_07a52e4/framebuf.py", "module": "framebuf" },
+    { "file": "/flash/stubs/WiPy_07a52e4/gc.py", "module": "gc" },
+    { "file": "/flash/stubs/WiPy_07a52e4/hashlib.py", "module": "hashlib" },
+    { "file": "/flash/stubs/WiPy_07a52e4/json.py", "module": "json" },
+    { "file": "/flash/stubs/WiPy_07a52e4/machine.py", "module": "machine" },
+    { "file": "/flash/stubs/WiPy_07a52e4/math.py", "module": "math" },
+    {
+      "file": "/flash/stubs/WiPy_07a52e4/micropython.py",
+      "module": "micropython"
+    },
+    { "file": "/flash/stubs/WiPy_07a52e4/network.py", "module": "network" },
+    { "file": "/flash/stubs/WiPy_07a52e4/os.py", "module": "os" },
+    { "file": "/flash/stubs/WiPy_07a52e4/re.py", "module": "re" },
+    { "file": "/flash/stubs/WiPy_07a52e4/select.py", "module": "select" },
+    { "file": "/flash/stubs/WiPy_07a52e4/socket.py", "module": "socket" },
+    { "file": "/flash/stubs/WiPy_07a52e4/ssl.py", "module": "ssl" },
+    { "file": "/flash/stubs/WiPy_07a52e4/struct.py", "module": "struct" },
+    { "file": "/flash/stubs/WiPy_07a52e4/sys.py", "module": "sys" },
+    { "file": "/flash/stubs/WiPy_07a52e4/time.py", "module": "time" },
+    { "file": "/flash/stubs/WiPy_07a52e4/ubinascii.py", "module": "ubinascii" },
+    {
+      "file": "/flash/stubs/WiPy_07a52e4/ucollections.py",
+      "module": "ucollections"
+    },
+    { "file": "/flash/stubs/WiPy_07a52e4/uctypes.py", "module": "uctypes" },
+    { "file": "/flash/stubs/WiPy_07a52e4/uerrno.py", "module": "uerrno" },
+    { "file": "/flash/stubs/WiPy_07a52e4/uhashlib.py", "module": "uhashlib" },
+    { "file": "/flash/stubs/WiPy_07a52e4/uio.py", "module": "uio" },
+    { "file": "/flash/stubs/WiPy_07a52e4/ujson.py", "module": "ujson" },
+    { "file": "/flash/stubs/WiPy_07a52e4/uos.py", "module": "uos" },
+    { "file": "/flash/stubs/WiPy_07a52e4/ure.py", "module": "ure" },
+    { "file": "/flash/stubs/WiPy_07a52e4/uselect.py", "module": "uselect" },
+    { "file": "/flash/stubs/WiPy_07a52e4/usocket.py", "module": "usocket" },
+    { "file": "/flash/stubs/WiPy_07a52e4/ussl.py", "module": "ussl" },
+    { "file": "/flash/stubs/WiPy_07a52e4/ustruct.py", "module": "ustruct" },
+    { "file": "/flash/stubs/WiPy_07a52e4/utime.py", "module": "utime" },
+    { "file": "/flash/stubs/WiPy_07a52e4/utimeq.py", "module": "utimeq" },
+    { "file": "/flash/stubs/WiPy_07a52e4/websocket.py", "module": "websocket" },
+    { "file": "/flash/stubs/WiPy_07a52e4/pycom.py", "module": "pycom" },
+    { "file": "/flash/stubs/WiPy_07a52e4/crypto.py", "module": "crypto" }
+  ]
+}
