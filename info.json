@@ -1,0 +1,178 @@
+{
+  "firmware": {
+    "machine": "ESP module with ESP8266",
+    "firmware": "esp8266 v2.11.0.1 on 2019",
+    "nodename": "esp8266",
+    "version": "2.11.0",
+    "release": "2.2.0-dev(9422289)",
+    "sysname": "esp8266",
+    "name": "pycopy"
+  },
+  "stubber": { "version": "1.2.0" },
+  "modules": [
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/apa102.py",
+      "module": "apa102"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/array.py", "module": "array" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/binascii.py",
+      "module": "binascii"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/btree.py", "module": "btree" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/builtins.py",
+      "module": "builtins"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/upip.py", "module": "upip" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/collections.py",
+      "module": "collections"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/dht.py", "module": "dht" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/ds18x20.py",
+      "module": "ds18x20"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/errno.py", "module": "errno" },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/esp.py", "module": "esp" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/flashbdev.py",
+      "module": "flashbdev"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/framebuf.py",
+      "module": "framebuf"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/gc.py", "module": "gc" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/hashlib.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/inisetup.py",
+      "module": "inisetup"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/io.py", "module": "io" },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/json.py", "module": "json" },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/lwip.py", "module": "lwip" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/machine.py",
+      "module": "machine"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/math.py", "module": "math" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/micropython.py",
+      "module": "micropython"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/neopixel.py",
+      "module": "neopixel"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/network.py",
+      "module": "network"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/ntptime.py",
+      "module": "ntptime"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/onewire.py",
+      "module": "onewire"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/os.py", "module": "os" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/port_diag.py",
+      "module": "port_diag"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/random.py",
+      "module": "random"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/re.py", "module": "re" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/select.py",
+      "module": "select"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/socket.py",
+      "module": "socket"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/ssl.py", "module": "ssl" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/struct.py",
+      "module": "struct"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/sys.py", "module": "sys" },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/time.py", "module": "time" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/ubinascii.py",
+      "module": "ubinascii"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/ucollections.py",
+      "module": "ucollections"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/ucryptolib.py",
+      "module": "ucryptolib"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/uctypes.py",
+      "module": "uctypes"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/uerrno.py",
+      "module": "uerrno"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/uhashlib.py",
+      "module": "uhashlib"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/uheapq.py",
+      "module": "uheapq"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/uio.py", "module": "uio" },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/ujson.py", "module": "ujson" },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/uos.py", "module": "uos" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/upip_utarfile.py",
+      "module": "upip_utarfile"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/urandom.py",
+      "module": "urandom"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/ure.py", "module": "ure" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/uselect.py",
+      "module": "uselect"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/usocket.py",
+      "module": "usocket"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/ussl.py", "module": "ussl" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/ustruct.py",
+      "module": "ustruct"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/utime.py", "module": "utime" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/utimeq.py",
+      "module": "utimeq"
+    },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/uwebsocket.py",
+      "module": "uwebsocket"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/uzlib.py", "module": "uzlib" },
+    {
+      "file": "/stubs/esp8266_v2_11_0_1_on_2019/websocket_helper.py",
+      "module": "websocket_helper"
+    },
+    { "file": "/stubs/esp8266_v2_11_0_1_on_2019/zlib.py", "module": "zlib" }
+  ]
+}
