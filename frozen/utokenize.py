@@ -88,6 +88,9 @@ def tokenize(readline):
         if l == "\n":
             yield TokenInfo(NL, l, lineno, 0, org_l)
             continue
+        elif l == "\x0c\n":
+            yield TokenInfo(NL, "\n", lineno, 0, org_l)
+            continue
 
         if l.startswith("#"):
             yield TokenInfo(COMMENT, l.rstrip("\n"), lineno, 0, org_l)
@@ -105,6 +108,7 @@ def tokenize(readline):
 
         while l:
             if l[0].isdigit() or (l.startswith(".") and len(l) > 1 and l[1].isdigit()):
+                seen_dot = False
                 t = ""
                 if l.startswith("0x") or l.startswith("0X"):
                     t = "0x"
@@ -116,6 +120,10 @@ def tokenize(readline):
                     t = "0b"
                     l = l[2:]
                 while l and (l[0].isdigit() or l[0] == "." or (t.startswith("0x") and l[0] in "ABCDEFabcdef")):
+                    if l[0] == ".":
+                        if seen_dot:
+                            break
+                        seen_dot = True
                     t += l[0]
                     l = l[1:]
                 if l.startswith("e") or l.startswith("E"):
@@ -127,6 +135,9 @@ def tokenize(readline):
                     while l and l[0].isdigit():
                         t += l[0]
                         l = l[1:]
+                if l.startswith("j"):
+                    t += l[0]
+                    l = l[1:]
                 yield TokenInfo(NUMBER, t, lineno, 0, org_l)
             elif l[0].isalpha() or l.startswith("_"):
                 name = ""
