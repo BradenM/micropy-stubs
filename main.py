@@ -78,7 +78,7 @@ def get_module(module, target_dir, prefix=None):
     """Download module from pypi or url"""
     _module = module.split("@")
     target = Path(str(target_dir)).resolve()
-    if len(_module) >= 1:
+    if len(_module) > 1:
         return get_git_module(*_module, target)
     _prefix = prefix or "micropython"
     module = f"{_prefix}-{module}"
