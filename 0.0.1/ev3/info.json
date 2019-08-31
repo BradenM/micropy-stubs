@@ -1,0 +1,13 @@
+{
+  "firmware": {
+    "machine": "EV3",
+    "firmware": "ev3 1.9.4",
+    "nodename": "ev3",
+    "version": "0.0.1",
+    "release": "1.9.4",
+    "sysname": "ev3",
+    "name": "pybricks"
+  },
+  "stubber": { "version": "1.2.0" },
+  "modules": []
+}
