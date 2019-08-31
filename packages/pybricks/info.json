@@ -1,0 +1,20 @@
+{
+  "scope": "firmware",
+  "name": "LEGO PyBricks",
+  "repo": "drewwhis/pybricks-stubs",
+  "module_path": "pybricks",
+  "firmware": "pybricks",
+  "excluded_modules": [],
+  "modules": [],
+  "devices": ["ev3"],
+  "versions": [
+    {
+      "version": "0.0.1",
+      "git_tag": "0.0.1",
+      "sha": "fcb952b95331b31a0354fe340d1fa33a8935a34c",
+      "latest": true,
+      "devices": ["ev3"]
+    }
+  ],
+  "path": "packages/pybricks/info.json"
+}
