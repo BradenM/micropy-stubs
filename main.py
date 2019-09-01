@@ -32,11 +32,11 @@ from pathlib import Path
 from pprint import pprint
 
 import click
-import requests
-
 import dictdiffer as dictdiff
-import upip
+import requests
 from deepmerge import always_merger
+
+import upip
 from firmware import Firmware
 
 ROOT = (Path(__file__).parent).resolve()
@@ -280,7 +280,7 @@ def archive_stub(stub):
 def create_archive(path, archive_name, **kwargs):
     """archive given path to tarfile at dest"""
     dist_path = ROOT / 'dist'
-    dist_path.mkdir(exist_ok=True)
+    dist_path.mkdir(exist_ok=True, parents=True)
     archive_path = dist_path / (archive_name + '.tar.gz')
     if archive_path.exists():
         archive_path.unlink()
