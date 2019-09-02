@@ -1,4 +1,4 @@
-# make_stub_files: Thu 25 Jul 2019 at 22:36:49
+# make_stub_files: Mon 02 Sep 2019 at 04:29:51
 
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
@@ -7,7 +7,6 @@ class ClientResponse:
     def read(self, sz: Any=-1) -> Any: ...
         #   0: return yield from self.content.read(sz)
         # ? 0: return yield from self.content.read(sz)
-    def aclose(self) -> None: ...
     def __repr__(self) -> str: ...
 class ChunkedClientResponse(ClientResponse):
     def __init__(self, reader: Any) -> None: ...

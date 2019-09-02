@@ -1,4 +1,4 @@
-# make_stub_files: Thu 25 Jul 2019 at 22:36:50
+# make_stub_files: Mon 02 Sep 2019 at 04:29:51
 
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
@@ -59,10 +59,3 @@ def urandom(n: int) -> Any: ...
 def popen(cmd: Any, mode: Any='r') -> Any: ...
     #   0: return builtins.open(i,mode)
     # ? 0: return builtins.open(int, mode)
-def spawnvp(mode: Any, file: Any, args: Any) -> Any: ...
-    #   0: return pid
-    # ? 0: return pid
-    #   1: return rc>>8
-    # ? 1: return rc>>number
-    #   2: return -sig
-    # ? 2: return sig

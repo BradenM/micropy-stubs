@@ -1,4 +1,4 @@
-# make_stub_files: Thu 25 Jul 2019 at 22:36:50
+# make_stub_files: Mon 02 Sep 2019 at 04:29:51
 
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
@@ -9,13 +9,12 @@ def abspath(s: str) -> Union[Any, str]: ...
     # ? 0: return os.getcwd()+str+str
     #   1: return s
     #   1: return str
-def join(*args) -> Any: ...
-    #   0: return res.encode()
-    # ? 0: return res.encode()
-    #   1: return res
-    # ? 1: return res
+def join(*args) -> Union[Any, str]: ...
+    #   0: return b'/'.join(args)
+    # ? 0: return bytes.join(args)
+    #   1: return '/'.join(args)
+    #   1: return str
 def split(path: Any) -> Union[Tuple[Any, str], Tuple[str, Any], Tuple[str, str]]: ...
-def splitdrive(path: Any) -> Tuple[str, Any]: ...
 def dirname(path: Any) -> Any: ...
     #   0: return split(path)[0]
     # ? 0: return split(path)[number]

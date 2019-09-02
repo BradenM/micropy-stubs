@@ -9,9 +9,6 @@ class ClientResponse:
     def read(self, sz=-1):
         return (yield from self.content.read(sz))
 
-    def aclose(self):
-        yield from self.content.aclose()
-
     def __repr__(self):
         return "<ClientResponse %d %s>" % (self.status, self.headers)
 
@@ -53,47 +50,36 @@ def request_raw(method, url):
         path = ""
     if proto != "http:":
         raise ValueError("Unsupported protocol: " + proto)
-    port = 80
-    if ":" in host:
-        host, port = host.split(":", 1)
-        port = int(port)
-    reader, writer = yield from asyncio.open_connection(host, port)
+    reader, writer = yield from asyncio.open_connection(host, 80)
     # Use protocol 1.0, because 1.1 always allows to use chunked transfer-encoding
     # But explicitly set Connection: close, even though this should be default for 1.0,
     # because some servers misbehave w/o it.
     query = "%s /%s HTTP/1.0\r\nHost: %s\r\nConnection: close\r\nUser-Agent: compat\r\n\r\n" % (method, path, host)
-    try:
-        yield from writer.awrite(query.encode('latin-1'))
-    except:
-        yield from writer.aclose()
-        raise
-
+    yield from writer.awrite(query.encode('latin-1'))
+#    yield from writer.aclose()
     return reader
 
 
 def request(method, url):
     redir_cnt = 0
+    redir_url = None
     while redir_cnt < 2:
         reader = yield from request_raw(method, url)
         headers = []
+        sline = yield from reader.readline()
+        sline = sline.split(None, 2)
+        status = int(sline[1])
         chunked = False
-        try:
-            sline = yield from reader.readline()
-            sline = sline.split(None, 2)
-            status = int(sline[1])
-            while True:
-                line = yield from reader.readline()
-                if not line or line == b"\r\n":
-                    break
-                headers.append(line)
-                if line.startswith(b"Transfer-Encoding:"):
-                    if b"chunked" in line:
-                        chunked = True
-                elif line.startswith(b"Location:"):
-                    url = line.rstrip().split(None, 1)[1].decode("latin-1")
-        except:
-            yield from reader.aclose()
-            raise
+        while True:
+            line = yield from reader.readline()
+            if not line or line == b"\r\n":
+                break
+            headers.append(line)
+            if line.startswith(b"Transfer-Encoding:"):
+                if b"chunked" in line:
+                    chunked = True
+            elif line.startswith(b"Location:"):
+                url = line.rstrip().split(None, 1)[1].decode("latin-1")
 
         if 301 <= status <= 303:
             redir_cnt += 1
