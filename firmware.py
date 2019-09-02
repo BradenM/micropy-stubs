@@ -85,6 +85,20 @@ class Firmware:
                 compat.append(vers_obj)
         return compat
 
+    def retrieve_license(self, dest, repository=None, repo_path="LICENSE"):
+        """Attempt to find and download repo license"""
+        _repo = repository or self.repo
+        repo = self.git.get_repo(_repo)
+        license_file = next(
+            (i for i in repo.get_contents('/') if i.path == repo_path), None)
+        file_name = repo_path.replace("/", "_")
+        if license_file:
+            file_dest = dest / file_name
+            contents = repo.get_contents(
+                license_file.path)
+            return self.write_file_bytes(contents.decoded_content,
+                                         file_dest)
+
     def fetch_modules(self, exclude=None):
         """Fetch modules from git repository"""
         exclude = exclude or self.excluded_modules

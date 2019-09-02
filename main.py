@@ -34,9 +34,9 @@ from pprint import pprint
 import click
 import dictdiffer as dictdiff
 import requests
+import upip
 from deepmerge import always_merger
 
-import upip
 from firmware import Firmware
 
 ROOT = (Path(__file__).parent).resolve()
@@ -202,8 +202,10 @@ def add_device(device):
     if fware_tag not in fware_versions:
         fware_tag = fware_versions[0]
     fware = Firmware(firmware_info=fware_info, port=port, tag=fware_tag)
-    mods_out = Path(device['path']).parent / 'frozen'
+    device_root = Path(device['path']).parent
+    mods_out = device_root / 'frozen'
     mods_out.mkdir(exist_ok=True, parents=True)
+    fware.retrieve_license(device_root)
     fware.retrieve_modules(mods_out)
     make_stubs(mods_out)
     return device
@@ -217,6 +219,10 @@ def add_firmware(firm):
     updated_firm = firm.copy()
     for p in ports:
         fware = Firmware(port=p, firmware_info=firm)
+        licenses = firm.get('licenses', [])
+        for file in licenses:
+            repo, file_path = file.split(':')
+            fware.retrieve_license(path, repository=repo, repo_path=file_path)
         compat = fware.get_compatible_tags()
         for cmp in compat:
             prev_compat = next(
