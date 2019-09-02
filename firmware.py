@@ -89,9 +89,18 @@ class Firmware:
         """Attempt to find and download repo license"""
         _repo = repository or self.repo
         repo = self.git.get_repo(_repo)
-        license_file = next(
-            (i for i in repo.get_contents('/') if i.path == repo_path), None)
-        file_name = repo_path.replace("/", "_")
+        repo_path = Path(repo_path)
+        if len(repo_path.parts) == 1:
+            license_file = next(
+                (i for i in repo.get_contents('/')
+                 if i.path == repo_path.name), None)
+        try:
+            license_file = repo.get_contents(str(repo_path))
+        except Exception:
+            print("Failed to retrieve license:", str(repo_path))
+            license_file = None
+        # Lazy unique names
+        file_name = str(repo_path).replace("/", "_")
         if license_file:
             file_dest = dest / file_name
             contents = repo.get_contents(
