@@ -21,6 +21,10 @@
     "uasyncio",
     "git_repo@path_on_git" // Git example
   ],
+  // Addtional Licenses to look for, formatted as <REPO_AUTHOR/REPO>:<PATH>
+  // The base repo (in this case: gitauthor/micropy-branch) is already checked for a license
+  // at its repo root.
+  "licenses": ["gitauthor/micropy-branch-lib:LICENSE"],
   "devices": ["esp8266", "esp32"] // Available ports
   // "versions": [] This is left empty, as it will be automatically populated by git tags
 }
