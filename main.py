@@ -89,6 +89,11 @@ def get_module(module, target_dir, prefix=None):
             "type": "Module",
             "msg": f"Package {module} not found!"
         })
+    except Exception:
+        INFO['errors'].append({
+            "type": "Module",
+            "msg": f"Package {module} failed to install!"
+        })
 
 
 def get_file(path):
