@@ -37,14 +37,43 @@
     "uwwwauth",
     "xmltok2"
   ],
+  "licenses": ["pfalcon/pycopy-lib:LICENSE"],
   "devices": ["esp8266", "esp32"],
   "path": "packages/pycopy/info.json",
   "versions": [
     {
+      "version": "2.11.0.9",
+      "git_tag": "v2.11.0.9",
+      "sha": "53a1551a0e0bd2ba27d75fe3033fbd7f479652a2",
+      "latest": true,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "2.11.0.8",
+      "git_tag": "v2.11.0.8",
+      "sha": "707a98a58bc4e1f9ded33b64ea47cf8f25f76644",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "2.11.0.7",
+      "git_tag": "v2.11.0.7",
+      "sha": "b02e1b3e7e46230ce335e2a8d467b1a935aa0be1",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "2.11.0.6",
+      "git_tag": "v2.11.0.6",
+      "sha": "4bcc5b2765c5acd3ceb8ad15ae4940783471071e",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
       "version": "2.11.0.5",
       "git_tag": "v2.11.0.5",
       "sha": "05793601a11fa0b29d6973c074195c5d07b9f2d9",
-      "latest": true,
+      "latest": false,
       "devices": ["esp8266", "esp32"]
     },
     {
