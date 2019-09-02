@@ -22,9 +22,6 @@ O_TRUNC    = 0o0001000
 O_APPEND   = 0o0002000
 O_NONBLOCK = 0o0004000
 
-P_WAIT = 0
-P_NOWAIT = 1
-
 error = OSError
 name = "posix"
 sep = "/"
@@ -145,7 +142,7 @@ else:
             import uctypes
             dirent = uctypes.bytes_at(dirent, struct.calcsize(dirent_fmt))
             dirent = struct.unpack(dirent_fmt, dirent)
-            dirent = (dirent[-1].split(b'\0', 1)[0], dirent[-2] << 12, dirent[0])
+            dirent = (dirent[-1].split(b'\0', 1)[0], dirent[-2], dirent[0])
             yield dirent
 
 def listdir(path="."):
@@ -167,7 +164,7 @@ def walk(top, topdown=True):
     files = []
     dirs = []
     for dirent in ilistdir(top):
-        mode = dirent[1]
+        mode = dirent[1] << 12
         fname = fsdecode(dirent[0])
         if stat_.S_ISDIR(mode):
             if fname != "." and fname != "..":
@@ -300,15 +297,3 @@ def popen(cmd, mode="r"):
     else:
         close(o)
         return builtins.open(i, mode)
-
-def spawnvp(mode, file, args):
-    pid = fork()
-    if pid:
-        if mode == P_NOWAIT:
-            return pid
-        pid, rc = waitpid(pid, 0)
-        sig = rc & 0xff
-        if not sig:
-            return rc >> 8
-        return -sig
-    execvp(file, args)

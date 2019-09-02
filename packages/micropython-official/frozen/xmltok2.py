@@ -77,13 +77,11 @@ class XMLTokenizer:
             res[0] = ATTR
             self.putnsident(res)
             self.expect("=")
-            quote = self.getch()
-            if quote != '"' and quote != "'":
-                raise XMLSyntaxError
+            self.expect('"')
             val = ""
-            while self.curch() != quote:
+            while self.curch() != '"':
                 val += self.getch()
-            self.expect(quote)
+            self.expect('"')
             res[3] = val
             yield res
             res[3] = None
@@ -115,15 +113,10 @@ class XMLTokenizer:
                 else:
                     res[0] = START_TAG
                     self.putnsident(res)
-                    ns = res[1]
-                    tag = res[2]
                     yield res
                     yield from self.lex_attrs_till(res)
                     if self.match("/"):
-                        res[0] = END_TAG
-                        res[1] = ns
-                        res[2] = tag
-                        yield res
+                        yield (END_TAG, tag)
                     self.expect(">")
             else:
                 text = ""

@@ -8,10 +8,6 @@ from uctypes import (
     ULONGLONG, LONGLONG
 )
 
-
-FLOAT = FLOAT32
-DOUBLE = FLOAT64
-
 def STRUCT(typ):
     return (0, typ)
 
