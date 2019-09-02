@@ -105,8 +105,8 @@ class Firmware:
                    ]
         return modules
 
-    def write_module(self, content, path):
-        """Write module content to file path"""
+    def write_file_bytes(self, content, path):
+        """Write bytes to file path"""
         parent = path.parent
         if not parent.exists():
             parent.mkdir(exist_ok=True, parents=True)
@@ -134,16 +134,16 @@ class Firmware:
             except AssertionError:
                 print(f"Could not decode {name}")
                 repo = self.git.get_repo(self.repo)
-                file = repo.get_file_contents(mod.path, ref=self.tag_obj.name)
+                file = repo.get_contents(mod.path, ref=self.tag_obj.name)
                 try:
                     print("Trying Again with:", file.path)
                     content = file.decoded_content
-                    self.write_module(content, out_path)
+                    self.write_file_bytes(content, out_path)
                 except AssertionError:
                     with failed_out.open('a+') as f:
                         f.write(
                             f'\nFailed to retrieve: {name} from {mod.path}')
             else:
                 print(f"Module: {name} => {str(out_path)}")
-                self.write_module(content, out_path)
+                self.write_file_bytes(content, out_path)
         return modules

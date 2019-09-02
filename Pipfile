@@ -15,12 +15,13 @@ packaging = "*"
 pre-commit = "*"
 
 [packages]
-micropython-cpython-upip = "*"
+pycopy-cpython-upip = "*"
 dictdiffer = "*"
 pygithub = "*"
 deepmerge = "*"
 click = "*"
 requests = "*"
+pycopy-cpython-gc = "*"
 
 [requires]
 python_version = "3.7"
