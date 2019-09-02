@@ -141,10 +141,12 @@ def get_firm_by_device(device):
     return firm
 
 
-def update_device(device_info):
+def update_device(device_info, existing):
     """update device info file"""
     path = Path(device_info['path']).parent
     frozen_path = path / 'frozen'
+    if existing:
+        shutil.rmtree(frozen_path)
     if not frozen_path.exists():
         device_info = add_device(device_info)
     return device_info
@@ -176,7 +178,7 @@ def update_firmware(firm, existing=False):
             update_firmware_modules(firm)
     fware = firm['firmware']
     devices = get_devices_by_firm(fware)
-    loaded = [update_device(d) for d in devices]
+    loaded = [update_device(d, existing) for d in devices]
     versions = firm['versions']
     possible = len([d for v in versions for d in v['devices']])
     INFO['stats'].append({
