@@ -1,9 +1,9 @@
-name: UploadToTesting
+name: Deploy Production Repo
 
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
         env:
           ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
           SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-          MIRROR_TARGET: micropy-stubs-dev/packages
+          MIRROR_TARGET: micropy-stubs-prod/packages
           MIRROR_SOURCE: dist
         with:
           args: --overwrite --remove
