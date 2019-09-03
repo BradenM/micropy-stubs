@@ -20,7 +20,6 @@ I will do this along with some tests soon.
 
 """
 
-
 import json
 import shutil
 import subprocess as subp
@@ -150,7 +149,7 @@ def update_device(device_info, existing):
     """update device info file"""
     path = Path(device_info['path']).parent
     frozen_path = path / 'frozen'
-    if existing:
+    if existing and frozen_path.exists():
         shutil.rmtree(frozen_path)
     if not frozen_path.exists():
         device_info = add_device(device_info)
@@ -207,13 +206,25 @@ def add_device(device):
     fware_tag = dev_fware['version']
     fware_versions = [v['version'] for v in fware_info['versions']]
     if fware_tag not in fware_versions:
-        fware_tag = fware_versions[0]
+        try:
+            fware_tag = fware_versions[0]
+        except IndexError:
+            fware_tag = "master"
     fware = Firmware(firmware_info=fware_info, port=port, tag=fware_tag)
     device_root = Path(device['path']).parent
     mods_out = device_root / 'frozen'
     mods_out.mkdir(exist_ok=True, parents=True)
     fware.retrieve_license(device_root)
-    fware.retrieve_modules(mods_out)
+    mod_paths = fware_info['module_path']
+    if isinstance(mod_paths, list) and any((i for i in mod_paths if '@' in i)):
+        for mod_path in mod_paths:
+            out_append, repo_path = mod_path.split('@')
+            submod_out = mods_out / out_append / repo_path
+            mods_out.mkdir(exist_ok=True, parents=True)
+            fware.module_path = [Path(repo_path)]
+            fware.retrieve_modules(submod_out)
+    else:
+        fware.retrieve_modules(mods_out)
     make_stubs(mods_out)
     return device
 
