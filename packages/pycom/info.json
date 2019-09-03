@@ -1,1 +1,50 @@
-{"scope": "firmware", "name": "Pycopy Sigfox", "repo": "pycom/pycom-micropython-sigfox", "module_path": ["{}/frozen/Common", "{}/frozen/LTE"], "firmware": "pycom", "excluded_modules": ["_boot.py", "inisetup.py", "upip.py", "upip_utarfile.py"], "module_prefix": "pycopy", "modules": ["pycom/pycom-libraries@lib/ADS1115/ADS1115.py", "pycom/pycom-libraries@lib/ALSPT19/ALSPT19.py", "pycom/pycom-libraries@lib/MFRC630/MFRC630.py", "pycom/pycom-libraries@lib/TB6612FNG/TB6612FNG.py", "pycom/pycom-libraries@lib/lora_mesh/loramesh.py", "pycom/pycom-libraries@lib/mqtt/mqtt.py", "pycom/pycom-libraries@lib/onewire/onewire.py", "pycom/pycom-libraries@lib/pycoproc/pycoproc.py"], "devices": ["esp32"], "licenses": ["pycom/pycom-libraries:license/Pycom Licences v2.2.pdf"], "versions": [{"version": "1.18.2", "git_tag": "v1.18.2", "sha": "07a52e47ed29d0e06bdfff56bdc336fe7b5e5f85", "latest": true, "devices": ["esp32"]}, {"version": "1.18.1", "git_tag": "v1.18.1", "sha": "f517b1df5083ddc158c075852d7f2497480b0d84", "latest": false, "devices": ["esp32"]}, {"version": "1.18.0", "git_tag": "v1.18.0", "sha": "046b3509da15ef00249b8ceca957c58d5328c4c9", "latest": false, "devices": []}], "path": "packages/pycom/info.json"}
+{
+  "scope": "firmware",
+  "name": "Pycopy Sigfox",
+  "repo": "pycom/pycom-micropython-sigfox",
+  "module_path": ["{}/frozen/Common", "{}/frozen/LTE"],
+  "firmware": "pycom",
+  "excluded_modules": [
+    "_boot.py",
+    "inisetup.py",
+    "upip.py",
+    "upip_utarfile.py"
+  ],
+  "module_prefix": "pycopy",
+  "modules": [
+    "pycom/pycom-libraries@lib/ADS1115/ADS1115.py",
+    "pycom/pycom-libraries@lib/ALSPT19/ALSPT19.py",
+    "pycom/pycom-libraries@lib/MFRC630/MFRC630.py",
+    "pycom/pycom-libraries@lib/TB6612FNG/TB6612FNG.py",
+    "pycom/pycom-libraries@lib/lora_mesh/loramesh.py",
+    "pycom/pycom-libraries@lib/mqtt/mqtt.py",
+    "pycom/pycom-libraries@lib/onewire/onewire.py",
+    "pycom/pycom-libraries@lib/pycoproc/pycoproc.py"
+  ],
+  "devices": ["esp32"],
+  "licenses": ["pycom/pycom-libraries:license/Pycom Licences v2.2.pdf"],
+  "versions": [
+    {
+      "version": "1.18.2",
+      "git_tag": "v1.18.2",
+      "sha": "07a52e47ed29d0e06bdfff56bdc336fe7b5e5f85",
+      "latest": true,
+      "devices": ["esp32"]
+    },
+    {
+      "version": "1.18.1",
+      "git_tag": "v1.18.1",
+      "sha": "f517b1df5083ddc158c075852d7f2497480b0d84",
+      "latest": false,
+      "devices": ["esp32"]
+    },
+    {
+      "version": "1.18.0",
+      "git_tag": "v1.18.0",
+      "sha": "046b3509da15ef00249b8ceca957c58d5328c4c9",
+      "latest": false,
+      "devices": []
+    }
+  ],
+  "path": "packages/pycom/info.json"
+}
