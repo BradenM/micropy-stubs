@@ -51,13 +51,13 @@ class Firmware:
         """get tags/branch refs"""
         repo = self.git.get_repo(self.repo)
         repo_tag_objs = list(repo.get_tags())
-        if not repo_tag_objs:
-            repo_tag_objs.append(repo.get_branch('master'))
         exclusions = ('rc', 'post', 'b', 'r')
         repo_tag_objs = [t for t in repo_tag_objs if not any(
             i in t.name for i in exclusions)]
         repo_tag_objs = [
             t for t in repo_tag_objs if self.parse_version(t.name)]
+        if not repo_tag_objs:
+            repo_tag_objs.append(repo.get_branch('master'))
         return (repo, repo_tag_objs)
 
     def get_compatible_tags(self):
