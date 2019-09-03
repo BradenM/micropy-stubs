@@ -1,0 +1,13 @@
+# make_stub_files: Tue 03 Sep 2019 at 17:05:43
+
+from typing import Any, Dict, Optional, Sequence, Tuple, Union
+Node = Any
+class Light:
+    def __init__(self, port: Any) -> None: ...
+    def analogValue(self) -> Any: ...
+        #   0: return round(1024*data/4095,2)
+        # ? 0: return round(number*data/number, number)
+    def digitalValue(self) -> Any: ...
+        #   0: return self.d_pin.value()
+        # ? 0: return self.d_pin.value()
+    def deinit(self) -> None: ...

@@ -1,0 +1,13 @@
+# make_stub_files: Tue 03 Sep 2019 at 17:05:43
+
+from typing import Any, Dict, Optional, Sequence, Tuple, Union
+Node = Any
+class Angle:
+    def __init__(self, port: Any) -> None: ...
+    def deinit(self) -> None: ...
+    def readraw(self) -> Any: ...
+        #   0: return 4095-self.adc.readraw()
+        # ? 0: return number-self.adc.readraw()
+    def read(self) -> Any: ...
+        #   0: return round(1024*data/4095,2)
+        # ? 0: return round(number*data/number, number)

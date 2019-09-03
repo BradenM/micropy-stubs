@@ -1,0 +1,20 @@
+{
+  "scope": "firmware",
+  "name": "M5 FlowUI",
+  "repo": "m5stack/UIFlow-Code",
+  "module_path": ["flowlib@units", "flowlib@modules", "flowlib@faces"],
+  "firmware": "m5flowui",
+  "excluded_modules": [],
+  "modules": [],
+  "devices": ["generic"],
+  "versions": [
+    {
+      "version": "master",
+      "git_tag": "master",
+      "sha": "c405f1f4b495b2289b414c01b6067d14f3b8f448",
+      "latest": true,
+      "devices": []
+    }
+  ],
+  "path": "packages/m5flowui/info.json"
+}
