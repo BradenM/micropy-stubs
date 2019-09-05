@@ -165,6 +165,8 @@ def update_firmware_modules(firm):
     modules = firm.get('modules')
     mod_prefix = firm.get('module_prefix', None)
     if not modules:
+        placeholder = path / 'none.txt'
+        placeholder.touch()
         return firm
     modules = [get_module(m, path, prefix=mod_prefix) for m in modules]
     make_stubs(path)
