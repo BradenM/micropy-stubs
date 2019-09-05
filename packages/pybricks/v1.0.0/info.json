@@ -3,7 +3,7 @@
     "machine": "ev3",
     "firmware": "LEGO EV3 v1.0.0",
     "nodename": "ev3",
-    "version": "v1.0.0",
+    "version": "1.0.0",
     "release": "v1.0.0",
     "sysname": "ev3",
     "name": "pybricks"
