@@ -33,9 +33,10 @@ from pprint import pprint
 import click
 import dictdiffer as dictdiff
 import requests
-import upip
 from deepmerge import always_merger
 
+import packages as pkg
+import upip
 from firmware import Firmware
 
 ROOT = (Path(__file__).parent).resolve()
@@ -276,17 +277,21 @@ def get_stub_name(stub):
     return name
 
 
-def archive_device(device):
+def archive_device(device, commit=False):
     """archive a device stub"""
     path = Path(device['path']).parent
     pkg_name = get_stub_name(device)
+    if commit:
+        pkg.create_or_update_package_branch(path, pkg_name)
     return create_archive(path, pkg_name)
 
 
-def archive_firmware(firmware):
-    """archive a firmwre stub"""
+def archive_firmware(firmware, commit=False):
+    """archive a firmware stub"""
     path = Path(firmware['path']).parent
     name = get_stub_name(firmware)
+    if commit:
+        pkg.create_or_update_package_branch(path, name)
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir) / name
         tmp_path.mkdir()
@@ -295,12 +300,12 @@ def archive_firmware(firmware):
         return create_archive(tmp_path, name)
 
 
-def archive_stub(stub):
+def archive_stub(stub, **kwargs):
     """archive given stub"""
     scope = stub.get('scope', 'device')
     if scope == 'firmware':
-        return archive_firmware(stub)
-    return archive_device(stub)
+        return archive_firmware(stub, **kwargs)
+    return archive_device(stub, **kwargs)
 
 
 def create_archive(path, archive_name, **kwargs):
@@ -343,10 +348,13 @@ def cli():
               help="Archive all stubs")
 @click.option('--clean', default=False, is_flag=True,
               help="Remove existing archives")
+@click.option('--commit', default=False, is_flag=True,
+              help="Commit Changes to Package Branches")
 def archive(stub_name, **kwargs):
     """Archive Stubs"""
     stubs = [*INFO['device'], *INFO['firmware']]
     archives = []
+    do_commit = kwargs.get('commit', False)
     if kwargs.get('clean'):
         dist = ROOT / 'dist'
         if dist.exists():
@@ -354,10 +362,10 @@ def archive(stub_name, **kwargs):
         print("Cleaned dist folder")
     if kwargs.get('do_all'):
         print("Archiving all stubs...")
-        archives.extend([archive_stub(s) for s in stubs])
+        archives.extend([archive_stub(s, commit=do_commit) for s in stubs])
     if stub_name:
         stub = resolve_stub(stub_name)
-        archives.append(archive_stub(stub))
+        archives.append(archive_stub(stub, commit=do_commit))
     if archives:
         archives = iter(archives)
         for a in archives:
