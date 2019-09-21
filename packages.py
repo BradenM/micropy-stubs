@@ -10,9 +10,24 @@ Module for creating/updating stub package git branches.
 """
 
 
+import shutil
 import subprocess as sp
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
+
+
+@contextmanager
+def temp_branch(name=None):
+    tmp_branch = name or 'tmp/tmp-branch'
+    current_branch = execute(
+        'git rev-parse --abbrev-ref HEAD', shell=True, text=True).stdout
+    execute(f"git checkout -b {tmp_branch}", shell=True)
+    try:
+        yield 'tmp/tmp-branch'
+    finally:
+        execute(f'git checkout {current_branch}', shell=True)
+        execute(f'git branch -D {tmp_branch}', shell=True)
 
 
 def execute(cmd, **kwargs):
@@ -49,19 +64,27 @@ def update_package_branch(root_path, ref_path, commit_msg=None):
     now = datetime.now().strftime("%m/%d/%y")
     commit_msg = commit_msg or "chore({}): Package Updates"
     commit_msg = commit_msg.format(now)
-    _cmd = (f"git commit-tree -p {ref_path} -m '{commit_msg}' "
-            f"master:{root_path} | xargs git update-ref "
-            f"refs/heads/{ref_path}"
-            )
-    try:
-        execute(_cmd, shell=True)
-    except sp.CalledProcessError as e:
-        print("Failed to update package branch!")
-        print(e)
-        return None
+    with temp_branch() as branch:
+        if not Path(root_path / 'stubs').exists():
+            # Handle firmware packages
+            for path in root_path.iterdir():
+                if path.is_dir() and path.name != 'frozen':
+                    shutil.rmtree(path)
+        execute(f"git add {root_path}")
+        execute(f"git commit -m 'tmp_commit'")
+        _cmd = (f"git commit-tree -p {ref_path} -m '{commit_msg}' "
+                f"{branch}:{root_path} | xargs git update-ref "
+                f"refs/heads/{ref_path}"
+                )
+        try:
+            execute(_cmd, shell=True)
+        except sp.CalledProcessError as e:
+            print("Failed to update package branch!")
+            print(e)
+            return None
 
 
-def create_or_update_package_branch(root_path, name):
+def create_or_update_package_branch(root_path, name, force=False):
     ref_path = f"pkg/{name}"
     if Path(root_path).is_absolute():
         root_path = root_path.relative_to(Path.cwd())
@@ -69,7 +92,7 @@ def create_or_update_package_branch(root_path, name):
     if not branch_exists(ref_path):
         return create_package_branch(root_path, ref_path)
     print("Branch already exists, checking for changes...")
-    if get_change_count(root_path):
+    if get_change_count(root_path) or force:
         return update_package_branch(root_path, ref_path)
     print("Pushing branch...")
     execute(f"git push origin {ref_path}:{ref_path}", shell=True)
