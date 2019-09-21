@@ -71,7 +71,13 @@ def update_package_branch(root_path, ref_path, commit_msg=None):
                 if path.is_dir() and path.name != 'frozen':
                     shutil.rmtree(path)
         execute(f"git add {root_path}")
-        execute(f"git commit -m 'tmp_commit'")
+        try:
+            execute(f"git commit -m 'tmp_commit'", shell=True)
+        except Exception as e:
+            print(("Failed to create temporary commit."
+                   " There were likely no changes."))
+            print("Reason:", e)
+            return None
         _cmd = (f"git commit-tree -p {ref_path} -m '{commit_msg}' "
                 f"{branch}:{root_path} | xargs git update-ref "
                 f"refs/heads/{ref_path}"
