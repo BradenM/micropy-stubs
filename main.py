@@ -277,21 +277,21 @@ def get_stub_name(stub):
     return name
 
 
-def archive_device(device, commit=False):
+def archive_device(device, commit=False, **kwargs):
     """archive a device stub"""
     path = Path(device['path']).parent
     pkg_name = get_stub_name(device)
     if commit:
-        pkg.create_or_update_package_branch(path, pkg_name)
+        pkg.create_or_update_package_branch(path, pkg_name, **kwargs)
     return create_archive(path, pkg_name)
 
 
-def archive_firmware(firmware, commit=False):
+def archive_firmware(firmware, commit=False, **kwargs):
     """archive a firmware stub"""
     path = Path(firmware['path']).parent
     name = get_stub_name(firmware)
     if commit:
-        pkg.create_or_update_package_branch(path, name)
+        pkg.create_or_update_package_branch(path, name, **kwargs)
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir) / name
         tmp_path.mkdir()
@@ -350,11 +350,14 @@ def cli():
               help="Remove existing archives")
 @click.option('--commit', default=False, is_flag=True,
               help="Commit Changes to Package Branches")
+@click.option('--force', default=False, is_flag=True,
+              help="Update Package Branch even if no changes were made")
 def archive(stub_name, **kwargs):
     """Archive Stubs"""
     stubs = [*INFO['device'], *INFO['firmware']]
     archives = []
     do_commit = kwargs.get('commit', False)
+    force = kwargs.get('force', False)
     if kwargs.get('clean'):
         dist = ROOT / 'dist'
         if dist.exists():
@@ -362,10 +365,11 @@ def archive(stub_name, **kwargs):
         print("Cleaned dist folder")
     if kwargs.get('do_all'):
         print("Archiving all stubs...")
-        archives.extend([archive_stub(s, commit=do_commit) for s in stubs])
+        archives.extend(
+            [archive_stub(s, commit=do_commit, force=force) for s in stubs])
     if stub_name:
         stub = resolve_stub(stub_name)
-        archives.append(archive_stub(stub, commit=do_commit))
+        archives.append(archive_stub(stub, commit=do_commit, force=force))
     if archives:
         archives = iter(archives)
         for a in archives:
