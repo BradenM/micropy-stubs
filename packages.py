@@ -10,11 +10,16 @@ Module for creating/updating stub package git branches.
 """
 
 
+import hashlib
+import json
 import shutil
 import subprocess as sp
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
+
+REPO_SOURCE = Path(__file__).parent / 'source.json'
+REPO = json.loads(REPO_SOURCE.read_text())
 
 
 @contextmanager
@@ -103,3 +108,34 @@ def create_or_update_package_branch(root_path, name, force=False):
     print("Pushing branch...")
     execute(f"git push origin {ref_path}:{ref_path}", shell=True)
     print("No changes found, skipping...")
+
+
+def calc_package_checksum(path):
+    print("\nCalculating Package Checksum...")
+    cksum = hashlib.sha256()
+    glob = Path(path).rglob("*")
+    files = [f for f in glob if f.is_file()]
+    for file in files:
+        print("Hashing: ", file.name)
+        cksum.update(file.read_bytes())
+    hdigest = cksum.hexdigest()
+    print("Checksum Calculated: ", hdigest, "\n")
+    return hdigest
+
+
+def add_package(path, name, stub_type='device', queue=True):
+    cksum = calc_package_checksum(path)
+    pkg = {
+        'name': name,
+        'type': stub_type,
+        'sha256sum': cksum
+    }
+    existing = next(
+        (pkg for pkg in REPO['packages'] if pkg['name'] == name), None)
+    if existing:
+        print("Updating existing package...")
+        REPO['packages'].remove(existing)
+    print("Adding package...")
+    REPO['packages'].append(pkg)
+    REPO_SOURCE.write_text(json.dumps(REPO, indent=2, sort_keys=False))
+    return pkg

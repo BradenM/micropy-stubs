@@ -15,7 +15,7 @@ and freeze them. The stubs and info file must be added manually
 Note: This is currently a WIP. The end goal is to have a mostly automated
 method of creating 'stub packages' with device-specific and firmware-specific
 modules included for micropy-cli.
-Also, yes script very much needs to be refactored. 
+Also, yes script very much needs to be refactored.
 I will do this along with some tests soon.
 
 """
@@ -33,10 +33,10 @@ from pprint import pprint
 import click
 import dictdiffer as dictdiff
 import requests
+import upip
 from deepmerge import always_merger
 
 import packages as pkg
-import upip
 from firmware import Firmware
 
 ROOT = (Path(__file__).parent).resolve()
@@ -281,6 +281,7 @@ def archive_device(device, commit=False, **kwargs):
     """archive a device stub"""
     path = Path(device['path']).parent
     pkg_name = get_stub_name(device)
+    pkg.add_package(path, pkg_name)
     if commit:
         pkg.create_or_update_package_branch(path, pkg_name, **kwargs)
     return create_archive(path, pkg_name)
@@ -297,6 +298,7 @@ def archive_firmware(firmware, commit=False, **kwargs):
         tmp_path.mkdir()
         shutil.copytree((path / 'frozen'), (tmp_path / 'frozen'))
         shutil.copy2((path / 'info.json'), tmp_path)
+        pkg.add_package(tmp_path, name, stub_type='firmware')
         return create_archive(tmp_path, name)
 
 
