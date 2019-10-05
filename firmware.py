@@ -139,9 +139,12 @@ class Firmware:
     def retrieve_modules(self, output_dir):
         """Retrieve Frozen Modules"""
         modules = self.fetch_modules()
+        backup = None
         for mod in modules:
             out_dir = Path(str(output_dir))
             failed_out = out_dir / 'failed.txt'
+            if failed_out.exists():
+                failed_out.unlink()
             mod_path = Path(mod.path)
             index_ref = self.module_path[0].name
             if len(self.module_path) > 1:
@@ -151,10 +154,15 @@ class Firmware:
             out_path = out_dir / mod_stem
             if out_path.parent.is_dir():
                 out_path.parent.mkdir(exist_ok=True, parents=True)
+            # Create Backup
+            if out_path.exists():
+                print(f"[BACKUP]: {out_path.name}")
+                backup = out_path.with_name(out_path.name + '-back')
+                out_path.rename(backup)
             name = str(out_path.name)
             try:
                 content = mod.decoded_content
-            except AssertionError:
+            except AssertionError or Exception:
                 print(f"Could not decode {name}")
                 repo = self.git.get_repo(self.repo)
                 file = repo.get_contents(mod.path, ref=self.tag_obj.name)
@@ -162,11 +170,17 @@ class Firmware:
                     print("Trying Again with:", file.path)
                     content = file.decoded_content
                     self.write_file_bytes(content, out_path)
-                except AssertionError:
+                except AssertionError or Exception:
                     with failed_out.open('a+') as f:
                         f.write(
                             f'\nFailed to retrieve: {name} from {mod.path}')
+                    if backup and backup.exists():
+                        print(f"[RESTORE] {backup.name} => {out_path.name}")
+                        backup.replace(out_path)
             else:
-                print(f"Module: {name} => {str(out_path)}")
+                print(f"[SUCCESS]: {name} => {str(out_path)}")
                 self.write_file_bytes(content, out_path)
+            finally:
+                if backup and backup.exists():
+                    backup.unlink()
         return modules

@@ -82,6 +82,15 @@ def get_module(module, target_dir, prefix=None):
         return get_git_module(*_module, target)
     _prefix = prefix or "micropython"
     module = f"{_prefix}-{module}"
+    mods = list(target.rglob(f"*{module}*.py"))
+    # backups = [m.with_name(m.name + '-back') for m in mods]
+    backups = []
+    for mod in mods:
+        if mod.exists():
+            print(f"Creating Backup: {mod.name}")
+            b_path = mod.with_name(mod.name + '-back')
+            backups.append(b_path)
+            mod.rename(b_path)
     try:
         upip.install(module, str(target))
     except upip.NotFoundError:
@@ -94,6 +103,19 @@ def get_module(module, target_dir, prefix=None):
             "type": "Module",
             "msg": f"Package {module} failed to install!"
         })
+    else:
+        # successful download, remove backup
+        for back in backups:
+            if back.exists():
+                back.unlink()
+        print("[SUCCESS]: ", module)
+        return module
+    # Restore backups
+    for back in backups:
+        if back.exists():
+            print("Restoring backup: ", back.name)
+            orig = back.with_name(back.name.split('-back')[0])
+            back.replace(orig)
 
 
 def get_file(path):
@@ -117,7 +139,7 @@ def update_file(orig, new):
     pprint(removed)
     print("==============")
     path = orig['path']
-    json.dump(new, Path(path).open('w'))
+    json.dump(new, Path(path).open('w'), indent=2, sort_keys=False)
     return new
 
 
@@ -150,9 +172,7 @@ def update_device(device_info, existing):
     """update device info file"""
     path = Path(device_info['path']).parent
     frozen_path = path / 'frozen'
-    if existing and frozen_path.exists():
-        shutil.rmtree(frozen_path)
-    if not frozen_path.exists():
+    if not frozen_path.exists() or existing:
         device_info = add_device(device_info)
     return device_info
 
@@ -160,8 +180,6 @@ def update_device(device_info, existing):
 def update_firmware_modules(firm):
     """Update firmware specific modules"""
     path = Path(firm['path']).parent / 'frozen'
-    if path.exists():
-        shutil.rmtree(str(path))
     path.mkdir(exist_ok=True, parents=True)
     modules = firm.get('modules')
     mod_prefix = firm.get('module_prefix', None)
@@ -281,9 +299,9 @@ def archive_device(device, commit=False, **kwargs):
     """archive a device stub"""
     path = Path(device['path']).parent
     pkg_name = get_stub_name(device)
-    pkg.add_package(path, pkg_name)
     if commit:
         pkg.create_or_update_package_branch(path, pkg_name, **kwargs)
+    pkg.add_package(path, pkg_name)
     return create_archive(path, pkg_name)
 
 
