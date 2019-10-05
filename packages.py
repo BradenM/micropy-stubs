@@ -14,93 +14,63 @@ import hashlib
 import json
 import shutil
 import subprocess as sp
+import tempfile
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
+from shutil import copytree
 
 REPO_SOURCE = Path(__file__).parent / 'source.json'
 REPO = json.loads(REPO_SOURCE.read_text())
+REPO_ROOT = Path(__file__).parent
+WORK_DIR = Path.cwd()
 
 
 @contextmanager
-def temp_branch(name=None):
-    tmp_branch = name or 'tmp/tmp-branch'
+def create_or_reset_branch(ref=None):
+    branch_ref = ref or 'master'
     current_branch = execute(
         'git rev-parse --abbrev-ref HEAD', shell=True, text=True).stdout
-    execute(f"git checkout -b {tmp_branch}", shell=True)
+    execute(f"git checkout -B {branch_ref}", shell=True)
     try:
-        yield 'tmp/tmp-branch'
+        yield ref
     finally:
         execute(f'git checkout --force {current_branch}', shell=True)
-        execute(f'git branch -D {tmp_branch}', shell=True)
 
 
-def execute(cmd, **kwargs):
-    check = kwargs.pop('check', True)
-    print("[CMD]: ", cmd)
-    if not kwargs.get('shell', None):
-        cmd = cmd.split()
-    proc = sp.run(cmd, capture_output=True, check=check, **kwargs)
-    print("[RESULT]: ", proc.stdout)
-    return proc
+@contextmanager
+def temp_repo():
+    global WORK_DIR
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        dest = tmp_path / 'micropy-stubs'
+        copytree(REPO_ROOT, dest)
+        WORK_DIR = dest
+        execute(f"git rm --cached --ignore-unmatch tools/stubber", shell=True)
+        yield WORK_DIR
+    WORK_DIR = Path.cwd()
 
 
-def get_change_count(root_path, ref=None):
-    ref = ref or ''
-    _cmd = (f"git diff --cached --numstat {ref} {root_path} | wc -l")
+def get_change_count(root_path=None):
+    root_path = root_path or Path.cwd()
+    _cmd = (f"git diff --cached --numstat {root_path} | wc -l")
     result = execute(_cmd, text=True, shell=True).stdout
     count = int(result.strip())
     return count
 
 
-def branch_exists(ref_path):
-    _cmd = f"git show-ref -q --heads '{ref_path}'"
-    result = execute(_cmd, check=False, shell=True).returncode
-    return not result
-
-
-def create_package_branch(root_path, ref_path):
-    _cmd = ("true | git mktree | xargs git commit-tree"
-            f" | xargs git branch {ref_path}")
-    execute(_cmd, shell=True)
-    print("Creating new Stub Branch...")
-    commit_msg = "chore({}): New Stub Branch"
-    return update_package_branch(root_path, ref_path, commit_msg=commit_msg)
-
-
-def update_package_branch(root_path, ref_path, commit_msg=None, force=False):
-    now = datetime.now().strftime("%m/%d/%y")
-    commit_msg = commit_msg or "chore({}): Package Updates"
-    commit_msg = commit_msg.format(now)
-    with temp_branch() as branch:
-        if not Path(root_path / 'stubs').exists():
-            # Handle firmware packages
-            for path in root_path.iterdir():
-                if path.is_dir() and path.name != 'frozen':
-                    shutil.rmtree(path)
-        execute(f"git reset HEAD~1", shell=True)
-        execute(f"git add {root_path}")
-        if not get_change_count(root_path, ref='origin/master') >= 2 or force:
-            print("No changes found, skipping...")
-            return
-        try:
-            execute(f"git commit -m 'tmp_commit'", shell=True)
-        except Exception as e:
-            print(("Failed to create temporary commit."
-                   " There were likely no changes."))
-            print("Reason:", e)
-            return None
-        _cmd = (f"git commit-tree -p {ref_path} -m '{commit_msg}' "
-                f"{branch}:{root_path} | xargs git update-ref "
-                f"refs/heads/{ref_path}"
-                )
-        try:
-            execute(_cmd, shell=True)
-        except sp.CalledProcessError as e:
-            print("Failed to update package branch!")
-            print(e)
-            return None
-    return commit_msg
+def execute(cmd, **kwargs):
+    global WORK_DIR
+    check = kwargs.pop('check', True)
+    print("[CMD]: ", cmd)
+    print("[CWD]: ", WORK_DIR)
+    if not kwargs.get('shell', None):
+        cmd = cmd.split()
+    proc = sp.run(cmd, capture_output=True,
+                  check=check, cwd=WORK_DIR, **kwargs)
+    print("[RESULT]: ", proc.stdout)
+    print("[ERROR]: ", proc.stderr)
+    return proc
 
 
 def create_or_update_package_branch(root_path, name, force=False):
@@ -108,12 +78,16 @@ def create_or_update_package_branch(root_path, name, force=False):
     if Path(root_path).is_absolute():
         root_path = root_path.relative_to(Path.cwd())
     print(f"\nCREATING PACKAGE BRANCH: {root_path} - {ref_path}")
-    if not branch_exists(ref_path):
-        return create_package_branch(root_path, ref_path)
-    print("Branch already exists, checking for changes...")
-    update_package_branch(root_path, ref_path, force=force)
-    print("Pushing branch...")
-    execute(f"git push origin {ref_path}:{ref_path}", shell=True)
+    with temp_repo():
+        with create_or_reset_branch(ref=ref_path) as ref:
+            execute((
+                "git filter-branch --force --prune-empty "
+                f"--subdirectory-filter {root_path} "
+                "--index-filter 'git rm --cached --ignore-unmatch "
+                '"v*/**/*"\''
+            ), shell=True)
+        execute(f"git push --force -u origin {ref}:{ref}")
+    print("Done.")
 
 
 def update_package_source():
@@ -121,8 +95,9 @@ def update_package_source():
     commit_msg = "chore({}): Update Package Sources"
     commit_msg = commit_msg.format(now)
     print("Updating repo source...")
+    execute("pre-commit run --hook-stage commit -a", shell=True, check=False)
     execute("git add source.json", shell=True)
-    if get_change_count('.'):
+    if get_change_count():
         execute("git add source.json", shell=True)
         print("Commiting updates...")
         execute(f"git commit -m '{commit_msg}'", shell=True, check=False)
