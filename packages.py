@@ -123,8 +123,9 @@ def update_package_source():
     print("Updating repo source...")
     execute("git add source.json", shell=True)
     if get_change_count('.'):
+        execute("git add source.json", shell=True)
         print("Commiting updates...")
-        execute(f"git commit -m '{commit_msg}'", shell=True)
+        execute(f"git commit -m '{commit_msg}'", shell=True, check=False)
     current_branch = execute(
         'git rev-parse --abbrev-ref HEAD', shell=True, text=True).stdout
     execute(f"git push origin {current_branch}", shell=True)
