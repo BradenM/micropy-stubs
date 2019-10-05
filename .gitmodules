@@ -1,3 +1,3 @@
 [submodule "tools/stubber"]
 	path = tools/stubber
-	url = https://github.com/Josverl/micropython-stubber.git
+	url = https://github.com/BradenM/micropython-stubber.git
