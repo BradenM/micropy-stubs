@@ -25,10 +25,17 @@
   "licenses": ["pycom/pycom-libraries:license/Pycom Licences v2.2.pdf"],
   "versions": [
     {
+      "version": "1.18.3",
+      "git_tag": "v1.18.3",
+      "sha": "d19c9e958a26a871598cbb0ca2aabc6773501282",
+      "latest": true,
+      "devices": ["esp32"]
+    },
+    {
       "version": "1.18.2",
       "git_tag": "v1.18.2",
       "sha": "07a52e47ed29d0e06bdfff56bdc336fe7b5e5f85",
-      "latest": true,
+      "latest": false,
       "devices": ["esp32"]
     },
     {
