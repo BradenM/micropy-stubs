@@ -94,6 +94,7 @@ def update_package_source():
     now = datetime.now().strftime("%m/%d/%y")
     commit_msg = "chore({}): Update Package Sources"
     commit_msg = commit_msg.format(now)
+    REPO_SOURCE.write_text(json.dumps(REPO, indent=2, sort_keys=False))
     print("Updating repo source...")
     execute("pre-commit run --hook-stage commit -a", shell=True, check=False)
     execute("git add source.json", shell=True)
@@ -133,5 +134,4 @@ def add_package(path, name, stub_type='device', queue=True):
         REPO['packages'].remove(existing)
     print("Adding package...")
     REPO['packages'].append(pkg)
-    REPO_SOURCE.write_text(json.dumps(REPO, indent=2, sort_keys=False))
     return pkg
