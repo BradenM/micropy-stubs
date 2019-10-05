@@ -1,4 +1,3 @@
-# make_stub_files: Mon 02 Sep 2019 at 04:16:30
 
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
@@ -25,6 +24,11 @@ def basename(path: Any) -> Any: ...
 def exists(path: Any) -> Any: ...
     #   0: return os.access(path,os.F_OK)
     # ? 0: return os.access(path, os.F_OK)
+def isfile(path: Any) -> Union[Any, bool]: ...
+    #   0: return stat.S_ISREG(mode)
+    # ? 0: return stat.S_ISREG(mode)
+    #   1: return bool
+    #   1: return bool
 def isdir(path: Any) -> Union[Any, bool]: ...
     #   0: return stat.S_ISDIR(mode)
     # ? 0: return stat.S_ISDIR(mode)

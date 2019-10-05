@@ -1,4 +1,3 @@
-# make_stub_files: Mon 02 Sep 2019 at 04:16:29
 
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
@@ -16,3 +15,4 @@ class Epoll:
 def epoll(sizehint: Any=4) -> Any: ...
     #   0: return Epoll(fd)
     # ? 0: return Epoll(fd)
+def select(rlist: Any, wlist: Any, xlist: Any, timeout: Any=None) -> Tuple[Any, Any, Any]: ...
