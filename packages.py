@@ -45,8 +45,9 @@ def execute(cmd, **kwargs):
     return proc
 
 
-def get_change_count(root_path):
-    _cmd = (f"git diff --cached --numstat origin/master {root_path} | wc -l")
+def get_change_count(root_path, ref=None):
+    ref = ref or ''
+    _cmd = (f"git diff --cached --numstat {ref} {root_path} | wc -l")
     result = execute(_cmd, text=True, shell=True).stdout
     count = int(result.strip())
     return count
@@ -79,7 +80,7 @@ def update_package_branch(root_path, ref_path, commit_msg=None, force=False):
                     shutil.rmtree(path)
         execute(f"git reset HEAD~1", shell=True)
         execute(f"git add {root_path}")
-        if not get_change_count(root_path) or force:
+        if not get_change_count(root_path, ref='origin/master') >= 2 or force:
             print("No changes found, skipping...")
             return
         try:
@@ -99,6 +100,7 @@ def update_package_branch(root_path, ref_path, commit_msg=None, force=False):
             print("Failed to update package branch!")
             print(e)
             return None
+    return commit_msg
 
 
 def create_or_update_package_branch(root_path, name, force=False):
@@ -112,7 +114,20 @@ def create_or_update_package_branch(root_path, name, force=False):
     update_package_branch(root_path, ref_path, force=force)
     print("Pushing branch...")
     execute(f"git push origin {ref_path}:{ref_path}", shell=True)
-    print("No changes found, skipping...")
+
+
+def update_package_source():
+    now = datetime.now().strftime("%m/%d/%y")
+    commit_msg = "chore({}): Update Package Sources"
+    commit_msg = commit_msg.format(now)
+    print("Updating repo source...")
+    execute("git add source.json", shell=True)
+    if get_change_count('.'):
+        print("Commiting updates...")
+        execute(f"git commit -m '{commit_msg}'", shell=True)
+    current_branch = execute(
+        'git rev-parse --abbrev-ref HEAD', shell=True, text=True).stdout
+    execute(f"git push origin {current_branch}", shell=True)
 
 
 def calc_package_checksum(path):

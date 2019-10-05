@@ -33,10 +33,10 @@ from pprint import pprint
 import click
 import dictdiffer as dictdiff
 import requests
-import upip
 from deepmerge import always_merger
 
 import packages as pkg
+import upip
 from firmware import Firmware
 
 ROOT = (Path(__file__).parent).resolve()
@@ -400,6 +400,7 @@ def archive(stub_name, **kwargs):
         for a in archives:
             print("Archived:", a.name)
         print("Done!")
+    pkg.update_package_source()
 
 
 @cli.command()
