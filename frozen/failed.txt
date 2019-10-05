@@ -1,7 +1,2 @@
 
-Failed to retrieve: ds18x20.py from ports/esp32/modules/ds18x20.py
-Failed to retrieve: onewire.py from ports/esp32/modules/onewire.py
-Failed to retrieve: upysh.py from ports/esp32/modules/upysh.py
-Failed to retrieve: urequests.py from ports/esp32/modules/urequests.py
-Failed to retrieve: robust.py from ports/esp32/modules/umqtt/robust.py
 Failed to retrieve: simple.py from ports/esp32/modules/umqtt/simple.py
