@@ -50,6 +50,11 @@
       "sha256sum": "3ce7697299b57175226e71dffa343d864162c9a3c1b0e07ef7b4924b7b71e9d3"
     },
     {
+      "name": "esp32-micropython-1.11.0",
+      "type": "device",
+      "sha256sum": "4787e22c2bd1a6157f45fd576355bbb40320cd8236d892e6058ab6316f564a61"
+    },
+    {
       "name": "esp8266-micropython-1.9.3",
       "type": "device",
       "sha256sum": "89f1dc00a8a5c9749b928dea7df5d0c125b701a9fc38b97fa4077cc04088514c"
@@ -90,6 +95,11 @@
       "sha256sum": "16612bf0fdd05417b15a711ac781a6aa643a1ae01d3b9dfac1eb8db020428c93"
     },
     {
+      "name": "pycopy",
+      "type": "firmware",
+      "sha256sum": "42382a1395f03f3e584f2ace34d6a6501cc1bdba095ed486e6197cbd79281729"
+    },
+    {
       "name": "micropython",
       "type": "firmware",
       "sha256sum": "6299a4330028b1840a3cefb8bda086aa34988189731c43894cc228e17268e030"
@@ -98,16 +108,6 @@
       "name": "pybricks",
       "type": "firmware",
       "sha256sum": "f43c14056a8d2272e10756ff4ae270bebd36bd70bb9b314edba6790b50288a29"
-    },
-    {
-      "name": "esp32-micropython-1.11.0",
-      "type": "device",
-      "sha256sum": "4787e22c2bd1a6157f45fd576355bbb40320cd8236d892e6058ab6316f564a61"
-    },
-    {
-      "name": "pycopy",
-      "type": "firmware",
-      "sha256sum": "42382a1395f03f3e584f2ace34d6a6501cc1bdba095ed486e6197cbd79281729"
     }
   ]
 }
