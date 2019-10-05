@@ -31,20 +31,22 @@ def temp_branch(name=None):
     try:
         yield 'tmp/tmp-branch'
     finally:
-        execute(f'git checkout {current_branch}', shell=True)
+        execute(f'git checkout --force {current_branch}', shell=True)
         execute(f'git branch -D {tmp_branch}', shell=True)
 
 
 def execute(cmd, **kwargs):
     check = kwargs.pop('check', True)
+    print("[CMD]: ", cmd)
     if not kwargs.get('shell', None):
         cmd = cmd.split()
     proc = sp.run(cmd, capture_output=True, check=check, **kwargs)
+    print("[RESULT]: ", proc.stdout)
     return proc
 
 
 def get_change_count(root_path):
-    _cmd = (f"git diff --cached --numstat {root_path} | wc -l")
+    _cmd = (f"git diff --cached --numstat origin/master {root_path} | wc -l")
     result = execute(_cmd, text=True, shell=True).stdout
     count = int(result.strip())
     return count
@@ -65,7 +67,7 @@ def create_package_branch(root_path, ref_path):
     return update_package_branch(root_path, ref_path, commit_msg=commit_msg)
 
 
-def update_package_branch(root_path, ref_path, commit_msg=None):
+def update_package_branch(root_path, ref_path, commit_msg=None, force=False):
     now = datetime.now().strftime("%m/%d/%y")
     commit_msg = commit_msg or "chore({}): Package Updates"
     commit_msg = commit_msg.format(now)
@@ -75,7 +77,11 @@ def update_package_branch(root_path, ref_path, commit_msg=None):
             for path in root_path.iterdir():
                 if path.is_dir() and path.name != 'frozen':
                     shutil.rmtree(path)
+        execute(f"git reset HEAD~1", shell=True)
         execute(f"git add {root_path}")
+        if not get_change_count(root_path) or force:
+            print("No changes found, skipping...")
+            return
         try:
             execute(f"git commit -m 'tmp_commit'", shell=True)
         except Exception as e:
@@ -103,8 +109,7 @@ def create_or_update_package_branch(root_path, name, force=False):
     if not branch_exists(ref_path):
         return create_package_branch(root_path, ref_path)
     print("Branch already exists, checking for changes...")
-    if get_change_count(root_path) or force:
-        return update_package_branch(root_path, ref_path)
+    update_package_branch(root_path, ref_path, force=force)
     print("Pushing branch...")
     execute(f"git push origin {ref_path}:{ref_path}", shell=True)
     print("No changes found, skipping...")
