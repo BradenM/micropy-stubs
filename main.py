@@ -187,6 +187,11 @@ def update_firmware_modules(firm):
         placeholder = path / 'none.txt'
         placeholder.touch()
         return firm
+    # Clean any generated stub files
+    old_stubs = path.rglob('*.pyi')
+    for s in old_stubs:
+        print(f"[CLEAN]: {s.name}")
+        s.unlink()
     modules = [get_module(m, path, prefix=mod_prefix) for m in modules]
     make_stubs(path)
     return firm
