@@ -26,6 +26,7 @@ import subprocess as subp
 import sys
 import tarfile
 import tempfile
+from contextlib import contextmanager
 from itertools import chain
 from pathlib import Path
 from pprint import pprint
@@ -47,7 +48,34 @@ INFO = {
     'device': [],
     'stats': [],
     'errors': []
+
 }
+
+
+@contextmanager
+def file_backups(target_dir, glob_pattern):
+    target = Path(target_dir)
+    files = list(target.rglob(glob_pattern))
+    backups = []
+    for file in files:
+        print("[BACKUP]:", file.name)
+        backup = file.with_suffix(file.suffix + ".back")
+        file.rename(backup)
+        backups.append((file, backup))
+    try:
+        yield backups
+    finally:
+        for orig, backup in backups:
+            if not orig.exists():
+                print("[RESTORE]: ", orig.name)
+                rel_path = orig.relative_to(target_dir.parent)
+                INFO['errors'].append({
+                    "type": "Module",
+                    "msg": f"{rel_path} was restored from backup."
+                })
+                backup.replace(orig)
+            if backup.exists():
+                backup.unlink()
 
 
 def make_stubs(target_dir):
@@ -57,10 +85,11 @@ def make_stubs(target_dir):
     py_cfg = stub_dir / 'make_stub_files.cfg'
     target = Path(str(target_dir)).resolve()
     dirs = set([p.parent for p in target.rglob('*.py')])
-    for d in dirs:
-        args = ["python", str(py_file), "-c",
-                str(py_cfg), "-u", f"{str(d)}/*.py"]
-        subp.run(args, capture_output=True)
+    with file_backups(target, "*.pyi"):
+        for d in dirs:
+            args = ["python", str(py_file), "-c",
+                    str(py_cfg), "-u", f"{str(d)}/*.py"]
+            subp.run(args, capture_output=True)
 
 
 def get_git_module(repo, path, target_dir):
@@ -82,40 +111,23 @@ def get_module(module, target_dir, prefix=None):
         return get_git_module(*_module, target)
     _prefix = prefix or "micropython"
     module = f"{_prefix}-{module}"
-    mods = list(target.rglob(f"*{module}*.py"))
-    # backups = [m.with_name(m.name + '-back') for m in mods]
-    backups = []
-    for mod in mods:
-        if mod.exists():
-            print(f"Creating Backup: {mod.name}")
-            b_path = mod.with_name(mod.name + '-back')
-            backups.append(b_path)
-            mod.rename(b_path)
-    try:
-        upip.install(module, str(target))
-    except upip.NotFoundError:
-        INFO['errors'].append({
-            "type": "Module",
-            "msg": f"Package {module} not found!"
-        })
-    except Exception:
-        INFO['errors'].append({
-            "type": "Module",
-            "msg": f"Package {module} failed to install!"
-        })
-    else:
-        # successful download, remove backup
-        for back in backups:
-            if back.exists():
-                back.unlink()
-        print("[SUCCESS]: ", module)
-        return module
-    # Restore backups
-    for back in backups:
-        if back.exists():
-            print("Restoring backup: ", back.name)
-            orig = back.with_name(back.name.split('-back')[0])
-            back.replace(orig)
+    with file_backups(target, "*.py"):
+        try:
+            upip.install(module, str(target))
+        except upip.NotFoundError:
+            INFO['errors'].append({
+                "type": "Module",
+                "msg": f"Package {module} not found!"
+            })
+        except Exception:
+            INFO['errors'].append({
+                "type": "Module",
+                "msg": f"Package {module} failed to install!"
+            })
+        else:
+            # successful download, remove backup
+            print("[SUCCESS]: ", module)
+            return module
 
 
 def get_file(path):
@@ -187,11 +199,6 @@ def update_firmware_modules(firm):
         placeholder = path / 'none.txt'
         placeholder.touch()
         return firm
-    # Clean any generated stub files
-    old_stubs = path.rglob('*.pyi')
-    for s in old_stubs:
-        print(f"[CLEAN]: {s.name}")
-        s.unlink()
     modules = [get_module(m, path, prefix=mod_prefix) for m in modules]
     make_stubs(path)
     return firm
@@ -239,18 +246,19 @@ def add_device(device):
     fware = Firmware(firmware_info=fware_info, port=port, tag=fware_tag)
     device_root = Path(device['path']).parent
     mods_out = device_root / 'frozen'
-    mods_out.mkdir(exist_ok=True, parents=True)
-    fware.retrieve_license(device_root)
-    mod_paths = fware_info['module_path']
-    if isinstance(mod_paths, list) and any((i for i in mod_paths if '@' in i)):
-        for mod_path in mod_paths:
-            out_append, repo_path = mod_path.split('@')
-            submod_out = mods_out / out_append / repo_path
-            mods_out.mkdir(exist_ok=True, parents=True)
-            fware.module_path = [Path(repo_path)]
-            fware.retrieve_modules(submod_out)
-    else:
-        fware.retrieve_modules(mods_out)
+    with file_backups(mods_out, "*.py"):
+        mods_out.mkdir(exist_ok=True, parents=True)
+        fware.retrieve_license(device_root)
+        mod_paths = fware_info['module_path']
+        if isinstance(mod_paths, list) and any((i for i in mod_paths if '@' in i)):
+            for mod_path in mod_paths:
+                out_append, repo_path = mod_path.split('@')
+                submod_out = mods_out / out_append / repo_path
+                mods_out.mkdir(exist_ok=True, parents=True)
+                fware.module_path = [Path(repo_path)]
+                fware.retrieve_modules(submod_out)
+        else:
+            fware.retrieve_modules(mods_out)
     make_stubs(mods_out)
     return device
 
