@@ -1,5 +1,6 @@
 repos:
   - repo: https://github.com/prettier/prettier
-    rev: 1.18.1
+    rev: 1.18.2
     hooks:
       - id: prettier
+        args: [--write, --loglevel=silent]
