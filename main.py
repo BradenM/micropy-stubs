@@ -234,7 +234,7 @@ def add_device(device):
     _port_attrs = ['machine', 'sysname', 'nodename']
     _port_ids = [dev_fware.get(a).lower().split() for a in _port_attrs]
     port_ids = set(chain.from_iterable(_port_ids))
-    fware_devs = [d for d in fware_info['devices']]
+    fware_devs = [d.lower() for d in fware_info['devices']]
     port = list(set(fware_devs).intersection(port_ids))[0]
     fware_tag = dev_fware['version']
     fware_versions = [v['version'] for v in fware_info['versions']]
