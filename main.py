@@ -111,23 +111,22 @@ def get_module(module, target_dir, prefix=None):
         return get_git_module(*_module, target)
     _prefix = prefix or "micropython"
     module = f"{_prefix}-{module}"
-    with file_backups(target, "*.py"):
-        try:
-            upip.install(module, str(target))
-        except upip.NotFoundError:
-            INFO['errors'].append({
-                "type": "Module",
-                "msg": f"Package {module} not found!"
-            })
-        except Exception:
-            INFO['errors'].append({
-                "type": "Module",
-                "msg": f"Package {module} failed to install!"
-            })
-        else:
-            # successful download, remove backup
-            print("[SUCCESS]: ", module)
-            return module
+    try:
+        upip.install(module, str(target))
+    except upip.NotFoundError:
+        INFO['errors'].append({
+            "type": "Module",
+            "msg": f"Package {module} not found!"
+        })
+    except Exception:
+        INFO['errors'].append({
+            "type": "Module",
+            "msg": f"Package {module} failed to install!"
+        })
+    else:
+        # successful download, remove backup
+        print("[SUCCESS]: ", module)
+        return module
 
 
 def get_file(path):
@@ -199,7 +198,8 @@ def update_firmware_modules(firm):
         placeholder = path / 'none.txt'
         placeholder.touch()
         return firm
-    modules = [get_module(m, path, prefix=mod_prefix) for m in modules]
+    with file_backups(path, "*.py"):
+        modules = [get_module(m, path, prefix=mod_prefix) for m in modules]
     make_stubs(path)
     return firm
 

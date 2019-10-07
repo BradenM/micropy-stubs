@@ -140,3 +140,5 @@ dmypy.json
 
 # End of https://www.gitignore.io/api/visualstudiocode,python
 
+
+.vscode/
