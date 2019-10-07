@@ -13,6 +13,7 @@ setuptools = "*"
 wheel = "*"
 packaging = "*"
 pre-commit = "*"
+pytest = "*"
 
 [packages]
 pycopy-cpython-upip = "*"
