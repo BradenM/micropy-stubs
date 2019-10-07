@@ -1,6 +1,6 @@
 {
   "scope": "firmware",
-  "name": "Pycopy Sigfox",
+  "name": "Pycom Sigfox",
   "repo": "pycom/pycom-micropython-sigfox",
   "module_path": ["{}/frozen/Common", "{}/frozen/LTE"],
   "firmware": "pycom",
