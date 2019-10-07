@@ -1,8 +1,8 @@
 {
-  "name": "micropy-stubs",
-  "location": "https://raw.githubusercontent.com/bradenm/micropy-stubs/repo.json",
-  "path": "https://github.com/BradenM/micropy-stubs",
-  "key": "tarball/pkg/{}",
+  "name": "Micropy Stubs",
+  "location": "https://github.com/BradenM/micropy-stubs",
+  "source": "https://raw.githubusercontent.com/bradenm/micropy-stubs/source.json",
+  "path": "tarball/pkg/",
   "packages": [
     {
       "name": "esp32_LoBo-esp32_LoBo-3.2.24",
