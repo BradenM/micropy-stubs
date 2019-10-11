@@ -1,0 +1,27 @@
+name: Deploy Packages
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GIT_API_TOKEN: ${{ secrets.GIT_API_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-python@v1
+      - uses: dschep/install-pipenv-action@v1
+
+      - name: Setup Environment
+        run: pipenv install --dev
+
+      - name: Update All Packages
+        run: pipenv run ./main.py generate --update
+
+      - name: Update Package Branches
+        if: ${{ github.ref == 'master' }}
+        run: pipenv run ./main.py archive --all --commit
+
+      - name: Push Changes
+        run: git push
