@@ -20,7 +20,7 @@ jobs:
         run: pipenv run ./main.py generate --update
 
       - name: Update Package Branches
-        if: ${{ github.ref == 'master' }}
+        if: github.ref == 'master'
         run: pipenv run ./main.py archive --all --commit
 
       - name: Push Changes
