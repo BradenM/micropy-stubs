@@ -12,7 +12,6 @@ Module for creating/updating stub package git branches.
 
 import hashlib
 import json
-import shutil
 import subprocess as sp
 import tempfile
 from contextlib import contextmanager
@@ -28,6 +27,12 @@ WORK_DIR = Path.cwd()
 
 @contextmanager
 def create_or_reset_branch(ref=None):
+    """Create or Reset a Git Branch
+
+    Args:
+        ref (str, optional): Git ref of branch.
+         Defaults to None. If None, master is used.
+    """
     branch_ref = ref or 'master'
     current_branch = execute(
         'git rev-parse --abbrev-ref HEAD', shell=True, text=True).stdout
@@ -40,6 +45,7 @@ def create_or_reset_branch(ref=None):
 
 @contextmanager
 def temp_repo():
+    """Creates a temporary copy of repo to use."""
     global WORK_DIR
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = Path(tmp_dir)
@@ -52,6 +58,15 @@ def temp_repo():
 
 
 def get_change_count(root_path=None):
+    """Get the num of git file changes.
+
+    Args:
+        root_path (str, optional): Root path to check from.
+         Defaults to None. If none, current dir is used.
+
+    Returns:
+        int: Num of Changes.
+    """
     root_path = root_path or Path.cwd()
     _cmd = (f"git diff --cached --numstat {root_path} | wc -l")
     result = execute(_cmd, text=True, shell=True).stdout
@@ -60,6 +75,12 @@ def get_change_count(root_path=None):
 
 
 def execute(cmd, **kwargs):
+    """Subprocess Wrapper
+
+    Args:
+        cmd (list): Command to Execute.
+
+    """
     global WORK_DIR
     check = kwargs.pop('check', True)
     print("[CMD]: ", cmd)
@@ -74,6 +95,14 @@ def execute(cmd, **kwargs):
 
 
 def create_or_update_package_branch(root_path, name, force=False):
+    """Creates or Updates a Stub Package Branch.
+
+    Args:
+        root_path (str): Root Path to Stub Package.
+        name (str): Stub Package Name.
+        force (bool, optional): Force update even
+            if no changes are found. Defaults to False.
+    """
     ref_path = f"pkg/{name}"
     if Path(root_path).is_absolute():
         root_path = root_path.relative_to(Path.cwd())
@@ -91,6 +120,7 @@ def create_or_update_package_branch(root_path, name, force=False):
 
 
 def update_package_source():
+    """Updates Repos source.json file"""
     now = datetime.now().strftime("%m/%d/%y")
     commit_msg = "chore({}): Update Package Sources"
     commit_msg = commit_msg.format(now)
@@ -108,6 +138,12 @@ def update_package_source():
 
 
 def calc_package_checksum(path):
+    """Calculates checksum of given package path.
+
+    Args:
+        path (str): Path to generate checksum of.
+
+    """
     print("\nCalculating Package Checksum...")
     cksum = hashlib.sha256()
     glob = Path(path).rglob("*")
@@ -121,6 +157,18 @@ def calc_package_checksum(path):
 
 
 def add_package(path, name, stub_type='device', queue=True):
+    """Adds Package to Repos source.json file
+
+    Args:
+        path (str): Path to package root.
+        name (str): Package name
+        stub_type (str, optional): Stub Type. Defaults to 'device'.
+        queue (bool, optional): Queues changes rather
+            than executing immediately. Defaults to True.
+
+    Returns:
+        [type]: [description]
+    """
     cksum = calc_package_checksum(path)
     pkg = {
         'name': name,

@@ -54,6 +54,16 @@ INFO = {
 
 @contextmanager
 def file_backups(target_dir, glob_pattern):
+    """Backup Files in Case of Failure
+
+    Creates temporary backup file which is used
+    to restore the original file if it is not
+    updated/recreated on exiting the context.
+
+    Args:
+        target_dir (os.Pathlike): Path to target
+        glob_pattern (str): Glob Pattern of Files to Backups
+    """
     target = Path(target_dir)
     files = list(target.rglob(glob_pattern))
     backups = []
@@ -250,7 +260,9 @@ def add_device(device):
         mods_out.mkdir(exist_ok=True, parents=True)
         fware.retrieve_license(device_root)
         mod_paths = fware_info['module_path']
-        if isinstance(mod_paths, list) and any((i for i in mod_paths if '@' in i)):
+        if isinstance(
+                mod_paths, list) and any(
+                (i for i in mod_paths if '@' in i)):
             for mod_path in mod_paths:
                 out_append, repo_path = mod_path.split('@')
                 submod_out = mods_out / out_append / repo_path
