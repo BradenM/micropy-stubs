@@ -21,15 +21,20 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Setup Environment
-        run: pipenv install --dev
+        run: |
+                git checkout master
+                git fetch
+                pipenv install --dev
 
       - name: Update All Packages
         run: pipenv run ./main.py generate --update
 
       - name: Update Package Branches
-        if: github.ref == 'master'
-        run: pipenv run ./main.py archive --all --commit
+        if: github.ref == 'refs/heads/master'
+        run: |
+                git checkout master
+                pipenv run ./main.py archive --all --commit
 
       - name: Push Changes
-        if: github.ref == 'master'
+        if: github.ref == 'refs/heads/master'
         run: git push origin master
