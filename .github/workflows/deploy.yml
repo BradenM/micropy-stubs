@@ -1,6 +1,10 @@
 name: Deploy Packages
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * mon"
 
 jobs:
   build:
@@ -10,10 +14,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - name: Checkout Submodules
-        run: git submodule update --init --recursive
       - uses: actions/setup-python@v1
       - uses: dschep/install-pipenv-action@v1
+
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
 
       - name: Setup Environment
         run: pipenv install --dev
