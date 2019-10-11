@@ -9,7 +9,9 @@ jobs:
       GIT_API_TOKEN: ${{ secrets.GIT_API_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@master
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
       - uses: actions/setup-python@v1
       - uses: dschep/install-pipenv-action@v1
 
@@ -24,4 +26,5 @@ jobs:
         run: pipenv run ./main.py archive --all --commit
 
       - name: Push Changes
-        run: git push
+        if: github.ref == 'master'
+        run: git push origin master
