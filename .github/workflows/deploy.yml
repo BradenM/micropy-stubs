@@ -35,7 +35,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "chore: Update All Frozen" -a
+          git commit -m "chore: Update All Frozen" -a || true
 
       - name: Push Changes
         uses: ad-m/github-push-action@v.0.4.0
@@ -48,6 +48,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     env:
       GIT_API_TOKEN: ${{ secrets.GIT_API_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GIT_API_TOKEN }}
 
     steps:
       - uses: actions/checkout@master
@@ -62,7 +63,10 @@ jobs:
           pipenv run pre-commit
 
       - name: Update Package Branches
-        run: pipenv run ./main.py archive --all --commit
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          pipenv run ./main.py archive --all --commit
 
       - name: Push Changes
         uses: ad-m/github-push-action@v.0.4.0
