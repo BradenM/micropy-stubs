@@ -22,18 +22,41 @@ jobs:
 
       - name: Setup Environment
         run: |
-                git checkout master
-                git fetch
-                pipenv install --dev
+          git checkout master
+          git fetch
+          pipenv install --dev
+          pipenv run pre-commit
 
-      - name: Update All Packages
+      - name: Build Packages
         run: pipenv run ./main.py generate --update
 
-      - name: Update Package Branches
+      - name: Commit Changes
         if: github.ref == 'refs/heads/master'
         run: |
-                git checkout master
-                pipenv run ./main.py archive --all --commit
+          git add .
+          git commit -m "chore: Update All Frozen"
+          git push origin master
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      GIT_API_TOKEN: ${{ secrets.GIT_API_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v1
+      - uses: dschep/install-pipenv-action@v1
+
+      - name: Setup Environment
+        run: |
+          git checkout master
+          git fetch
+          pipenv install --dev
+          pipenv run pre-commit
+
+      - name: Update Package Branches
+        run: pipenv run ./main.py archive --all --commit
 
       - name: Push Changes
         if: github.ref == 'refs/heads/master'
