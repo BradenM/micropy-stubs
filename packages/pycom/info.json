@@ -25,10 +25,17 @@
   "licenses": ["pycom/pycom-libraries:license/Pycom Licences v2.2.pdf"],
   "versions": [
     {
+      "version": "1.20.1",
+      "git_tag": "v1.20.1",
+      "sha": "12f4ce0fb25401bdbbb030ed5104641d16f89739",
+      "latest": true,
+      "devices": ["esp32"]
+    },
+    {
       "version": "1.18.3",
       "git_tag": "v1.18.3",
       "sha": "d19c9e958a26a871598cbb0ca2aabc6773501282",
-      "latest": true,
+      "latest": false,
       "devices": ["esp32"]
     },
     {
@@ -49,6 +56,62 @@
       "version": "1.18.0",
       "git_tag": "v1.18.0",
       "sha": "046b3509da15ef00249b8ceca957c58d5328c4c9",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.2.3",
+      "git_tag": "V0.2.3",
+      "sha": "7310a8dc8f58d29b45f222d404c985e7d3db9610",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.2.2",
+      "git_tag": "V0.2.2",
+      "sha": "97d82fb9fe48214bb2302b779fb182bf3813d222",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.2.1",
+      "git_tag": "V0.2.1",
+      "sha": "b4f30fda44890cf5f9d43fec2ebb16c62210aab1",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.2.0",
+      "git_tag": "V0.2.0",
+      "sha": "96da86082bbfdb23b206534743453c199380b2af",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.1.2",
+      "git_tag": "V0.1.2",
+      "sha": "7a982e1431a502b67cd9fada17cc08738b6d0601",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.1.1",
+      "git_tag": "V0.1.1",
+      "sha": "a2c6bafbf8ed8bfb9a7e6ff64210c32e335df0c0",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.1.0",
+      "git_tag": "V0.1.0",
+      "sha": "2246d933f88158408b7db190d25b1108ac9673aa",
+      "latest": false,
+      "devices": []
+    },
+    {
+      "version": "0.0.1",
+      "git_tag": "V0.0.1",
+      "sha": "0ecf5d1ed6e689c984a1b505cbc3df90401d283d",
       "latest": false,
       "devices": []
     }
