@@ -183,3 +183,10 @@ def add_package(path, name, stub_type='device', queue=True):
     print("Adding package...")
     REPO['packages'].append(pkg)
     return pkg
+
+
+def format_info_files():
+    """Executes pre-commit prettier hook"""
+    print("[INFO]: Formatting Info Files...")
+    return execute("pre-commit run --hook-stage commit -a",
+                   shell=True, check=False)

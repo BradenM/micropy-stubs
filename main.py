@@ -438,6 +438,7 @@ def generate(firmware, update):
         update_firmware(firm, existing=update)
     stats = INFO['stats']
     errors = INFO['errors']
+    pkg.format_info_files()
     print("Report:")
     for s in stats:
         print(f"\n{s['firmware']}:")
