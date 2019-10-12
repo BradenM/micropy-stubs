@@ -14,11 +14,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+        with:
+          submodules: true
       - uses: actions/setup-python@v1
       - uses: dschep/install-pipenv-action@v1
-
-      - name: Checkout Submodules
-        run: git submodule update --init --recursive
 
       - name: Setup Environment
         run: |
@@ -48,10 +47,11 @@ jobs:
     if: github.ref == 'refs/heads/master'
     env:
       GIT_API_TOKEN: ${{ secrets.GIT_API_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GIT_API_TOKEN }}
 
     steps:
       - uses: actions/checkout@master
+        with:
+          submodules: true
       - uses: actions/setup-python@v1
       - uses: dschep/install-pipenv-action@v1
 
@@ -64,8 +64,10 @@ jobs:
 
       - name: Update Package Branches
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git remote rm origin || true
+          git remote add origin https://x-access-token:${{ secrets.GIT_API_TOKEN }}@github.com/bradenm/micropy-stubs.git
           pipenv run ./main.py archive --all --commit
 
       - name: Push Changes
