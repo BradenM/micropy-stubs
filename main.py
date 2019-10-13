@@ -39,7 +39,10 @@ from deepmerge import always_merger
 import packages as pkg
 import upip
 from firmware import Firmware
+from logbook import Logger, StreamHandler
+from logbook.more import ColorizingStreamHandlerMixin
 
+# Paths / State
 ROOT = (Path(__file__).parent).resolve()
 PKG_ROOT = ROOT / 'packages'
 def_files = PKG_ROOT.glob("**/info.json")
@@ -48,8 +51,17 @@ INFO = {
     'device': [],
     'stats': [],
     'errors': []
-
 }
+
+# Logging Setup
+
+
+class LogHandler(ColorizingStreamHandlerMixin, StreamHandler):
+    """Colorized Stream Handler"""
+
+
+log_handler = LogHandler(sys.stdout, level="INFO").push_application()
+log = Logger('micropy')
 
 
 @contextmanager
@@ -68,7 +80,7 @@ def file_backups(target_dir, glob_pattern):
     files = list(target.rglob(glob_pattern))
     backups = []
     for file in files:
-        print("[BACKUP]:", file.name)
+        log.debug(f"Backup: {file.name}")
         backup = file.with_suffix(file.suffix + ".back")
         file.rename(backup)
         backups.append((file, backup))
@@ -77,7 +89,7 @@ def file_backups(target_dir, glob_pattern):
     finally:
         for orig, backup in backups:
             if not orig.exists():
-                print("[RESTORE]: ", orig.name)
+                log.warning(f"Restoring {orig.name} to backup.")
                 rel_path = orig.relative_to(target_dir.parent)
                 INFO['errors'].append({
                     "type": "Module",
@@ -104,11 +116,13 @@ def make_stubs(target_dir):
 
 def get_git_module(repo, path, target_dir):
     """Download module from git"""
-    print("Installing via Git")
     url = f"https://raw.githubusercontent.com/{repo}/master/{path}"
     data = requests.get(url).text
-    target = target_dir / Path(path).name
-    print(f"{url} => {target}")
+    mod_path = Path(path)
+    log.notice(f"Installing {mod_path.name} via Git")
+    target = target_dir / mod_path.name
+    log.info(f"{repo}:{mod_path.name} => {target.relative_to(PKG_ROOT)}")
+    log.debug(f"Retrieving {mod_path.name} from {url} to {target}")
     with target.open('w+') as f:
         f.write(data)
 
@@ -121,7 +135,10 @@ def get_module(module, target_dir, prefix=None):
         return get_git_module(*_module, target)
     _prefix = prefix or "micropython"
     module = f"{_prefix}-{module}"
+    log.notice(f"Installing {module} via upip...")
+    log.info(f"{module} => {target.relative_to(PKG_ROOT)}")
     try:
+        upip.print = log.debug
         upip.install(module, str(target))
     except upip.NotFoundError:
         INFO['errors'].append({
@@ -134,38 +151,20 @@ def get_module(module, target_dir, prefix=None):
             "msg": f"Package {module} failed to install!"
         })
     else:
-        # successful download, remove backup
-        print("[SUCCESS]: ", module)
         return module
 
 
 def get_file(path):
     """Get file by info path"""
+    log.debug(f"Found: {path}")
     data = json.load(path.open())
     scope = data.get('scope', 'device')
     return (data, scope)
 
 
-def update_file(orig, new):
-    """Update Json"""
-    update_diff = dictdiff.diff(orig, new)
-    pprint("Update Diff:")
-    changes = [i for i in update_diff if i[0] == 'change']
-    removed = [i for i in update_diff if i[0] == 'remove']
-    print("==============")
-    print("CHANGES:")
-    pprint(changes)
-    print("==============")
-    print("REMOVED:")
-    pprint(removed)
-    print("==============")
-    path = orig['path']
-    json.dump(new, Path(path).open('w'), indent=2, sort_keys=False)
-    return new
-
-
 def sort_info(glob):
     """Sort info files by scope"""
+    log.notice("Searching for Info Files...")
     for f in glob:
         data, scope = get_file(f)
         data['path'] = str(f.relative_to(ROOT))
@@ -302,11 +301,12 @@ def add_firmware(firm):
             v_dir = path / vers['git_tag']
             dev_dirs = [Path(v_dir / dev) for dev in devices]
             [d.mkdir(exist_ok=True, parents=True) for d in dev_dirs]
-    new = update_file(firm, updated_firm)
+    json.dump(updated_firm, Path(updated_firm['path']).open(
+        'w'), indent=2, sort_keys=False)
     fware_index = INFO['firmware'].index(firm)
     INFO['firmware'].pop(fware_index)
-    INFO['firmware'].append(new)
-    return new
+    INFO['firmware'].append(updated_firm)
+    return updated_firm
 
 
 def get_stub_name(stub):
@@ -320,20 +320,18 @@ def get_stub_name(stub):
     return name
 
 
-def archive_device(device, commit=False, **kwargs):
+def archive_device(device, name, commit=False, **kwargs):
     """archive a device stub"""
     path = Path(device['path']).parent
-    pkg_name = get_stub_name(device)
     if commit:
-        pkg.create_or_update_package_branch(path, pkg_name, **kwargs)
-    pkg.add_package(path, pkg_name)
-    return create_archive(path, pkg_name)
+        pkg.create_or_update_package_branch(path, name, **kwargs)
+    pkg.add_package(path, name)
+    return create_archive(path, name)
 
 
-def archive_firmware(firmware, commit=False, **kwargs):
+def archive_firmware(firmware, name, commit=False, **kwargs):
     """archive a firmware stub"""
     path = Path(firmware['path']).parent
-    name = get_stub_name(firmware)
     if commit:
         pkg.create_or_update_package_branch(path, name, **kwargs)
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -348,9 +346,11 @@ def archive_firmware(firmware, commit=False, **kwargs):
 def archive_stub(stub, **kwargs):
     """archive given stub"""
     scope = stub.get('scope', 'device')
-    if scope == 'firmware':
-        return archive_firmware(stub, **kwargs)
-    return archive_device(stub, **kwargs)
+    name = get_stub_name(stub)
+    with pkg.with_package_log(name):
+        if scope == 'firmware':
+            return archive_firmware(stub, name, **kwargs)
+        return archive_device(stub, name, **kwargs)
 
 
 def create_archive(path, archive_name, **kwargs):
@@ -382,8 +382,12 @@ def resolve_stub(stub_name):
 
 
 @click.group()
-def cli():
+@click.option('--verbose', '-v', is_flag=True,
+              default=False, help="Enable verbose output.")
+def cli(verbose=False):
     """Micropy Stubs Cli"""
+    if verbose:
+        LogHandler(sys.stdout, level="DEBUG").push_application()
     sort_info(def_files)
 
 
@@ -407,9 +411,9 @@ def archive(stub_name, **kwargs):
         dist = ROOT / 'dist'
         if dist.exists():
             shutil.rmtree(dist)
-        print("Cleaned dist folder")
+        log.debug("Cleaned dist folder")
     if kwargs.get('do_all'):
-        print("Archiving all stubs...")
+        log.notice("Archiving all stubs...")
         archives.extend(
             [archive_stub(s, commit=do_commit, force=force) for s in stubs])
     if stub_name:
@@ -418,7 +422,7 @@ def archive(stub_name, **kwargs):
     if archives:
         archives = iter(archives)
         for a in archives:
-            print("Archived:", a.name)
+            log.notice("Archived:", a.name)
         print("Done!")
     pkg.update_package_source()
 

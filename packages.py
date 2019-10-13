@@ -19,10 +19,21 @@ from datetime import datetime
 from pathlib import Path
 from shutil import copytree
 
+from logbook import Logger
+
 REPO_SOURCE = Path(__file__).parent / 'source.json'
 REPO = json.loads(REPO_SOURCE.read_text())
 REPO_ROOT = Path(__file__).parent
 WORK_DIR = Path.cwd()
+log = Logger('package')
+
+
+@contextmanager
+def with_package_log(name):
+    """Set appropriate log instance"""
+    log = Logger(f'package:{name}')
+    yield log
+    log = Logger('package')
 
 
 @contextmanager
@@ -83,14 +94,15 @@ def execute(cmd, **kwargs):
     """
     global WORK_DIR
     check = kwargs.pop('check', True)
-    print("[CMD]: ", cmd)
-    print("[CWD]: ", WORK_DIR)
+    log.debug(f"Executing: {cmd}")
+    log.debug(f"Working Directory: {WORK_DIR}")
     if not kwargs.get('shell', None):
         cmd = cmd.split()
     proc = sp.run(cmd, capture_output=True,
                   check=check, cwd=WORK_DIR, **kwargs)
-    print("[RESULT]: ", proc.stdout)
-    print("[ERROR]: ", proc.stderr)
+    log.debug(f"Result: {proc.stdout}")
+    if proc.stderr:
+        log.error(f"[ERROR]: {proc.stderr}")
     return proc
 
 
@@ -106,7 +118,7 @@ def create_or_update_package_branch(root_path, name, force=False):
     ref_path = f"pkg/{name}"
     if Path(root_path).is_absolute():
         root_path = root_path.relative_to(Path.cwd())
-    print(f"\nCREATING PACKAGE BRANCH: {root_path} - {ref_path}")
+    log.notice(f"\nCREATING PACKAGE BRANCH: {root_path} - {ref_path}")
     with temp_repo():
         with create_or_reset_branch(ref=ref_path) as ref:
             execute((
@@ -116,7 +128,7 @@ def create_or_update_package_branch(root_path, name, force=False):
                 '"v*/**/*"\''
             ), shell=True)
             execute(f"git push --force -u origin {ref}:{ref}", shell=True)
-    print("Done.")
+    log.debug("Done.")
 
 
 def update_package_source():
@@ -125,12 +137,12 @@ def update_package_source():
     commit_msg = "chore({}): Update Package Sources"
     commit_msg = commit_msg.format(now)
     REPO_SOURCE.write_text(json.dumps(REPO, indent=2, sort_keys=False))
-    print("Updating repo source...")
+    log.notice("Updating repo source...")
     execute("pre-commit run --hook-stage commit -a", shell=True, check=False)
     execute("git add source.json", shell=True)
     if get_change_count():
         execute("git add source.json", shell=True)
-        print("Commiting updates...")
+        log.notice("Commiting updates...")
         execute(f"git commit -m '{commit_msg}'", shell=True, check=False)
     current_branch = execute(
         'git rev-parse --abbrev-ref HEAD', shell=True, text=True).stdout
@@ -144,15 +156,15 @@ def calc_package_checksum(path):
         path (str): Path to generate checksum of.
 
     """
-    print("\nCalculating Package Checksum...")
+    log.notice("\nCalculating Package Checksum...")
     cksum = hashlib.sha256()
     glob = Path(path).rglob("*")
     files = [f for f in glob if f.is_file()]
     for file in files:
-        print("Hashing: ", file.name)
+        log.debug("Hashing: ", file.name)
         cksum.update(file.read_bytes())
     hdigest = cksum.hexdigest()
-    print("Checksum Calculated: ", hdigest, "\n")
+    log.info("Checksum Calculated: ", hdigest, "\n")
     return hdigest
 
 
@@ -178,15 +190,15 @@ def add_package(path, name, stub_type='device', queue=True):
     existing = next(
         (pkg for pkg in REPO['packages'] if pkg['name'] == name), None)
     if existing:
-        print("Updating existing package...")
+        log.notice("Updating existing package...")
         REPO['packages'].remove(existing)
-    print("Adding package...")
+    log.notice("Adding package...")
     REPO['packages'].append(pkg)
     return pkg
 
 
 def format_info_files():
     """Executes pre-commit prettier hook"""
-    print("[INFO]: Formatting Info Files...")
+    log.debug("[INFO]: Formatting Info Files...")
     return execute("pre-commit run --hook-stage commit -a",
                    shell=True, check=False)

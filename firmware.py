@@ -13,6 +13,7 @@ from pathlib import Path
 
 from github import Github
 
+from logbook import Logger
 from packaging import version
 
 
@@ -23,6 +24,8 @@ class Firmware:
         self.tag = version.parse(tag) if tag else None
         self.port = port
         self.name = kwargs.get('name', firmware_info.get('firmware'))
+        self.log = Logger(
+            f'{self.port}-{self.name}-{self.tag or "latest"}')
         self.__dict__.update(firmware_info)
         if not isinstance(self.module_path, list):
             self.module_path = [self.module_path]
@@ -88,6 +91,7 @@ class Firmware:
 
     def retrieve_license(self, dest, repository=None, repo_path="LICENSE"):
         """Attempt to find and download repo license"""
+        self.log.notice("Retrieving Licenses...")
         _repo = repository or self.repo
         repo = self.git.get_repo(_repo)
         repo_path = Path(repo_path)
@@ -95,10 +99,12 @@ class Firmware:
             license_file = next(
                 (i for i in repo.get_contents('/')
                  if i.path == repo_path.name), None)
+            if license_file:
+                self.log.info(f"Found License: {license_file.path}")
         try:
             license_file = repo.get_contents(str(repo_path))
         except Exception:
-            print("Failed to retrieve license:", str(repo_path))
+            self.log.error("Failed to retrieve license:", str(repo_path))
             license_file = None
         # Lazy unique names
         file_name = str(repo_path).replace("/", "_")
@@ -158,11 +164,11 @@ class Firmware:
             try:
                 content = mod.decoded_content
             except AssertionError or Exception:
-                print(f"Could not decode {name}")
+                self.log.error(f"Could not decode {name}")
                 repo = self.git.get_repo(self.repo)
                 file = repo.get_contents(mod.path, ref=self.tag_obj.name)
                 try:
-                    print("Trying Again with:", file.path)
+                    self.log.notice(f"Trying Again with: {file.path}")
                     content = file.decoded_content
                     self.write_file_bytes(content, out_path)
                 except AssertionError or Exception:
@@ -170,6 +176,6 @@ class Firmware:
                         f.write(
                             f'\nFailed to retrieve: {name} from {mod.path}')
             else:
-                print(f"[SUCCESS]: {name} => {str(out_path)}")
+                self.log.info(f"{name} => {str(out_path)}")
                 self.write_file_bytes(content, out_path)
         return modules

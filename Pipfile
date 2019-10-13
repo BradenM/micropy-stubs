@@ -23,6 +23,7 @@ deepmerge = "*"
 click = "*"
 requests = "*"
 pycopy-cpython-gc = "*"
+logbook = "*"
 
 [requires]
 python_version = "3.7"
