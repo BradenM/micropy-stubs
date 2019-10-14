@@ -17,7 +17,6 @@ pytest = "*"
 
 [packages]
 pycopy-cpython-upip = "*"
-dictdiffer = "*"
 pygithub = "*"
 deepmerge = "*"
 click = "*"

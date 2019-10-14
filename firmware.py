@@ -12,7 +12,6 @@ from os import environ
 from pathlib import Path
 
 from github import Github
-
 from logbook import Logger
 from packaging import version
 
@@ -66,6 +65,7 @@ class Firmware:
 
     def get_compatible_tags(self):
         """returns tags compatible with current device"""
+        self.log.notice("Detecting Compatible Tags from Repo")
         repo, repo_tag_objs = self.get_refs()
         compat = []
         for tag in repo_tag_objs:

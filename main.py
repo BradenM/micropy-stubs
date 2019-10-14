@@ -29,10 +29,8 @@ import tempfile
 from contextlib import contextmanager
 from itertools import chain
 from pathlib import Path
-from pprint import pprint
 
 import click
-import dictdiffer as dictdiff
 import requests
 from deepmerge import always_merger
 
