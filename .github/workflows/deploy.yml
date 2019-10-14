@@ -37,6 +37,7 @@ jobs:
           git commit -m "chore: Update All Frozen" -a || true
 
       - name: Push Changes
+        if: github.ref == 'refs/heads/master'
         uses: ad-m/github-push-action@v.0.4.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
