@@ -23,6 +23,7 @@ click = "*"
 requests = "*"
 pycopy-cpython-gc = "*"
 logbook = "*"
+micropy-cli = "*"
 
 [requires]
 python_version = "3.7"

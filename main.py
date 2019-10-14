@@ -22,7 +22,6 @@ I will do this along with some tests soon.
 
 import json
 import shutil
-import subprocess as subp
 import sys
 import tarfile
 import tempfile
@@ -32,13 +31,14 @@ from pathlib import Path
 
 import click
 import requests
-from deepmerge import always_merger
-
-import packages as pkg
 import upip
-from firmware import Firmware
+from deepmerge import always_merger
 from logbook import Logger, StreamHandler
 from logbook.more import ColorizingStreamHandlerMixin
+from micropy.utils import generate_stub
+
+import packages as pkg
+from firmware import Firmware
 
 # Paths / State
 ROOT = (Path(__file__).parent).resolve()
@@ -100,16 +100,11 @@ def file_backups(target_dir, glob_pattern):
 
 def make_stubs(target_dir):
     """Call make_stub_files on a directory"""
-    stub_dir = (ROOT / 'tools' / 'stubber' / 'runOnPc').resolve()
-    py_file = stub_dir / 'make_stub_files.py'
-    py_cfg = stub_dir / 'make_stub_files.cfg'
     target = Path(str(target_dir)).resolve()
-    dirs = set([p.parent for p in target.rglob('*.py')])
-    with file_backups(target, "*.pyi"):
-        for d in dirs:
-            args = ["python", str(py_file), "-c",
-                    str(py_cfg), "-u", f"{str(d)}/*.py"]
-            subp.run(args, capture_output=True)
+    files = target.rglob('*.py')
+    with file_backups(target, '*.pyi'):
+        for file in files:
+            generate_stub(file, log.debug)
 
 
 def get_git_module(repo, path, target_dir):
