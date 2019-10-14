@@ -22,7 +22,6 @@ jobs:
 
       - name: Setup Environment
         run: |
-          git checkout master
           git fetch
           pipenv install --dev
           pipenv run pre-commit
