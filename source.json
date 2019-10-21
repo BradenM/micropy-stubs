@@ -62,7 +62,7 @@
     {
       "name": "esp8266-pycopy-2.11.0",
       "type": "device",
-      "sha256sum": "c5e2b918da18408ae7ebc4938dd24faa9b8f3d5e0b917adca5ae812e479a68ac"
+      "sha256sum": "bdb5bc9750febe0365711b7f9e85e4610a2f086a2a1b6d6905591a270306dce3"
     },
     {
       "name": "esp32-pycopy-1.11.0",
@@ -107,7 +107,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "a2b5034f1bc9a5ef39b7ad67a0dc9e08dd564027b5b95947372882315d2cbf35"
+      "sha256sum": "35db8d12df0b0510816f261ac3f42fae17d7a9507fb96f94608cc4c1ccaff3f2"
     }
   ]
 }
