@@ -9,10 +9,17 @@
   "devices": ["ev3"],
   "versions": [
     {
+      "version": "0.0.2",
+      "git_tag": "0.0.2",
+      "sha": "09854cda6b2bcb6bbac07a9c0db2531fc294338a",
+      "latest": true,
+      "devices": ["ev3"]
+    },
+    {
       "version": "0.0.1",
       "git_tag": "0.0.1",
       "sha": "fcb952b95331b31a0354fe340d1fa33a8935a34c",
-      "latest": true,
+      "latest": false,
       "devices": ["ev3"]
     }
   ],
