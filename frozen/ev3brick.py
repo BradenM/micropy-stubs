@@ -99,15 +99,12 @@ class battery:
         ...
 
 
-def buttons(channel: int) -> List[Button]:
+def buttons() -> List[Button]:
     """
-    Check which buttons on the infrared remote are pressed.
+    Check which buttons on the EV3 Brick are currently pressed.
 
     ----------
-    channel : int – Channel number of the remote.
-
-    ----------
-    Returns - List of pressed buttons on the remote on the specified channel.
+    Returns - List of pressed buttons.
     """
     ...
 
