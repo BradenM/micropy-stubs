@@ -17,7 +17,7 @@
     {
       "name": "ev3-pybricks-1.0.0",
       "type": "device",
-      "sha256sum": "660f00c32b800b49260254d74d33b0f6abb7e75c2e290222f3fa78d07ef4400b"
+      "sha256sum": "416bd238db18761694d9cc2f449449694e130180501c579ef6f96e54936f9d94"
     },
     {
       "name": "esp8266-micropython-1.9.3",
@@ -97,7 +97,7 @@
     {
       "name": "pybricks",
       "type": "firmware",
-      "sha256sum": "f43c14056a8d2272e10756ff4ae270bebd36bd70bb9b314edba6790b50288a29"
+      "sha256sum": "6d437cf46b1fe2a059081fb57bbc1967a2f813164b4acb7a64fde43b966214a7"
     },
     {
       "name": "micropython",
@@ -107,7 +107,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "35db8d12df0b0510816f261ac3f42fae17d7a9507fb96f94608cc4c1ccaff3f2"
+      "sha256sum": "a5455f6d8d9e8c3590ddf743e1679054b295761f6206d190a480b1e2b42b0df5"
     }
   ]
 }
