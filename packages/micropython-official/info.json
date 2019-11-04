@@ -33,7 +33,11 @@
     "utokenize",
     "uurequests",
     "uwwwauth",
-    "xmltok2"
+    "xmltok2",
+    "micropython/micropython@/tools/upip_tarfile.py",
+    "micropython/micropython@/drivers/dht/dht.py",
+    "micropython/micropython@/drivers/onewire/ds18x20.py",
+    "micropython/micropython@/drivers/onewire/onewire.py"
   ],
   "devices": ["esp8266", "esp32"],
   "licenses": ["micropython/micropython-lib:LICENSE"],

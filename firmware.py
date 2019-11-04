@@ -11,7 +11,7 @@ Copyright (c) 2019 Braden Mars
 from os import environ
 from pathlib import Path
 
-from github import Github
+from github import Github, GithubException
 from logbook import Logger
 from packaging import version
 
@@ -115,6 +115,22 @@ class Firmware:
             return self.write_file_bytes(contents.decoded_content,
                                          file_dest)
 
+    def iter_subdirs(self, repo, repo_mods):
+        """Iterates over subdirectories in list of repo contents"""
+        dirs = [i for i in repo_mods if i.type == 'dir']
+        for i in dirs:
+            try:
+                yield repo.get_contents(i.path)
+            except GithubException as e:
+                # Handles modules that have been moved in the master branch
+                self.log.debug(e)
+                self.log.error(
+                    f"Failed to retrieve module directory contents: {i.path}")
+                self.log.error(f"Repo: {repo.full_name}")
+                self.log.error(
+                    "Module is not present on master branch!")
+                pass
+
     def fetch_modules(self, exclude=None):
         """Fetch modules from git repository"""
         exclude = exclude or self.excluded_modules
@@ -124,8 +140,7 @@ class Firmware:
                 if self.parse_version(i.name) == self.tag))
         self.tag_obj = tag_obj
         repo_mods = list(self.get_modules(repo, ref=tag_obj.name))
-        subdirs = [repo.get_contents(i.path)
-                   for i in repo_mods if i.type == 'dir']
+        subdirs = self.iter_subdirs(repo, repo_mods)
         for files in subdirs:
             repo_mods.extend(files)
         modules = [i
