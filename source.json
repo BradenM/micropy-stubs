@@ -5,6 +5,11 @@
   "path": "legacy.tar.gz/pkg/",
   "packages": [
     {
+      "name": "generic-m5flowui-1.4.0",
+      "type": "device",
+      "sha256sum": "2cbc277af9fb9248108170bd50e51393c97fca7dd19d9386b15440166b8dd667"
+    },
+    {
       "name": "ev3-pybricks-1.0.0",
       "type": "device",
       "sha256sum": "34dabac669fc035b1bbe3c9cefbfd52583c669a97898adf6b2887bae1fdc2751"
@@ -47,7 +52,7 @@
     {
       "name": "esp32-micropython-1.11.0",
       "type": "device",
-      "sha256sum": "34bf9ba6eb994ff677717bbd983b3d5db9dfed268ee015971b3afb30c617dc9c"
+      "sha256sum": "c91ff4502867e3d01d732ae7ecd72e2d73f3be835f011f623754b3a1bfea4b4f"
     },
     {
       "name": "esp8266-micropython-1.11.0",
@@ -62,7 +67,7 @@
     {
       "name": "esp32-micropython-1.10.0",
       "type": "device",
-      "sha256sum": "37489f39fb1e3a668adda4987bd37c11fdc30debb853971af6828a33648431eb"
+      "sha256sum": "52d638b45e9490975d626bbc2d9ee482e9179677adde4bd413084b039f941eb7"
     },
     {
       "name": "esp8266-micropython-1.10.0",
@@ -83,6 +88,11 @@
       "name": "WiPy-pycom-1.18.2",
       "type": "device",
       "sha256sum": "33654402cf5dfbf149b99ecb07790d4d6d16e4b03fffee622ca86812ec2db15a"
+    },
+    {
+      "name": "m5flowui",
+      "type": "firmware",
+      "sha256sum": "b749919ec7cc49e505e42f20e60de09336cc6821a01c88c649496b384bf42aa0"
     },
     {
       "name": "pybricks",
