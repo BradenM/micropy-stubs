@@ -102,12 +102,12 @@
     {
       "name": "micropython",
       "type": "firmware",
-      "sha256sum": "b5d44863fe6c000ca2716dfd4d672353771dbef59f4ef1c675493693c5a930a7"
+      "sha256sum": "7ff2cce0237268cd52164b77b6c2df6be6249a67ee285edc122960af869b8ed2"
     },
     {
       "name": "pycom",
       "type": "firmware",
-      "sha256sum": "b891bf52a796dbea929f070cec47d0cc0977592f9934ca5bd769f90d9f4756c8"
+      "sha256sum": "15ced2172e74c4a2cc24e019b91af39f654e64236d1b2b00829804809c1f23d8"
     }
   ]
 }
