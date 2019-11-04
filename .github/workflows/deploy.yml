@@ -17,7 +17,9 @@ jobs:
       - uses: actions/checkout@master
         with:
           submodules: true
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v1.1.0
+        with:
+          python-version: "3.7.x"
       - uses: dschep/install-pipenv-action@v1
 
       - name: Setup Environment
@@ -53,7 +55,9 @@ jobs:
       - uses: actions/checkout@master
         with:
           submodules: true
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v1.1.0
+        with:
+          python-version: "3.7.x"
       - uses: dschep/install-pipenv-action@v1
 
       - name: Setup Environment
