@@ -1,3 +1,31 @@
+# This file is part of the standard library of Pycopy project, minimalist
+# and lightweight Python implementation.
+#
+# https://github.com/pfalcon/pycopy
+# https://github.com/pfalcon/pycopy-lib
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2018-2019 Paul Sokolovsky
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
 TEXT = "TEXT"
 START_TAG = "START_TAG"
 #START_TAG_DONE = "START_TAG_DONE"
@@ -14,10 +42,8 @@ class XMLTokenizer:
 
     def __init__(self, f):
         self.f = f
+        self.c = ""
         self.nextch()
-
-    def curch(self):
-        return self.c
 
     def getch(self):
         c = self.c
@@ -29,23 +55,20 @@ class XMLTokenizer:
 
     def nextch(self):
         self.c = self.f.read(1)
-        if not self.c:
-            raise StopIteration
-        return self.c
 
     def skip_ws(self):
-        while self.curch().isspace():
+        while self.c.isspace():
             self.nextch()
 
     def isident(self):
         self.skip_ws()
-        return self.curch().isalpha()
+        return self.c.isalpha()
 
     def getident(self):
         self.skip_ws()
         ident = ""
-        while True:
-            c = self.curch()
+        while self.c:
+            c = self.c
             if not(c.isalpha() or c.isdigit() or c in "_-."):
                 break
             ident += self.getch()
@@ -54,7 +77,7 @@ class XMLTokenizer:
     def putnsident(self, res):
         ns = ""
         ident = self.getident()
-        if self.curch() == ":":
+        if self.c == ":":
             self.nextch()
             ns = ident
             ident = self.getident()
@@ -63,7 +86,7 @@ class XMLTokenizer:
 
     def match(self, c):
         self.skip_ws()
-        if self.curch() == c:
+        if self.c == c:
             self.nextch()
             return True
         return False
@@ -81,7 +104,7 @@ class XMLTokenizer:
             if quote != '"' and quote != "'":
                 raise XMLSyntaxError
             val = ""
-            while self.curch() != quote:
+            while self.c != quote:
                 val += self.getch()
             self.expect(quote)
             res[3] = val
@@ -127,7 +150,7 @@ class XMLTokenizer:
                     self.expect(">")
             else:
                 text = ""
-                while self.curch() != "<":
+                while self.c and self.c != "<":
                     text += self.getch()
                 if text:
                     res[0] = TEXT
