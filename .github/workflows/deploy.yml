@@ -36,11 +36,12 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "chore: Update All Frozen" -a || true
+          git add .
+          git commit -a -m "chore: Update All Frozen" || true
 
       - name: Push Changes
         if: github.ref == 'refs/heads/master'
-        uses: ad-m/github-push-action@v.0.4.0
+        uses: ad-m/github-push-action@v0.5.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -76,6 +77,6 @@ jobs:
           pipenv run ./main.py archive --all --commit
 
       - name: Push Changes
-        uses: ad-m/github-push-action@v.0.4.0
+        uses: ad-m/github-push-action@v0.5.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
