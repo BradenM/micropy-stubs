@@ -92,7 +92,7 @@
     {
       "name": "micropython",
       "type": "firmware",
-      "sha256sum": "b883da4b6b9948b92862aecfdf4242abafdd50627479d32de754fe200d955ab0"
+      "sha256sum": "39ff676e8ad9ec020feb35673ccf272906e7099f6816d5b6bdf4b58630533505"
     },
     {
       "name": "pybricks",
@@ -102,7 +102,7 @@
     {
       "name": "esp32_LoBo",
       "type": "firmware",
-      "sha256sum": "e077ea28be31392bc92b93e6e26b13b9b64c4744a16c5edefcf60445f861c63e"
+      "sha256sum": "9725b23a5ab8181a6b24d742a46a131dfa5274ff9589c58946889fc861b2e835"
     },
     {
       "name": "pycopy",
