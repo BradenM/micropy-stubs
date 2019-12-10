@@ -415,7 +415,7 @@ def archive(stub_name, **kwargs):
     if archives:
         archives = iter(archives)
         for a in archives:
-            log.notice("Archived:", a.name)
+            log.notice(f"Archived: {a.name}")
         print("Done!")
     pkg.update_package_source()
 

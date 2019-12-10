@@ -62,7 +62,6 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
-          ref: master
 
       - uses: actions/setup-python@v1.1.0
         with:
@@ -75,6 +74,8 @@ jobs:
 
       - name: Setup Environment
         run: |
+          git checkout master
+          git fetch
           poetry install -v
           poetry run pre-commit
 

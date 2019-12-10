@@ -164,7 +164,7 @@ def calc_package_checksum(path):
         log.debug("Hashing: ", file.name)
         cksum.update(file.read_bytes())
     hdigest = cksum.hexdigest()
-    log.info("Checksum Calculated: ", hdigest, "\n")
+    log.info(f"Checksum Calculated: {hdigest}\n")
     return hdigest
 
 
@@ -199,6 +199,6 @@ def add_package(path, name, stub_type='device', queue=True):
 
 def format_info_files():
     """Executes pre-commit prettier hook"""
-    log.debug("[INFO]: Formatting Info Files...")
+    log.info("Formatting Info Files...")
     return execute("pre-commit run --hook-stage commit -a",
                    shell=True, check=False)
