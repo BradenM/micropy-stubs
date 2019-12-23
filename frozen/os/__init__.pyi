@@ -65,3 +65,6 @@ def spawnvp(mode: Any, file: Any, args: Any) -> Any: ...
     # ? 1: return rc>>number
     #   2: return -sig
     # ? 2: return sig
+    def __getitem__(self, k: Any) -> Any: ...
+        #   0: return getenv(k)
+        # ? 0: return getenv(k)
