@@ -1,3 +1,31 @@
+# This file is part of the standard library of Pycopy project, minimalist
+# and lightweight Python implementation.
+#
+# https://github.com/pfalcon/pycopy
+# https://github.com/pfalcon/pycopy-lib
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2014-2019 Paul Sokolovsky
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
 import uarray as array
 import ustruct as struct
 import errno as errno_
@@ -11,26 +39,25 @@ W_OK = const(2)
 X_OK = const(1)
 F_OK = const(0)
 
-O_ACCMODE  = 0o0000003
-O_RDONLY   = 0o0000000
-O_WRONLY   = 0o0000001
-O_RDWR     = 0o0000002
-O_CREAT    = 0o0000100
-O_EXCL     = 0o0000200
-O_NOCTTY   = 0o0000400
-O_TRUNC    = 0o0001000
-O_APPEND   = 0o0002000
-O_NONBLOCK = 0o0004000
+O_ACCMODE  = const(0o0000003)
+O_RDONLY   = const(0o0000000)
+O_WRONLY   = const(0o0000001)
+O_RDWR     = const(0o0000002)
+O_CREAT    = const(0o0000100)
+O_EXCL     = const(0o0000200)
+O_NOCTTY   = const(0o0000400)
+O_TRUNC    = const(0o0001000)
+O_APPEND   = const(0o0002000)
+O_NONBLOCK = const(0o0004000)
 
 P_WAIT = 0
 P_NOWAIT = 1
 
-error = OSError
+error = const(OSError)
 name = "posix"
-sep = "/"
-curdir = "."
-pardir = ".."
-environ = {"WARNING": "NOT_IMPLEMENTED"}
+sep = const("/")
+curdir = const(".")
+pardir = const("..")
 
 
 libc = ffilib.libc()
@@ -312,3 +339,12 @@ def spawnvp(mode, file, args):
             return rc >> 8
         return -sig
     execvp(file, args)
+
+
+class _Environ:
+
+    def __getitem__(self, k):
+        return getenv(k)
+
+
+environ = _Environ()
