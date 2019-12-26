@@ -80,6 +80,11 @@
       "sha256sum": "f922cbe1a191f7ed2b081530bc64eefdfc5205b786603cf120bc2546930881ee"
     },
     {
+      "name": "esp32-micropython-1.12.0",
+      "type": "device",
+      "sha256sum": "c7933702955a32dbca5c59d6eb15cf3e770313f6f93142e57a85732549662ee4"
+    },
+    {
       "name": "esp8266-micropython-1.9.4",
       "type": "device",
       "sha256sum": "6c6349c664a04d5cdd04c05b0b63afc2647ef6174318ecc16d97b54ff6a6f803"
@@ -112,12 +117,12 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "9f3b9ad885115a137a33168a76995143f2b1620724dd0092920e326b9c9a7df1"
+      "sha256sum": "2ca61f791c9408ae630e9460afcb4be6d402fa8a37e0f1c2572b16043d3fe534"
     },
     {
       "name": "micropython",
       "type": "firmware",
-      "sha256sum": "18892f00c86914b6b0b7dfba557ba826750aa4adc4dd50ec3a197184407dea10"
+      "sha256sum": "dead33dc08e3bd9882dddeb664ce0edb40a9ce5e3145160aa086683831b79164"
     }
   ]
 }
