@@ -187,7 +187,7 @@ class StreamWriter:
             if DEBUG and __debug__:
                 log.debug("StreamWriter.awrite(): can write more")
 
-    # This function is tenative, subject to change
+    # This function is tentative, subject to change
     def awritestr(self, s):
         yield from self.awrite(s.encode())
 
@@ -218,6 +218,7 @@ def open_connection(host, port, ssl=False):
         s.connect(ai[-1])
     except OSError as e:
         if e.args[0] != uerrno.EINPROGRESS:
+            s.close()
             raise
     if DEBUG and __debug__:
         log.debug("open_connection: After connect")
