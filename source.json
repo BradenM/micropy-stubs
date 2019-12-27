@@ -82,7 +82,7 @@
     {
       "name": "esp32-micropython-1.12.0",
       "type": "device",
-      "sha256sum": "c7933702955a32dbca5c59d6eb15cf3e770313f6f93142e57a85732549662ee4"
+      "sha256sum": "d22cee51a5f29eeeeb77ccb75f838a6fa0fc384f70ad4521ba057a35791080b4"
     },
     {
       "name": "esp8266-micropython-1.9.4",
@@ -117,7 +117,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "2ca61f791c9408ae630e9460afcb4be6d402fa8a37e0f1c2572b16043d3fe534"
+      "sha256sum": "96f911b564476a3f5fb873639e7761f3e3d84b8225b95d4674a07d6a5b97716b"
     },
     {
       "name": "micropython",
