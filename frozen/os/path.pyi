@@ -34,6 +34,11 @@ def isdir(path: Any) -> Union[Any, bool]: ...
     # ? 0: return stat.S_ISDIR(mode)
     #   1: return bool
     #   1: return bool
+def islink(path: Any) -> Union[Any, bool]: ...
+    #   0: return stat.S_ISLNK(mode)
+    # ? 0: return stat.S_ISLNK(mode)
+    #   1: return bool
+    #   1: return bool
 def expanduser(s: str) -> Union[Any, str]: ...
     #   0: return h+s[1:]
     # ? 0: return h+str
