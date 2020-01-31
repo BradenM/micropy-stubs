@@ -70,9 +70,6 @@ jobs:
           fetch-depth: 0
           ref: master
 
-      - name: Fetch History
-        run: git fetch --prune --unshallow
-
       - uses: actions/setup-python@v1.1.0
         with:
           python-version: "3.7.x"
