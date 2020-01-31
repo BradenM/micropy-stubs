@@ -9,10 +9,38 @@
   "devices": ["ev3"],
   "versions": [
     {
+      "version": "0.0.6",
+      "git_tag": "0.0.6",
+      "sha": "de3b6c19813c4bb47207904bd21e60c14971214b",
+      "latest": true,
+      "devices": ["ev3"]
+    },
+    {
+      "version": "0.0.5",
+      "git_tag": "0.0.5",
+      "sha": "b52dfaccbbc812ba4bb87b0408b7cb2899ce118a",
+      "latest": false,
+      "devices": ["ev3"]
+    },
+    {
+      "version": "0.0.4",
+      "git_tag": "0.0.4",
+      "sha": "4d7749569009699c7659d6da6f34a4eb0663ab25",
+      "latest": false,
+      "devices": ["ev3"]
+    },
+    {
+      "version": "0.0.3",
+      "git_tag": "0.0.3",
+      "sha": "7d407d00a848cef76d1997ae79ca20acac30ee56",
+      "latest": false,
+      "devices": ["ev3"]
+    },
+    {
       "version": "0.0.2",
       "git_tag": "0.0.2",
       "sha": "09854cda6b2bcb6bbac07a9c0db2531fc294338a",
-      "latest": true,
+      "latest": false,
       "devices": ["ev3"]
     },
     {
