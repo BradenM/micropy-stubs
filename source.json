@@ -85,6 +85,11 @@
       "sha256sum": "49dfbc6d5945a12ab54b6086043d5cafe3349acfe39d5c6d2bc6edaea849d1d1"
     },
     {
+      "name": "esp32-pycopy-3.0.0",
+      "type": "device",
+      "sha256sum": "bd622782176c86af09b791f732936f2dd86cb9603540fa14c82bdeba23ebbc22"
+    },
+    {
       "name": "esp32-pycopy-1.11.0",
       "type": "device",
       "sha256sum": "39ec328a1338f4fb6a6826e51f956f07de6532aa3d89963df33732febcbff7c6"
