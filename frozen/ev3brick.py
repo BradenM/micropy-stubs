@@ -1,10 +1,10 @@
-from pybricks.parameters import Align, Button, Color
-from typing import List, Tuple
+from pybricks.parameters import Align, Button, Color, ImageFile, SoundFile
+from typing import List, Tuple, Union
 
 
 class sound:
-    @classmethod
-    def beep(cls, frequency: int = 500, duration: int = 100, volume: int = 30):
+    @staticmethod
+    def beep(frequency: int = 500, duration: int = 100, volume: int = 30):
         """
         Play a beep/tone.
 
@@ -17,8 +17,8 @@ class sound:
         """
         ...
 
-    @classmethod
-    def beeps(cls, number: int):
+    @staticmethod
+    def beeps(number: int):
         """
         Play a number of default beeps with a brief pause in between.
 
@@ -27,13 +27,13 @@ class sound:
         """
         ...
 
-    @classmethod
-    def file(cls, file_name: str, volume: int = 100):
+    @staticmethod
+    def file(file_name: Union[str, SoundFile], volume: int = 100):
         """
         Play a sound file.
 
         ----------
-        file_name : str – Path to the sound file, including extension.
+        file_name : str – Path to the sound file, including extension. Paths can also be one of the SoundFile values.
 
         volume : int - Volume of the sound as a percent. (Default: 100).
         """
@@ -41,20 +41,20 @@ class sound:
 
 
 class display:
-    @classmethod
-    def clear(cls):
+    @staticmethod
+    def clear():
         """
         Clear everything on the display.
         """
 
-    @classmethod
-    def image(cls, file_name: str, alignment: Align = Align.CENTER, coordinate: Tuple[int, int] = None, clear: bool = True):
+    @staticmethod
+    def image(file_name: Union[str, ImageFile], alignment: Align = Align.CENTER, coordinate: Tuple[int, int] = None, clear: bool = True):
         """
         Show an image file. You can specify its placement either using alignmentor by specifying a coordinate, 
         but not both.
 
         ----------
-        file_name : str – Path to the image file. Paths may be absolute or relative from theproject folder.
+        file_name : str or ImageFile – Path to the image file. Paths may be absolute or relative from the project folder. Paths can also be one of the ImageFile values.
 
         alignment : Align – Where to place the image (Default: Align.CENTER).
 
@@ -64,8 +64,8 @@ class display:
         """
         ...
 
-    @classmethod
-    def text(cls, text: str, coordinate: Tuple[int, int] = None):
+    @staticmethod
+    def text(text: str, coordinate: Tuple[int, int] = None):
         """
         Display text.
 
@@ -78,25 +78,25 @@ class display:
 
 
 class battery:
-    @classmethod
-    def current(cls) -> int:
+    @staticmethod
+    def current() -> int:
         """
         Get the current supplied by the battery.
 
         ----------
         Returns - Battery current (mA).
         """
-        ...
+        return 0
 
-    @classmethod
-    def voltage(cls) -> int:
+    @staticmethod
+    def voltage() -> int:
         """
         Get the voltage of the battery.
 
         ----------
         Returns - Battery voltage (mV).
         """
-        ...
+        return 0
 
 
 def buttons() -> List[Button]:
@@ -106,7 +106,7 @@ def buttons() -> List[Button]:
     ----------
     Returns - List of pressed buttons.
     """
-    ...
+    return []
 
 
 def light(color: Color):
