@@ -10,7 +10,7 @@ class Motor:
     - 45503 or 45502: Separate part (2013)
     """
 
-    def __init__(self, port: Port, direction: Direction = Direction.CLOCKWISE, gears: List[int, int] = None):
+    def __init__(self, port: Port, direction: Direction = Direction.CLOCKWISE, gears: List[int] = None):
         """
         LEGO® MINDSTORMS® EV3 Medium or Large Motor.
         ----------
@@ -19,7 +19,7 @@ class Motor:
 
         direction : Direction – Positive speed direction (Default: Direction.CLOCKWISE).
 
-        gears : List[int, int] – List of gears linked to the motor (Default:None). For example: [12, 36] represents a gear train with a 12-tooth and a 36-tooth gear. Use a list of lists for multiple gear trains, such as [[12, 36], [20, 16, 40]]. The gears setting is only available for motors with rotation sensors.
+        gears : List[int] – List of gears linked to the motor (Default:None). For example: [12, 36] represents a gear train with a 12-tooth and a 36-tooth gear. Use a list of lists for multiple gear trains, such as [[12, 36], [20, 16, 40]]. The gears setting is only available for motors with rotation sensors.
         """
         ...
 
@@ -39,7 +39,7 @@ class Motor:
         ----------
         Returns - Motor angle in degrees.
         """
-        ...
+        return 0
 
     def reset_angle(self, angle: int):
         """
@@ -57,7 +57,7 @@ class Motor:
         ----------
         Returns - Motor speed in degrees/second.
         """
-        ...
+        return 0
 
     def stop(self, stop_type: Stop = Stop.COAST):
         """
@@ -138,7 +138,7 @@ class Motor:
         ----------
         Returns - True if the motor is stalled, False if it is not.
         """
-        ...
+        return False
 
     def run_until_stalled(self, speed: int, stop_type: Stop = Stop.COAST, duty_limit: float = 100):
         """
@@ -223,7 +223,7 @@ class TouchSensor:
         ----------
         Returns - True if the sensor is pressed, False if it is not pressed.
         """
-        ...
+        return False
 
 
 class ColorSensor:
@@ -248,9 +248,9 @@ class ColorSensor:
         Measure the color of a surface.
 
         ----------
-        Returns - Color.BLACK, Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED, Color.WHITE Color.BROWN or None.
+        Returns - Color.BLACK, Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED, Color.WHITE Color.BROWN, or None.
         """
-        ...
+        return Color.BLACK
 
     def ambient(self) -> int:
         """
@@ -259,7 +259,7 @@ class ColorSensor:
         ----------
         Returns - Ambient light intensity, ranging from 0 (dark) to 100 (bright).
         """
-        ...
+        return 0
 
     def reflection(self) -> int:
         """
@@ -268,7 +268,7 @@ class ColorSensor:
         ----------
         Returns - Reflection, ranging from 0 (no reflection) to 100 (high reflection).
         """
-        ...
+        return 0
 
     def rgb(self) -> Tuple[float, float, float]:
         """
@@ -277,7 +277,7 @@ class ColorSensor:
         ----------
         Returns - Reflection for red, green, and blue light, each ranging from 0.0 (no reflection) to 100.0(high reflection).
         """
-        ...
+        return (0.0, 0.0, 0.0)
 
 
 class InfraredSensor:
@@ -303,7 +303,7 @@ class InfraredSensor:
         ----------
         Returns - Relative distance ranging from 0 (closest) to 100 (farthest).
         """
-        ...
+        return 0.0
 
     def beacon(self, channel: int) -> Tuple[float, float]:
         """
@@ -315,7 +315,7 @@ class InfraredSensor:
         ----------
         Returns - Tuple of relative distance (0 to 100) and approximate angle (-75 to 75 degrees) between remote and infrared sensor or (None,None) if no remote is detected.
         """
-        ...
+        return (0.0, 0.0)
 
     def buttons(self, channel: int) -> List[Button]:
         """
@@ -327,7 +327,7 @@ class InfraredSensor:
         ----------
         Returns - List of pressed buttons on the remote on the specified channel.
         """
-        ...
+        return []
 
 
 class UltrasonicSensor:
@@ -356,7 +356,7 @@ class UltrasonicSensor:
         ----------
         Returns - Distance (millimeters).
         """
-        ...
+        return 0
 
     def presence(self) -> bool:
         """
@@ -365,7 +365,7 @@ class UltrasonicSensor:
         ----------
         Returns - True if ultrasonic sounds are detected, False if not.
         """
-        ...
+        return False
 
 
 class GyroSensor:
@@ -393,7 +393,7 @@ class GyroSensor:
         ----------
         Returns - Sensor angular velocity (degrees/second).
         """
-        ...
+        return 0
 
     def angle(self) -> int:
         """
@@ -402,7 +402,7 @@ class GyroSensor:
         ----------
         Returns - Rotation angle (degrees).
         """
-        ...
+        return 0
 
     def reset_angle(self, angle: int):
         """

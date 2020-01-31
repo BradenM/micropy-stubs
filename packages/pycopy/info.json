@@ -42,10 +42,45 @@
   "path": "packages/pycopy/info.json",
   "versions": [
     {
+      "version": "3.0.1",
+      "git_tag": "v3.0.1",
+      "sha": "8ce8cc0b0322e52bbd069f41ac3df850d3b5deac",
+      "latest": true,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.0.0",
+      "git_tag": "v3.0.0",
+      "sha": "6bff5f93e5518e58db04fd3a8b201529f13a2786",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "2.12.0.6",
+      "git_tag": "v2.12.0.6",
+      "sha": "f992a66e504928981b88a8d518d9238882409f49",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "2.12.0.5",
+      "git_tag": "v2.12.0.5",
+      "sha": "9e52c5e7032aa13f999da28c6274cc8f782dda9b",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "2.12.0.4",
+      "git_tag": "v2.12.0.4",
+      "sha": "f4b15ea29274847f32bb65bf3a3f41d3269bf723",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
       "version": "2.12.0.3",
       "git_tag": "v2.12.0.3",
       "sha": "3338486835fb1bfd55ba4adce6166cf2c2565128",
-      "latest": true,
+      "latest": false,
       "devices": ["esp8266", "esp32"]
     },
     {
