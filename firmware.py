@@ -30,7 +30,7 @@ class Firmware:
             self.module_path = [self.module_path]
         self.module_path = [Path(p.format(self.port))
                             for p in self.module_path]
-        git_token = environ.get("GIT_API_TOKEN").strip()
+        git_token = environ.get("GIT_PAT").strip()
         self.git = Github(login_or_token=git_token)
 
     @staticmethod
