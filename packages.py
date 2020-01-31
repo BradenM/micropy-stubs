@@ -127,6 +127,7 @@ def create_or_update_package_branch(root_path, name, force=False):
                 "--index-filter 'git rm --cached --ignore-unmatch "
                 '"v*/**/*"\''
             ), shell=True)
+            execute(f"git add .", shell=True)
             execute(f"git push --force -u origin {ref}:{ref}", shell=True)
     log.debug("Done.")
 
