@@ -47,7 +47,7 @@
     {
       "name": "ev3-pybricks-1.0.0",
       "type": "device",
-      "sha256sum": "d85d542ef5e2d255715b49ec7e91e60518cc15c9c3f04735475130b656170674"
+      "sha256sum": "c28521c3e0cf933e7a35ef806dd74c73184501a44b1e4d5abee2ee6af0a098ea"
     },
     {
       "name": "generic-m5flowui-1.4.0",
@@ -67,37 +67,37 @@
     {
       "name": "esp32-pycopy-2.11.0.5",
       "type": "device",
-      "sha256sum": "594d20bd49321d4a5951053569b3d00d9478d1d291cb9832067cf8347f01af67"
+      "sha256sum": "ac51828e254afd503c1d9de22dd5b408055f8f638cc4254813a0a98b4778a2ae"
     },
     {
       "name": "esp8266-pycopy-2.11.0",
       "type": "device",
-      "sha256sum": "8d8cb39dd327bc7fb93c9367e51bfc3861f735388d10a7a851333d993162179a"
+      "sha256sum": "1a1346464ad1e42cfb774ce8ab832531056e356db24b96c8a00692e615b55da5"
     },
     {
       "name": "esp32-pycopy-2.11.0.1",
       "type": "device",
-      "sha256sum": "933b3f211c138eb03d0856ffb25aa0bc01ffc2eb725eb8c8639e6842b1fed4b5"
+      "sha256sum": "571c9f9d93f8d1df5188afd796d1d663d3d1ee756af322cbaea493e441efdd14"
     },
     {
       "name": "esp8266-pycopy-2.11.0.1",
       "type": "device",
-      "sha256sum": "49dfbc6d5945a12ab54b6086043d5cafe3349acfe39d5c6d2bc6edaea849d1d1"
+      "sha256sum": "b26bf5e438937727f5ab4bc4780e6fde3690dbae0237e8cfe38c1b8e09c01b72"
     },
     {
       "name": "esp32-pycopy-3.0.0",
       "type": "device",
-      "sha256sum": "bd622782176c86af09b791f732936f2dd86cb9603540fa14c82bdeba23ebbc22"
+      "sha256sum": "1e22f7d715f43082d2c0e9f2e5dd96ab33f3ce6d99ab261ae54e97e443050cee"
     },
     {
       "name": "esp32-pycopy-1.11.0",
       "type": "device",
-      "sha256sum": "39ec328a1338f4fb6a6826e51f956f07de6532aa3d89963df33732febcbff7c6"
+      "sha256sum": "2deb129fad000ae844e311ac139a03d7d1bf9221970fb80018d6ad0213335e7a"
     },
     {
       "name": "esp8266-pycopy-1.11.0",
       "type": "device",
-      "sha256sum": "c6935163dcf3d165b762f7652f72d650eca4a7cf6bb03c83f199e894e31b4e07"
+      "sha256sum": "7cc828b954e3d397d487296f59b53d4572f675dceb6a50386e31e9bf6f4f62f2"
     },
     {
       "name": "micropython",
@@ -107,7 +107,7 @@
     {
       "name": "pybricks",
       "type": "firmware",
-      "sha256sum": "6d437cf46b1fe2a059081fb57bbc1967a2f813164b4acb7a64fde43b966214a7"
+      "sha256sum": "7b23227aa48e85155b08fb81e7df45a18c52ef50858e908ce52361b1157a5f1b"
     },
     {
       "name": "m5flowui",
@@ -127,7 +127,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "daa640c39ebc2b74d09d5ff9f6e71d2910d9e091939604ba41d5661399a278f4"
+      "sha256sum": "510cfbf7260aeea0b0886bf31cc519cdcd923e57e4c906871de9e8d45019187d"
     }
   ]
 }
