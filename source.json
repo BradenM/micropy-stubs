@@ -102,7 +102,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "18bd7908b79aa722342bbbeef028d350d17c63f75a58b1e0accfda6e9d67a960"
+      "sha256sum": "b47eb6be3784500bb71ee212704b3de180e7326f3a4ac170f480a44abd5d5b86"
     },
     {
       "name": "esp32_LoBo",
