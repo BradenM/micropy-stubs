@@ -9,6 +9,9 @@ class MPU9250:
     def gyro(self) -> Any: ...
         #   0: return self.mpu6500.gyro
         # ? 0: return self.mpu6500.gyro
+    def temperature(self) -> Any: ...
+        #   0: return self.mpu6500.temperature
+        # ? 0: return self.mpu6500.temperature
     def magnetic(self) -> Any: ...
         #   0: return self.ak8963.magnetic
         # ? 0: return self.ak8963.magnetic
