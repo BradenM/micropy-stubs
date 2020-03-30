@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 Mika Tuupola
+# Copyright (c) 2018-2020 Mika Tuupola
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of  this software and associated documentation files (the "Software"), to
@@ -30,7 +30,13 @@ from mpu6500 import MPU6500
 from ak8963 import AK8963
 # pylint: enable=import-error
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
+
+# Used for enabling and disabling the I2C bypass access
+_INT_PIN_CFG = const(0x37)
+_I2C_BYPASS_MASK = const(0b00000010)
+_I2C_BYPASS_EN = const(0b00000010)
+_I2C_BYPASS_DIS = const(0b00000000)
 
 class MPU9250:
     """Class which provides interface to MPU9250 9-axis motion tracking device."""
@@ -39,6 +45,12 @@ class MPU9250:
             self.mpu6500 = MPU6500(i2c)
         else:
             self.mpu6500 = mpu6500
+
+        # Enable I2C bypass to access AK8963 directly.
+        char = self.mpu6500._register_char(_INT_PIN_CFG)
+        char &= ~_I2C_BYPASS_MASK # clear I2C bits
+        char |= _I2C_BYPASS_EN
+        self.mpu6500._register_char(_INT_PIN_CFG, char)
 
         if ak8963 is None:
             self.ak8963 = AK8963(i2c)
@@ -62,6 +74,13 @@ class MPU9250:
         `gyro_sf=SF_DEG_S` parameter to the MPU6500 constructor.
         """
         return self.mpu6500.gyro
+
+    @property
+    def temperature(self):
+        """
+        Die temperature in celcius as a float.
+        """
+        return self.mpu6500.temperature
 
     @property
     def magnetic(self):

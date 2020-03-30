@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 Mika Tuupola
+# Copyright (c) 2018-2020 Mika Tuupola
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of  this software and associated documentation files (the "Software"), to
@@ -24,10 +24,11 @@
 MicroPython I2C driver for MPU6500 6-axis motion tracking device
 """
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 # pylint: disable=import-error
 import ustruct
+import utime
 from machine import I2C, Pin
 from micropython import const
 # pylint: enable=import-error
@@ -35,7 +36,6 @@ from micropython import const
 _GYRO_CONFIG = const(0x1b)
 _ACCEL_CONFIG = const(0x1c)
 _ACCEL_CONFIG2 = const(0x1d)
-_INT_PIN_CFG = const(0x37)
 _ACCEL_XOUT_H = const(0x3b)
 _ACCEL_XOUT_L = const(0x3c)
 _ACCEL_YOUT_H = const(0x3d)
@@ -74,10 +74,8 @@ _GYRO_SO_500DPS = 62.5
 _GYRO_SO_1000DPS = 32.8
 _GYRO_SO_2000DPS = 16.4
 
-# Used for enablind and disabling the i2c bypass access
-_I2C_BYPASS_MASK = const(0b00000010)
-_I2C_BYPASS_EN = const(0b00000010)
-_I2C_BYPASS_DIS = const(0b00000000)
+_TEMP_SO = 333.87
+_TEMP_OFFSET = 21
 
 SF_G = 1
 SF_M_S2 = 9.80665 # 1 g = 9.80665 m/s2 ie. standard gravity
@@ -89,24 +87,21 @@ class MPU6500:
     def __init__(
         self, i2c, address=0x68,
         accel_fs=ACCEL_FS_SEL_2G, gyro_fs=GYRO_FS_SEL_250DPS,
-        accel_sf=SF_M_S2, gyro_sf=SF_RAD_S
+        accel_sf=SF_M_S2, gyro_sf=SF_RAD_S,
+        gyro_offset=(0, 0, 0)
     ):
         self.i2c = i2c
         self.address = address
 
-        if 0x71 != self.whoami:
+        # 0x70 = standalone MPU6500, 0x71 = MPU6250 SIP
+        if self.whoami not in [0x71, 0x70]:
             raise RuntimeError("MPU6500 not found in I2C bus.")
 
         self._accel_so = self._accel_fs(accel_fs)
         self._gyro_so = self._gyro_fs(gyro_fs)
         self._accel_sf = accel_sf
         self._gyro_sf = gyro_sf
-
-        # Enable I2C bypass to access for MPU9250 magnetometer access.
-        char = self._register_char(_INT_PIN_CFG)
-        char &= ~_I2C_BYPASS_MASK # clear I2C bits
-        char |= _I2C_BYPASS_EN
-        self._register_char(_INT_PIN_CFG, char)
+        self._gyro_offset = gyro_offset
 
     @property
     def acceleration(self):
@@ -129,14 +124,45 @@ class MPU6500:
         """
         so = self._gyro_so
         sf = self._gyro_sf
+        ox, oy, oz = self._gyro_offset
 
         xyz = self._register_three_shorts(_GYRO_XOUT_H)
-        return tuple([value / so * sf for value in xyz])
+        xyz = [value / so * sf for value in xyz]
+
+        xyz[0] -= ox
+        xyz[1] -= oy
+        xyz[2] -= oz
+
+        return tuple(xyz)
+
+    @property
+    def temperature(self):
+        """
+        Die temperature in celcius as a float.
+        """
+        temp = self._register_short(_TEMP_OUT_H)
+        return ((temp - _TEMP_OFFSET) / _TEMP_SO) + _TEMP_OFFSET
 
     @property
     def whoami(self):
         """ Value of the whoami register. """
         return self._register_char(_WHO_AM_I)
+
+    def calibrate(self, count=256, delay=0):
+        ox, oy, oz = (0.0, 0.0, 0.0)
+        self._gyro_offset = (0.0, 0.0, 0.0)
+        n = float(count)
+
+        while count:
+            utime.sleep_ms(delay)
+            gx, gy, gz = self.gyro
+            ox += gx
+            oy += gy
+            oz += gz
+            count -= 1
+
+        self._gyro_offset = (ox / n, oy / n, oz / n)
+        return self._gyro_offset
 
     def _register_short(self, register, value=None, buf=bytearray(2)):
         if value is None:
