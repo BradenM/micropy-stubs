@@ -112,7 +112,7 @@
     {
       "name": "pycom",
       "type": "firmware",
-      "sha256sum": "3cdffb77fc8ef43da068ee461e94b8a2c214a06a7d980d1c79cf9f7e332632c3"
+      "sha256sum": "fa89635d4e557802736c50e8cea0193285bde5591614f171ceaba65c5314b159"
     },
     {
       "name": "pybricks",
