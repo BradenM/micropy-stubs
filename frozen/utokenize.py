@@ -29,9 +29,11 @@ def get_indent(l):
 
 def get_str(l, readline):
     lineno = 0
+    s = uio.StringIO()
 
     if l.startswith('"""') or l.startswith("'''"):
-        s = sep = l[0:3]
+        sep = l[0:3]
+        s += sep
         l = l[3:]
         pos = 0
         while True:
@@ -47,27 +49,28 @@ def get_str(l, readline):
             assert l
             lineno += 1
         s += l[:i + 3]
-        return s, l[i + 3:], lineno
+        return s.getvalue(), l[i + 3:], lineno
 
-    lbuf = uio.StringIO(l)
-    sep = lbuf.read(1)
-    sbuf = uio.StringIO()
-    sbuf.write(sep)
-    while True:
-        c = lbuf.read(1)
-        if not c:
-            break
-        sbuf.write(c)
-        if c == "\\":
-            c = lbuf.read(1)
-            sbuf.write(c)
-            if c == "\n":
-                lbuf = uio.StringIO(readline())
+    sep = l[0]
+    s += sep
+    l = l[1:]
+    quoted = False
+    while l:
+        c = l[0]
+        l = l[1:]
+        s += c
+        if quoted:
+            quoted = False
+        elif c == "\\":
+            if l == "\n":
+                s += "\n"
+                l = readline()
                 lineno += 1
                 continue
+            quoted = True
         elif c == sep:
             break
-    return sbuf.getvalue(), lbuf.read(), lineno
+    return s.getvalue(), l, lineno
 
 
 def tokenize(readline):
@@ -120,7 +123,7 @@ def tokenize(readline):
                 elif l.startswith("0b") or l.startswith("0B"):
                     t = "0b"
                     l = l[2:]
-                while l and (l[0].isdigit() or l[0] == "." or (t.startswith("0x") and l[0] in "ABCDEFabcdef")):
+                while l and (l[0].isdigit() or l[0] == "." or l[0] == "_" or (t.startswith("0x") and l[0] in "ABCDEFabcdef")):
                     if l[0] == ".":
                         if seen_dot:
                             break
@@ -133,16 +136,16 @@ def tokenize(readline):
                     if l[0] in ("+", "-"):
                         t += l[0]
                         l = l[1:]
-                    while l and l[0].isdigit():
+                    while l and (l[0].isdigit() or l[0] == "_"):
                         t += l[0]
                         l = l[1:]
                 if l.startswith("j"):
                     t += l[0]
                     l = l[1:]
                 yield TokenInfo(NUMBER, t, lineno, 0, org_l)
-            elif l[0].isalpha() or l.startswith("_"):
+            elif l[0].isalpha() or l.startswith("_") or ord(l[0]) >= 0xaa:
                 name = ""
-                while l and (l[0].isalpha() or l[0].isdigit() or l.startswith("_")):
+                while l and (l[0].isalpha() or l[0].isdigit() or l.startswith("_") or ord(l[0]) >= 0xaa):
                     name += l[0]
                     l = l[1:]
                 if (l.startswith('"') or l.startswith("'")) and name in ("b", "r", "rb", "br", "u", "f"):
