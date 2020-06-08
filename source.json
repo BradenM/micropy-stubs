@@ -102,7 +102,7 @@
     {
       "name": "pybricks",
       "type": "firmware",
-      "sha256sum": "7b23227aa48e85155b08fb81e7df45a18c52ef50858e908ce52361b1157a5f1b"
+      "sha256sum": "6bb934f42527535b9cf71c86c5ed6c6715c4f9f33339eb5c64eafcf8d76fb9bd"
     },
     {
       "name": "pycopy",
