@@ -9,10 +9,24 @@
   "devices": ["ev3"],
   "versions": [
     {
+      "version": "2.0.2",
+      "git_tag": "2.0.2",
+      "sha": "9d6672df9aeef375d3cd0983dc710abeebf9c798",
+      "latest": true,
+      "devices": ["ev3"]
+    },
+    {
+      "version": "2.0.1",
+      "git_tag": "2.0.1",
+      "sha": "31c359e3715307544f99bdfb04c928c4e5867d44",
+      "latest": false,
+      "devices": ["ev3"]
+    },
+    {
       "version": "2.0.0",
       "git_tag": "2.0.0",
       "sha": "3bda88318dba1e69fee009ecf7401d3218ea8382",
-      "latest": true,
+      "latest": false,
       "devices": ["ev3"]
     },
     {

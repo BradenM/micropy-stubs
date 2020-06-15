@@ -42,10 +42,31 @@
   "path": "packages/pycopy/info.json",
   "versions": [
     {
+      "version": "3.1.5",
+      "git_tag": "v3.1.5",
+      "sha": "16fcd99d27249479399be48602c6d32df545e2ec",
+      "latest": true,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.1.4",
+      "git_tag": "v3.1.4",
+      "sha": "5d99cfcf6c9d05f34570da6c8e4c7fe95b6035ed",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.1.3",
+      "git_tag": "v3.1.3",
+      "sha": "3ccbfd558043bd08f3bf57dbf051927109773e17",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
       "version": "3.1.2",
       "git_tag": "v3.1.2",
       "sha": "fa544c628c2522d6910e1e8c74c21f5d0ceba95d",
-      "latest": true,
+      "latest": false,
       "devices": ["esp8266", "esp32"]
     },
     {
