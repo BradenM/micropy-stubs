@@ -5,129 +5,129 @@
   "path": "legacy.tar.gz/pkg/",
   "packages": [
     {
-      "name": "ev3-pybricks-1.0.0",
-      "type": "device",
-      "sha256sum": "0fa332c249d8702a1621500bfc936f361a68f859548d31e5f2163aecec90ecc2"
-    },
-    {
-      "name": "esp8266-pycopy-2.11.0",
-      "type": "device",
-      "sha256sum": "a259b026d83aa8d1f19a9d0519262b627fdd5b2d56f26f5d30c2a2dbbbc1305b"
-    },
-    {
-      "name": "esp32-pycopy-2.11.0.5",
-      "type": "device",
-      "sha256sum": "99f88575f360b806706da7151e471ae205cf6a235346585be7681946d27e2da6"
-    },
-    {
       "name": "esp32-pycopy-3.0.0",
       "type": "device",
-      "sha256sum": "103686032adfc123fff05684918ea998507759821c1da1fa4665397d4d662005"
-    },
-    {
-      "name": "esp8266-pycopy-1.11.0",
-      "type": "device",
-      "sha256sum": "a22c6ef80e49bd12dccec31360d82816b94117982cb1504e9d54b5d90a221973"
+      "sha256sum": "8c6d9a03eabda8a3287cc6ceb6ddcea3d548533e3f611be285b8ac34b5ee26ce"
     },
     {
       "name": "esp32-pycopy-1.11.0",
       "type": "device",
-      "sha256sum": "4180db98dc8e3a05300793ff09ac0b0ba076d39530bde0ca49e5f784544a16d0"
+      "sha256sum": "333c2b4f580e0ea52338b9b74ee2a855deba1ca7fdc4f591fec0443171d7d7c8"
     },
     {
-      "name": "esp8266-pycopy-2.11.0.1",
+      "name": "esp8266-pycopy-1.11.0",
       "type": "device",
-      "sha256sum": "61403e5fbb50f6c42d4f586c509548959fb98fbe7a3a34fb399eeba958aa9acb"
+      "sha256sum": "c6872c8fabb7fb9ad25429fb8eff6ae91184e2602b52d1ccc90b49029210f938"
     },
     {
       "name": "esp32-pycopy-2.11.0.1",
       "type": "device",
-      "sha256sum": "984aba2fb477f83a0aa07a529974fd7ab52b15738c7922d92bdff6dd225a0697"
+      "sha256sum": "8f909097b7f6c8b35bc752c81eba9be2347ecf49dba19f48b42525645fc0865d"
     },
     {
-      "name": "esp32_LoBo-esp32_LoBo-3.2.24",
+      "name": "esp8266-pycopy-2.11.0.1",
       "type": "device",
-      "sha256sum": "153ca1fafad667d26bc35cad0a27a5a5ec6bbbf4b9b72e4ba9a6bc12c51f0189"
+      "sha256sum": "d98a010d6ab289edd6933d80c3150726a3b96d8991d76ace850b262534dc6eea"
     },
     {
-      "name": "generic-m5flowui-1.4.0",
+      "name": "esp32-pycopy-2.11.0.5",
       "type": "device",
-      "sha256sum": "435385b11c81c69e58242143f3d2f7aedfa066fc0863dc9e0e05f2d0dde74dc1"
+      "sha256sum": "4268745573152475b13e514ffe1b5568c33eed7756a8797365965a842faffc23"
+    },
+    {
+      "name": "esp8266-pycopy-2.11.0",
+      "type": "device",
+      "sha256sum": "31b10c657471c357e1901ac385c0eda569af621b4182b84c94df8310380a6e5d"
     },
     {
       "name": "WiPy-pycom-1.18.2",
       "type": "device",
-      "sha256sum": "61bbae8321e445f1e2f58681025606e74a6f50a651c1f2f21f7b908e51aae7e7"
+      "sha256sum": "4c8fad2fba51dd7e3727a98696acfd57d6494129238aed2e73ed0a91d331a9a4"
     },
     {
-      "name": "esp32-micropython-1.12.0",
+      "name": "esp32_LoBo-esp32_LoBo-3.2.24",
       "type": "device",
-      "sha256sum": "897944fe1602b4ed4207de50a3e59fab9cf00ac3773dc2c45818f5fb00a7f6ce"
-    },
-    {
-      "name": "esp8266-micropython-1.10.0",
-      "type": "device",
-      "sha256sum": "09735578382af4ee63f988a4e0b7fa29fe0e8b8c4cf1db29cf2f82c410dc53c1"
-    },
-    {
-      "name": "esp32-micropython-1.10.0",
-      "type": "device",
-      "sha256sum": "a7b45d14aeae49f16f7964bf61a214e2b8e231c069de80d3449673473ce85935"
-    },
-    {
-      "name": "esp8266-micropython-1.9.3",
-      "type": "device",
-      "sha256sum": "31734129ec49d0e6c56854a5d2ec1a424d67fc13f2f245306d3dc40ac8f52b81"
-    },
-    {
-      "name": "esp8266-micropython-1.11.0",
-      "type": "device",
-      "sha256sum": "d98ab4ccce849753c28ac04312e0613a024bb73cec65d252bc53b8a11cc9f993"
+      "sha256sum": "7d9f21cb89d6430f155c1a6dd0204057da875fbe5de894aef3f3f7555f082025"
     },
     {
       "name": "esp32-micropython-1.11.0",
       "type": "device",
-      "sha256sum": "3d9ab3c118347ac378b989187fbcf97e8c4bf0f867a4b5b186c2a0d50f0bfa45"
+      "sha256sum": "23518809c6ba6e6497b3d290d4575a9ea1f1c6e95cd8f57732ef92921d0cd0a1"
     },
     {
-      "name": "esp8266-micropython-1.9.4",
+      "name": "esp8266-micropython-1.11.0",
       "type": "device",
-      "sha256sum": "c18acf9abd7d79171591c227fffc35aa09203532ebba400a0feffd9f12a9e7dc"
+      "sha256sum": "5175c54bb67bf8b866729d3843d4dcaf0517adc2578da67a34a2cb909c9eee9b"
+    },
+    {
+      "name": "esp32-micropython-1.12.0",
+      "type": "device",
+      "sha256sum": "912bfd3cdef6a3cd1e7daeb852df5d0822f60522dce90d88f9e62eedd444cc0c"
+    },
+    {
+      "name": "esp8266-micropython-1.9.3",
+      "type": "device",
+      "sha256sum": "82a46eb089cb5b2943969c8560d1e78e5c12f9f26f6bfc9377c3e77a856424fc"
+    },
+    {
+      "name": "esp32-micropython-1.10.0",
+      "type": "device",
+      "sha256sum": "9412ec39d388742dd7363703e38d00bd7dc275b460523c84e279dc604b925689"
+    },
+    {
+      "name": "esp8266-micropython-1.10.0",
+      "type": "device",
+      "sha256sum": "84da48d4bb5b97cf7f5d86d7ecc7be1f6fe9b832f6fec2e16f2feef285ac4738"
     },
     {
       "name": "esp32-micropython-1.9.4",
       "type": "device",
-      "sha256sum": "7a531d4b020ae6d0270796d75dc2c4df0154fa3c042ef77004399591beaccf18"
+      "sha256sum": "7df521b37638e15fadec8a4c6f5c59ac620a975ece70459189fc626fb4cf3347"
     },
     {
-      "name": "pybricks",
-      "type": "firmware",
-      "sha256sum": "6bb934f42527535b9cf71c86c5ed6c6715c4f9f33339eb5c64eafcf8d76fb9bd"
+      "name": "esp8266-micropython-1.9.4",
+      "type": "device",
+      "sha256sum": "1bbf9574e835ac2a83b39e6947b9c97e0e3c5d1f0afaeedb3c4fb12a6949ec08"
+    },
+    {
+      "name": "ev3-pybricks-1.0.0",
+      "type": "device",
+      "sha256sum": "70c13a5669b8bb189268df31dd6b72aa1cd72e10f6227cb1eb365cb4f38ca8af"
+    },
+    {
+      "name": "generic-m5flowui-1.4.0",
+      "type": "device",
+      "sha256sum": "f1ff44fd3b07404b2547dc8594a00b97bc35bd745f21d7e4eaa2878ff9b3ebc1"
     },
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "30320f58b129121c9f33ddeb29b25653b63f482f9d3a3984662278eb72a12e6c"
+      "sha256sum": "74cc78f51a2513abcc24955bc02217d4d995f3c5d3208c8c4c0023fc2a0d93d0"
+    },
+    {
+      "name": "pycom",
+      "type": "firmware",
+      "sha256sum": "40b91816e7950719a4638cb0b343d7053372bcb6730b4e929bdde139452ea246"
     },
     {
       "name": "esp32_LoBo",
       "type": "firmware",
-      "sha256sum": "0ff381a7dba7db43c2091583fa53f58f176c4da4f2d60ee49b51ca683ea35815"
+      "sha256sum": "8b613ea1ff11ce391463202ddab25a9945f7ace4f347b663235dc18d98542340"
+    },
+    {
+      "name": "micropython",
+      "type": "firmware",
+      "sha256sum": "a28fef16ac7bcba775eeba9a1e4a20e5e8435ba41fb7b77c61fa47c7db58d875"
+    },
+    {
+      "name": "pybricks",
+      "type": "firmware",
+      "sha256sum": "d838f880cfa78c065872dce50c23034467166169f4b44659e90f2cb2e52e5178"
     },
     {
       "name": "m5flowui",
       "type": "firmware",
       "sha256sum": "b749919ec7cc49e505e42f20e60de09336cc6821a01c88c649496b384bf42aa0"
-    },
-    {
-      "name": "pycom",
-      "type": "firmware",
-      "sha256sum": "acd1c9291a212fdc33717f28f5f099cfde0bc90ceb46c052639d46b20fef16fc"
-    },
-    {
-      "name": "micropython",
-      "type": "firmware",
-      "sha256sum": "9095d07fde8b5cefad1c73369391f3ffa5356237d2d7eba028dfc16930b8bbfc"
     }
   ]
 }
