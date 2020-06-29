@@ -102,7 +102,7 @@
     {
       "name": "m5flowui",
       "type": "firmware",
-      "sha256sum": "b749919ec7cc49e505e42f20e60de09336cc6821a01c88c649496b384bf42aa0"
+      "sha256sum": "1cd7296e86be38a64304253b7588f33da8750eedfabe7a00205b3afef82f201f"
     },
     {
       "name": "pycom",
