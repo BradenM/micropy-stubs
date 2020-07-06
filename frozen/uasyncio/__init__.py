@@ -206,7 +206,7 @@ class Stream:
 StreamReader = StreamWriter = const(Stream)
 
 
-def open_connection(host, port, ssl=False):
+def open_connection(host, port, ssl=False, server_hostname=None):
     if DEBUG and __debug__:
         log.debug("open_connection(%s, %s)", host, port)
     ai = _socket.getaddrinfo(host, port, 0, _socket.SOCK_STREAM)
@@ -226,8 +226,10 @@ def open_connection(host, port, ssl=False):
         log.debug("open_connection: After iowait: %s", s)
     s2 = s
     if ssl:
-        import ussl
-        s2 = ussl.wrap_socket(s, do_handshake=False)
+        if ssl is True:
+            import ussl
+            ssl = ussl.SSLContext()
+        s2 = ssl.wrap_socket(s, server_hostname=server_hostname, do_handshake=False)
         s2.setblocking(False)
     return StreamReader(s, s2), StreamWriter(s, s2)
 
@@ -253,8 +255,7 @@ def start_server(client_coro, host, port, backlog=10, ssl=None):
             s2, client_addr = s.accept()
             s3 = s2
             if ssl:
-                import ussl
-                s3 = ussl.wrap_socket(s2, server_side=True, do_handshake=False)
+                s3 = ssl.wrap_socket(s2, server_side=True, do_handshake=False)
             s3.setblocking(False)
             if DEBUG and __debug__:
                 log.debug("start_server: After accept: %s", s2)
