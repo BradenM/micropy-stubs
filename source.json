@@ -122,7 +122,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "bda78a66e87229db71fb3fe3d9161bc5f8787938d6d2b5e85146366522529b2f"
+      "sha256sum": "6c58922e4c705597e5bafa68980a9e4eba249811639354c2ea8db1c398a4d4dc"
     },
     {
       "name": "micropython",
