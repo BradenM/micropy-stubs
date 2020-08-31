@@ -62,37 +62,37 @@
     {
       "name": "esp32-pycopy-1.11.0",
       "type": "device",
-      "sha256sum": "f5352068692b6d1b00452cf417b43f4a0041f7f7187878848abbdb7a3b2e2e33"
+      "sha256sum": "f6ae75f86accdaa9708d472514c8ed4223a95ce31612e6697c2bf1358e04f6b9"
     },
     {
       "name": "esp8266-pycopy-1.11.0",
       "type": "device",
-      "sha256sum": "4e82f80c374145e83dbded3cd685a8d1ac93c522e418d1a59349d0efb036094b"
+      "sha256sum": "56766e8e3935789e60fa06368448f315363c888eac5244e7bf545add2013bc0e"
     },
     {
       "name": "esp32-pycopy-2.11.0.5",
       "type": "device",
-      "sha256sum": "7f6691dc4265af81e016159fe20e0fd663fdac936ca3a2d7236cf8dcd8d809d2"
+      "sha256sum": "4ca771aaa5e4c6610ffe29d26e06091e64d247086cf6d69986466ef5df3c5390"
     },
     {
       "name": "esp8266-pycopy-2.11.0",
       "type": "device",
-      "sha256sum": "9d90c08dd3c6d2b1d45c0cbf5b363904d53c2eb8ef8c14c1361e2ce03ad50a14"
+      "sha256sum": "e92515c363f172d21f3818e6d8761e65060a48e589c96bb1623fe474be02abbc"
     },
     {
       "name": "esp32-pycopy-2.11.0.1",
       "type": "device",
-      "sha256sum": "e65d4a45ec13126b4ffbeb557b334d1fe67e71f6126d0ec73e8b1a26d773c85b"
+      "sha256sum": "967f6f7ae22a58df293eaa170c900b8634724193e444b81525b8a2501050f9b7"
     },
     {
       "name": "esp8266-pycopy-2.11.0.1",
       "type": "device",
-      "sha256sum": "b9b39a2e7436e553458bf709f2fb6b0a5cbdae3663e146474ea8f70c65397145"
+      "sha256sum": "6ae33cec308fc1d018ec3d47841153eec2f809f44dc25ed6ff8e3a591f61b79b"
     },
     {
       "name": "esp32-pycopy-3.0.0",
       "type": "device",
-      "sha256sum": "306e9fe91d9ad0fb498cffa512daa9e99c07ecdc61cc29aefa201d071c76732a"
+      "sha256sum": "aa35fafcfa9ebcaefea9caca4bf79eb781a2e34dee892cdf7ca3572171dacc77"
     },
     {
       "name": "generic-m5flowui-1.4.0",
