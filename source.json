@@ -112,7 +112,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "8eea1bef621f50f0c25677cc91652d55a55f75a458592632205a86aa1245daa1"
+      "sha256sum": "eaad2f8b0f963e83e6cd3e8e6671688fb48199a85580e6058a32186ef4f3802d"
     },
     {
       "name": "pybricks",
