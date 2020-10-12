@@ -77,5 +77,5 @@ def spawnvp(mode: Any, file: Any, args: Any) -> Any: ...
     #   2: return -sig
     # ? 2: return sig
     def __getitem__(self, k: Any) -> Any: ...
-        #   0: return getenv(k)
-        # ? 0: return getenv(k)
+        #   0: return r
+        # ? 0: return r
