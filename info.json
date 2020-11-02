@@ -42,10 +42,17 @@
   "path": "packages/pycopy/info.json",
   "versions": [
     {
+      "version": "3.3.2",
+      "git_tag": "v3.3.2",
+      "sha": "0f548ae9e3c9f650407d11a6bdcb0c1f17d4aab5",
+      "latest": true,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
       "version": "3.3.1",
       "git_tag": "v3.3.1",
       "sha": "993facc3b7a56a9e2555560733a46987ae5f9d2d",
-      "latest": true,
+      "latest": false,
       "devices": ["esp8266", "esp32"]
     },
     {
