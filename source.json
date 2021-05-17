@@ -90,6 +90,11 @@
       "sha256sum": "7ceb23dd33acf2cb9d624c9fb702f4a4783b64b7bc9bcb1bfff069d6b1ebec89"
     },
     {
+      "name": "esp32-micropython-1.15.0",
+      "type": "device",
+      "sha256sum": "e859d8cc41035b42b94bec70edee1ac021ca5b9043b09f8c59b91a6abc37528d"
+    },
+    {
       "name": "esp32-micropython-1.10.0",
       "type": "device",
       "sha256sum": "fdf3df43b86a3dab1ad51bc3a9b8b74248e9f1fd921370982326e47738edca42"
