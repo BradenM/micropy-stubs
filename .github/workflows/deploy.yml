@@ -48,7 +48,7 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add .
-          git commit -a -m "chore: Update All Frozen" || true
+          git commit -a -m "chore: Update All Frozen [skip ci]" || true
 
       - name: Push Changes
         if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'

@@ -135,7 +135,7 @@ def create_or_update_package_branch(root_path, name, force=False):
 def update_package_source():
     """Updates Repos source.json file"""
     now = datetime.now().strftime("%m/%d/%y")
-    commit_msg = "chore({}): Update Package Sources"
+    commit_msg = "chore({}): Update Package Sources [skip ci]"
     commit_msg = commit_msg.format(now)
     REPO_SOURCE.write_text(json.dumps(REPO, indent=2, sort_keys=False))
     log.notice("Updating repo source...")
