@@ -6,7 +6,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2014-2019 Paul Sokolovsky
+# Copyright (c) 2014-2021 Paul Sokolovsky
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,27 +28,15 @@
 
 import uarray as array
 import ustruct as struct
+import uctypes
 import errno as errno_
 import stat as stat_
-import ffilib
 import uos
 from . import path
 
-R_OK = const(4)
-W_OK = const(2)
-X_OK = const(1)
-F_OK = const(0)
+from uos2 import *
+from uos2 import _exit, _libc as libc
 
-O_ACCMODE  = const(0o0000003)
-O_RDONLY   = const(0o0000000)
-O_WRONLY   = const(0o0000001)
-O_RDWR     = const(0o0000002)
-O_CREAT    = const(0o0000100)
-O_EXCL     = const(0o0000200)
-O_NOCTTY   = const(0o0000400)
-O_TRUNC    = const(0o0001000)
-O_APPEND   = const(0o0002000)
-O_NONBLOCK = const(0o0004000)
 
 P_WAIT = 0
 P_NOWAIT = 1
@@ -58,46 +46,17 @@ name = "posix"
 sep = const("/")
 curdir = const(".")
 pardir = const("..")
+devnull = const("/dev/null")
 linesep = const("\n")
 
 
-libc = ffilib.libc()
-
 if libc:
-    chdir_ = libc.func("i", "chdir", "s")
-    mkdir_ = libc.func("i", "mkdir", "si")
-    rename_ = libc.func("i", "rename", "ss")
-    unlink_ = libc.func("i", "unlink", "s")
-    rmdir_ = libc.func("i", "rmdir", "s")
-    getcwd_ = libc.func("s", "getcwd", "si")
     opendir_ = libc.func("P", "opendir", "s")
     readdir_ = libc.func("P", "readdir", "P")
-    open_ = libc.func("i", "open", "sii")
-    read_ = libc.func("i", "read", "ipi")
-    write_ = libc.func("i", "write", "iPi")
-    close_ = libc.func("i", "close", "i")
     dup_ = libc.func("i", "dup", "i")
-    access_ = libc.func("i", "access", "si")
-    fork_ = libc.func("i", "fork", "")
-    pipe_ = libc.func("i", "pipe", "p")
-    _exit_ = libc.func("v", "_exit", "i")
-    getpid_ = libc.func("i", "getpid", "")
-    waitpid_ = libc.func("i", "waitpid", "ipi")
-    system_ = libc.func("i", "system", "s")
-    execvp_ = libc.func("i", "execvp", "PP")
-    kill_ = libc.func("i", "kill", "ii")
-    getenv_ = libc.func("s", "getenv", "P")
+    _execvpe = libc.func("i", "execvpe", "PPP")  # non-POSIX
+    _environ_ptr = libc.var("P", "environ")
 
-
-
-def check_error(ret):
-    # Return True is error was EINTR (which usually means that OS call
-    # should be restarted).
-    if ret == -1:
-        e = uos.errno()
-        if e == errno_.EINTR:
-            return True
-        raise OSError(e)
 
 def raise_error():
     raise OSError(uos.errno())
@@ -123,42 +82,6 @@ def stat(name):
 def lstat(name):
     return stat_result(uos.stat(name, False))
 
-
-if hasattr(uos, "getcwd"):
-    getcwd = uos.getcwd
-else:
-    def getcwd():
-        buf = bytearray(512)
-        return getcwd_(buf, 512)
-
-if hasattr(uos, "mkdir"):
-    mkdir = uos.mkdir
-else:
-    def mkdir(name, mode=0o777):
-        e = mkdir_(name, mode)
-        check_error(e)
-
-if hasattr(uos, "rename"):
-    rename = uos.rename
-else:
-    def rename(old, new):
-        e = rename_(old, new)
-        check_error(e)
-
-if hasattr(uos, "remove"):
-    unlink = remove = uos.remove
-else:
-    def unlink(name):
-        e = unlink_(name)
-        check_error(e)
-    remove = unlink
-
-if hasattr(uos, "rmdir"):
-    rmdir = uos.rmdir
-else:
-    def rmdir(name):
-        e = rmdir_(name)
-        check_error(e)
 
 def makedirs(name, mode=0o777, exist_ok=False):
     s = ""
@@ -229,89 +152,25 @@ def walk(top, topdown=True):
     if not topdown:
         yield top, dirs, files
 
-def open(n, flags, mode=0o777):
-    r = open_(n, flags, mode)
-    check_error(r)
-    return r
-
-def read(fd, n):
-    buf = bytearray(n)
-    r = read_(fd, buf, n)
-    check_error(r)
-    return bytes(buf[:r])
-
-def write(fd, buf):
-    r = write_(fd, buf, len(buf))
-    check_error(r)
-    return r
-
-def close(fd):
-    r = close_(fd)
-    check_error(r)
-    return r
 
 def dup(fd):
     r = dup_(fd)
     check_error(r)
     return r
 
-def access(path, mode):
-    return access_(path, mode) == 0
 
-if hasattr(uos, "chdir"):
-    chdir = uos.chdir
-else:
-    def chdir(dir):
-        r = chdir_(dir)
-        check_error(r)
+def WIFSIGNALED(st):
+    return st & 0x7f != 0
 
-def fork():
-    r = fork_()
-    check_error(r)
-    return r
+def WIFEXITED(st):
+    return st & 0x7f == 0
 
-def pipe():
-    a = array.array('i', [0, 0])
-    r = pipe_(a)
-    check_error(r)
-    return a[0], a[1]
+def WEXITSTATUS(st):
+    return st >> 8
 
-def _exit(n):
-    _exit_(n)
+def WTERMSIG(st):
+    return st & 0x7f
 
-def execvp(f, args):
-    import uctypes
-    args_ = array.array("P", [0] * (len(args) + 1))
-    i = 0
-    for a in args:
-        args_[i] = uctypes.addressof(a)
-        i += 1
-    r = execvp_(f, uctypes.addressof(args_))
-    check_error(r)
-
-def getpid():
-    return getpid_()
-
-def waitpid(pid, opts):
-    a = array.array('i', [0])
-    r = waitpid_(pid, a, opts)
-    check_error(r)
-    return (r, a[0])
-
-def kill(pid, sig):
-    r = kill_(pid, sig)
-    check_error(r)
-
-def system(command):
-    r = system_(command)
-    check_error(r)
-    return r
-
-def getenv(var, default=None):
-    var = getenv_(var)
-    if var is None:
-        return default
-    return var
 
 def fsencode(s):
     if type(s) is bytes:
@@ -349,6 +208,31 @@ def popen(cmd, mode="r"):
         close(o)
         return builtins.open(i, mode)
 
+
+def execvpe(f, args, env):
+    import uctypes
+    args_ = uarray.array("P", [0] * (len(args) + 1))
+    i = 0
+    for a in args:
+        args_[i] = uctypes.addressof(a)
+        i += 1
+    env_ = uarray.array("P", [0] * (len(env) + 1))
+    i = 0
+    if isinstance(env, list):
+        for s in env:
+            env_[i] = uctypes.addressof(s)
+            i += 1
+    else:
+        env_l = []  # so strings weren't gc'ed
+        for k, v in env.items():
+            s = "%s=%s" % (k, v)
+            env_l.append(s)
+            env_[i] = uctypes.addressof(s)
+            i += 1
+    r = _execvpe(f, args_, env_)
+    check_error(r)
+
+
 def spawnvp(mode, file, args):
     pid = fork()
     if pid:
@@ -362,13 +246,40 @@ def spawnvp(mode, file, args):
     execvp(file, args)
 
 
-class _Environ:
+def closerange(low, high):
+    for fd in range(low, high):
+        try:
+            close(fd)
+        except OSError:
+            pass
 
-    def __getitem__(self, k):
-        r = getenv(k)
-        if r is None:
-            raise KeyError(k)
-        return r
+
+def fpathconf(fd, name):
+    if name == "PC_PIPE_BUF":
+        return 512
+    raise ValueError
+
+
+_ENV_STRUCT = {
+    "arr": (uctypes.ARRAY, 4096, (uctypes.PTR, uctypes.UINT8))
+}
+
+
+class _Environ(dict):
+
+    def __init__(self):
+        dict.__init__(self)
+        env = uctypes.struct(_environ_ptr.get(), _ENV_STRUCT)
+        for i in range(4096):
+            if int(env.arr[i]) == 0:
+                break
+            s = uctypes.bytes_at(env.arr[i]).decode()
+            k, v = s.split("=", 1)
+            dict.__setitem__(self, k, v)
+
+    def __setitem__(self, k, v):
+        putenv(k, v)
+        dict.__setitem__(self, k, v)
 
 
 environ = _Environ()

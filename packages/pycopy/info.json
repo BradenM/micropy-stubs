@@ -42,10 +42,94 @@
   "path": "packages/pycopy/info.json",
   "versions": [
     {
+      "version": "3.5.7",
+      "git_tag": "v3.5.7",
+      "sha": "d557fd1b80dfcfadd63e25b6a2ed381a1561372a",
+      "latest": true,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.5.6",
+      "git_tag": "v3.5.6",
+      "sha": "46b5df3ddc439f955e4f76b36e4edbddd72c6ec4",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.5.5",
+      "git_tag": "v3.5.5",
+      "sha": "f215ac6cf1d85335609fc50dc40a4afb26501ba9",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.5.4",
+      "git_tag": "v3.5.4",
+      "sha": "b551867ab66f57f2ba42d9ffefeba7d0ba09c123",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.5.3",
+      "git_tag": "v3.5.3",
+      "sha": "56df869915be9e61cd21ad2081e144adc128eba3",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.5.2",
+      "git_tag": "v3.5.2",
+      "sha": "4e78d3bbd02e8d91ea43dd2eeabb543456dcb8fb",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.5.1",
+      "git_tag": "v3.5.1",
+      "sha": "ac9179aa54abf95db71dab1acc975c6125f6f1d5",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.5.0",
+      "git_tag": "v3.5.0",
+      "sha": "3f954564fe39c7e279ab529e32f5d8a980eabf66",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.4.3",
+      "git_tag": "v3.4.3",
+      "sha": "cabe62c7d739516926abbe331ea0c57dbfe2873a",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.4.2",
+      "git_tag": "v3.4.2",
+      "sha": "68652db56902b22ae991a97b47af3fa545958d39",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.4.1",
+      "git_tag": "v3.4.1",
+      "sha": "82b32a53155a6f0f9ee8205c4117a443a9827d59",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
+      "version": "3.4.0",
+      "git_tag": "v3.4.0",
+      "sha": "e683f61d0697154c7e0251ea59c2aefc9f548984",
+      "latest": false,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
       "version": "3.3.2",
       "git_tag": "v3.3.2",
       "sha": "0f548ae9e3c9f650407d11a6bdcb0c1f17d4aab5",
-      "latest": true,
+      "latest": false,
       "devices": ["esp8266", "esp32"]
     },
     {
@@ -280,13 +364,6 @@
       "devices": ["esp8266", "esp32"]
     },
     {
-      "version": "2.11.0.17",
-      "git_tag": "v2.11.0.17",
-      "sha": "2843838554b7faab27f3f0711d93a4fa4995d215",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
-    },
-    {
       "version": "2.11.0.16",
       "git_tag": "v2.11.0.16",
       "sha": "36f9aa7566486b337dd9ec43192fc4742a17c94a",
@@ -308,23 +385,9 @@
       "devices": ["esp8266", "esp32"]
     },
     {
-      "version": "2.11.0.13",
-      "git_tag": "v2.11.0.13",
-      "sha": "5c1937d2c290b1c395da7c0ccbbbdb86d6e40b3a",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
-    },
-    {
       "version": "2.11.0.12",
       "git_tag": "v2.11.0.12",
       "sha": "760810d010e2a333f161b178f2fb4490af4ee1b7",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
-    },
-    {
-      "version": "2.11.0.11",
-      "git_tag": "v2.11.0.11",
-      "sha": "0ce8b42e0156f7667e745af1a23e5e54d11eb3ea",
       "latest": false,
       "devices": ["esp8266", "esp32"]
     },
@@ -343,23 +406,9 @@
       "devices": ["esp8266", "esp32"]
     },
     {
-      "version": "2.11.0.8",
-      "git_tag": "v2.11.0.8",
-      "sha": "707a98a58bc4e1f9ded33b64ea47cf8f25f76644",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
-    },
-    {
       "version": "2.11.0.7",
       "git_tag": "v2.11.0.7",
       "sha": "b02e1b3e7e46230ce335e2a8d467b1a935aa0be1",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
-    },
-    {
-      "version": "2.11.0.6",
-      "git_tag": "v2.11.0.6",
-      "sha": "4bcc5b2765c5acd3ceb8ad15ae4940783471071e",
       "latest": false,
       "devices": ["esp8266", "esp32"]
     },
@@ -378,23 +427,9 @@
       "devices": ["esp8266", "esp32"]
     },
     {
-      "version": "2.11.0.3",
-      "git_tag": "v2.11.0.3",
-      "sha": "99f5642032e5f311f706646517f87dfc7970cd7d",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
-    },
-    {
       "version": "2.11.0.2",
       "git_tag": "v2.11.0.2",
       "sha": "4918b27350e4f39da4ea751b7a1e38b2a25bbf7a",
-      "latest": false,
-      "devices": ["esp8266", "esp32"]
-    },
-    {
-      "version": "2.11.0.1",
-      "git_tag": "v2.11.0.1",
-      "sha": "e08c65fba536eb013eb1decfbf6ea527f14e8a39",
       "latest": false,
       "devices": ["esp8266", "esp32"]
     },
