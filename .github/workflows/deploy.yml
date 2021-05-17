@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.actor != 'github-actions'
+    if: github.actor != 'github-actions[bot]'
     env:
       GIT_PAT: ${{ secrets.GIT_PAT }}
 
@@ -21,14 +21,14 @@ jobs:
       - name: Fetch History
         run: git fetch --prune --unshallow
 
-      - uses: actions/setup-python@v1.1.0
+      - uses: actions/setup-python@v2
         with:
           python-version: "3.7.x"
 
       - name: Install Poetry
-        uses: dschep/install-poetry-action@v1.3
+        uses: abatilo/actions-poetry@v2.1.2
         with:
-          version: 1.0.3
+          poetry-version: 1.1.6
 
       - name: Setup Environment
         run: |
@@ -43,23 +43,23 @@ jobs:
           git status -vv
 
       - name: Commit Changes
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "github-actions"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add .
           git commit -a -m "chore: Update All Frozen" || true
 
       - name: Push Changes
-        if: github.ref == 'refs/heads/master'
-        uses: ad-m/github-push-action@v0.5.0
+        if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+        uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/master' && github.actor != 'github-actions'
+    if: github.ref == 'refs/heads/master' && github.actor != 'github-actions[bot]' && github.event_name != 'pull_request'
     env:
       GIT_PAT: ${{ secrets.GIT_PAT }}
 
@@ -70,14 +70,14 @@ jobs:
           fetch-depth: 0
           ref: master
 
-      - uses: actions/setup-python@v1.1.0
+      - uses: actions/setup-python@v2
         with:
           python-version: "3.7.x"
 
       - name: Install Poetry
-        uses: dschep/install-poetry-action@v1.3
+        uses: abatilo/actions-poetry@v2.1.2
         with:
-          version: 1.0.3
+          poetry-version: 1.1.6
 
       - name: Setup Environment
         run: |
@@ -86,14 +86,14 @@ jobs:
 
       - name: Update Package Branches
         run: |
-          git config user.email "action@github.com"
-          git config user.name "github-actions"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git remote rm origin || true
           git remote add origin "https://x-access-token:${{ secrets.GIT_PAT }}@github.com/bradenm/micropy-stubs.git"
           poetry run ./main.py archive --all --commit
           git status
 
       - name: Push Changes
-        uses: ad-m/github-push-action@v0.5.0
+        uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
