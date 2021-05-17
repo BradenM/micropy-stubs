@@ -39,6 +39,9 @@ def islink(path: Any) -> Union[Any, bool]: ...
     # ? 0: return stat.S_ISLNK(mode)
     #   1: return bool
     #   1: return bool
+def realpath(path: Any) -> Any: ...
+    #   0: return realpath_(path,None)
+    # ? 0: return realpath_(path, None)
 def expanduser(s: str) -> Union[Any, str]: ...
     #   0: return h+s[1:]
     # ? 0: return h+str
