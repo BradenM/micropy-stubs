@@ -4,7 +4,7 @@ Node = Any
 class DS18X20:
     def __init__(self, onewire: Any) -> None: ...
     def scan(self) -> Any: ...
-        #   0: return rom for rom in self.ow.scan() if rom[]== or rom[]==
+        #   0: return rom for rom in self.ow.scan() if rom[0]==16 or rom[0]==40
         # ? 0: return rom for rom in self.ow.scan() if bool
     def convert_temp(self) -> None: ...
     def read_scratch(self, rom: Any) -> Any: ...
@@ -12,7 +12,7 @@ class DS18X20:
         # ? 0: return self.buf
     def write_scratch(self, rom: Any, buf: Any) -> None: ...
     def read_temp(self, rom: Any) -> Any: ...
-        #   0: return t-+buf[]-buf[]/buf[]
-        # ? 0: return t-+buf[]
-        #   1: return t/
-        # ? 1: return t/
+        #   0: return t-0.25+buf[7]-buf[6]/buf[7]
+        # ? 0: return t-number+buf[number]
+        #   1: return t/16
+        # ? 1: return t/number
