@@ -2,7 +2,7 @@
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
 class OneWire:
-    def __init__(self, pin: machine.Pin.pin) -> None: ...
+    def __init__(self, pin: machine.Pin) -> None: ...
     def reset(self) -> Any: ...
         #   0: return status
         # ? 0: return status
@@ -25,22 +25,22 @@ class OneWire:
     def scan(self) -> Any: ...
         #   0: return devices
         # ? 0: return devices
-    def _search_rom(self, l_rom: Any, diff: Any) -> Union[Tuple[Any, Any], Tuple[None, number]]: ...
+    def _search_rom(self, l_rom: Any, diff: Any) -> Union[Tuple[, ], Tuple[Any, Any]]: ...
 class DS18X20(object):
     def __init__(self, onewire: Any) -> None: ...
     def isbusy(self) -> bool: ...
-    def start_conversion(self, rom: Any=None) -> None: ...
-    def read_temp_async(self, rom: Any=None) -> Optional[Any]: ...
-        #   0: return None
-        #   0: return None
-        #   1: return None
-        #   1: return None
-        #   2: return self.convert_temp(rom[0],data)
-        # ? 2: return self.convert_temp(rom[number], data)
+    def start_conversion(self, rom: Any=) -> None: ...
+    def read_temp_async(self, rom: Any=) -> Optional[Any]: ...
+        #   0: return
+        #   0: return 
+        #   1: return
+        #   1: return 
+        #   2: return self.convert_temp(rom[],data)
+        # ? 2: return self.convert_temp(rom[], data)
     def convert_temp(self, rom0: Any, data: Any) -> Any: ...
-        #   0: return temp_read-25+count_per_c-count_remain/count_per_c
-        # ? 0: return temp_read-number+count_per_c-count_remain/count_per_c
-        #   1: return 100*temp_read-25+count_per_c-count_remain//count_per_c
-        # ? 1: return number*temp_read-number+count_per_c-count_remain//count_per_c
+        #   0: return temp_read-+count_per_c-count_remain/count_per_c
+        # ? 0: return temp_read-+count_per_c-count_remain/count_per_c
+        #   1: return *temp_read-+count_per_c-count_remain//count_per_c
+        # ? 1: return *temp_read-+count_per_c-count_remain//count_per_c
         #   2: return temp
         # ? 2: return temp
