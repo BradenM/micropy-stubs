@@ -2,30 +2,32 @@
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
 Node = Any
 def roundup(val: Any, align: Any) -> Any: ...
-    #   0: return val+align-1&~align-1
-    # ? 0: return val+align-number&align-number
+    #   0: return val+align-&~align-
+    # ? 0: return val+align-&align-
 class FileSection:
-    def __init__(self, f: Any, content_len: smallint, aligned_len: smallint) -> None: ...
-    def read(self, sz: Any=65536) -> Union[Any, bytes]: ...
-        #   0: return b''
-        #   0: return bytes
+    def __init__(self, f: Any, content_len: Any, aligned_len: Any) -> None: ...
+    def read(self, sz: Any=) -> Optional[Any]: ...
+        #   0: return
+        #   0: return 
         #   1: return data
         # ? 1: return data
-    def readinto(self, buf: Any) -> Union[Any, number]: ...
-        #   0: return 0
-        #   0: return number
+    def readinto(self, buf: Any) -> Optional[Any]: ...
+        #   0: return
+        #   0: return 
         #   1: return sz
         # ? 1: return sz
     def skip(self) -> None: ...
 class TarInfo:
-    def __str__(self) -> str: ...
+    def __str__(self) -> Any: ...
+        #   0: return %(self.name, self.type, self.size)
+        # ? 0: return %Tuple[self.name, self.type, self.size]
 class TarFile:
-    def __init__(self, name: str=None, fileobj: Any=None) -> None: ...
+    def __init__(self, name: str=, fileobj: Any=) -> None: ...
     def next(self) -> Optional[Any]: ...
-        #   0: return None
-        #   0: return None
-        #   1: return None
-        #   1: return None
+        #   0: return
+        #   0: return 
+        #   1: return
+        #   1: return 
         #   2: return d
         # ? 2: return d
     def __iter__(self) -> Any: ...
