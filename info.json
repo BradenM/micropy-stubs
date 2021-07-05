@@ -44,10 +44,17 @@
   "path": "packages/micropython-official/info.json",
   "versions": [
     {
+      "version": "1.16.0",
+      "git_tag": "v1.16",
+      "sha": "7c51cb2307eaca1a1ccc071e0bb5eb4a5f734610",
+      "latest": true,
+      "devices": ["esp8266", "esp32"]
+    },
+    {
       "version": "1.15.0",
       "git_tag": "v1.15",
       "sha": "321d1897c34f16243edf2c94913d7cf877a013d1",
-      "latest": true,
+      "latest": false,
       "devices": ["esp8266", "esp32"]
     },
     {
