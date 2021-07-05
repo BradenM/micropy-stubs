@@ -41,6 +41,16 @@ def split(path):
         head = "/"
     return (head, r[1])
 
+
+def splitext(path):
+    r = path.rsplit(".", 1)
+    if len(r) == 1:
+        return path, ""
+    if not r[0]:
+        return path, ""
+    return r[0], "." + r[1]
+
+
 def splitdrive(path):
     return "", path
 
@@ -85,7 +95,12 @@ def realpath(path):
     if isinstance(path, str) or isinstance(path, bytes):
         realpath_ = libc.func("s", "realpath", "ss")
         # XXX: memory leak! should free() returned pointer, see man realpath
-        return realpath_(path, None)
+        res = realpath_(path, None)
+        if res is not None:
+            return res
+        # Assume that file doesn't exist, return abspath.
+        return abspath(path)
+
     raise TypeError
 
 def expanduser(s):
