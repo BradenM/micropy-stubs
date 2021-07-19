@@ -40,6 +40,9 @@ def islink(path: Any) -> Union[Any, bool]: ...
     # ? 0: return stat.S_ISLNK(mode)
     #   1: return bool
     #   1: return bool
+def isabs(path: Any) -> Any: ...
+    #   0: return path.startswith('/')
+    # ? 0: return path.startswith(str)
 def realpath(path: Any) -> Any: ...
     #   0: return res
     # ? 0: return res
