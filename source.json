@@ -17,52 +17,52 @@
     {
       "name": "esp8266-micropython-1.9.3",
       "type": "device",
-      "sha256sum": "4b58f8c0d8e78867d8d5dd49d8bd84d0210af5de1eaab7b38b74f2a075f0926b"
+      "sha256sum": "21b8617310c209d11a944be3d4a94ea4335d0e8587623f1b2e421d51d1fbc842"
     },
     {
       "name": "esp32s2-micropython-1.15.0",
       "type": "device",
-      "sha256sum": "68709f959a85b53ecc3a5de244b43163d8229fa63c06f07fbf2658994c72c1a2"
+      "sha256sum": "815375d44e2c846cb8621ef65dc0643a72567db4227aabfaff80ddf28fced538"
     },
     {
       "name": "esp32-micropython-1.15.0",
       "type": "device",
-      "sha256sum": "6e80b0ee740dbffce3252f00a8fa0c554d133efa50dbbc7b54c87aa59e861801"
+      "sha256sum": "78efb6a8cc3bed95af8802f259424b33e5b6437b93e9a19b1ee23d2b6aac2249"
     },
     {
       "name": "esp8266-micropython-1.9.4",
       "type": "device",
-      "sha256sum": "63772375d50643ac31b73ca325bdd78bbf18c3cbd9a1fef2a15f7af0f30861cc"
+      "sha256sum": "e723d0efd6365eef8d25887d0b1d2554eb07417fd3a1c03c483f4cb4dbb0f5fe"
     },
     {
       "name": "esp32-micropython-1.9.4",
       "type": "device",
-      "sha256sum": "e223d5441121b79cae202faa4bb85af4e665280f0c0b48e3f12df2e99b213b42"
+      "sha256sum": "b2bde18d54c370dda71f12c3037fcb1fd173045b88592ffa0d1346c66d805c28"
     },
     {
       "name": "esp8266-micropython-1.11.0",
       "type": "device",
-      "sha256sum": "19655b54c6d6c3fb8867e0fd5cc69bf124f07bdb563a2683ec0665429b49b270"
+      "sha256sum": "d503e45898dbd41a4ce19c711afb88f796ed4d8ca7bd4896698cd0ee30772677"
     },
     {
       "name": "esp32-micropython-1.11.0",
       "type": "device",
-      "sha256sum": "6955483ca4fab9f165212b58673d6a8aab41daa4f91d5a3b4787b02204e43370"
+      "sha256sum": "99816f4ae0216da7e4f257b000730b1e63bdb026c4a95e00e2d9e6a9b582bd61"
     },
     {
       "name": "esp32-micropython-1.12.0",
       "type": "device",
-      "sha256sum": "69ad57bae5f639854a7406b44e249fbedceed98bb14a3bc54030118c05c198f8"
+      "sha256sum": "6d9fad4c50ff5376a62e4e15a5f024c74537daf24a5843bec3ca8dc662480c4e"
     },
     {
       "name": "esp8266-micropython-1.10.0",
       "type": "device",
-      "sha256sum": "272685f5ea72deef42f7de6ce930bd352b681e81728d9c9d8041842d86c7249d"
+      "sha256sum": "05baa9a7438c5b0ac891b4756abe98f811e1f1f8410f6da7574c7a1b3acf88de"
     },
     {
       "name": "esp32-micropython-1.10.0",
       "type": "device",
-      "sha256sum": "c4e48c9eed8ac3cd9c082c47398c690d271a519dcc92df0ab26997a05319904b"
+      "sha256sum": "e48244bfeb940de3db98cefaa8339c6d168686fcdbbc754edaeb4e9790a881dc"
     },
     {
       "name": "generic-m5flowui-1.4.0",
@@ -132,7 +132,7 @@
     {
       "name": "pycopy",
       "type": "firmware",
-      "sha256sum": "e912fd7a7817a9a6ada76320d0aafee706efb57ad8e271a8bd9c8fdc33ad5ea3"
+      "sha256sum": "a1d3e2bb689d47189689b70627229ea0101eb2dcf1b5ea48d22330ba4d1c8273"
     },
     {
       "name": "pycom",
